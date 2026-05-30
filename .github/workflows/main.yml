@@ -91,8 +91,7 @@
         - name: Unzip Android command line tools
           run: unzip -o commandlinetools.zip
 
-        - name: Unzip? [y]es, [n]o, [A]ll, [N]one, [r]ename:”). The command line tools
-          run: unzip -o commandlinetools.zip
+        
 
   
         - name: Set up Android SDK
