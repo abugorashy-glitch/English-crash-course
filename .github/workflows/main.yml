@@ -1,150 +1,68 @@
+name: Build Kivy APK
 
-    name: Build Kivy APK
+on: [push]
 
-    on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-    jobs:
-      build:
-        runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-        steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
 
-        - name: Set up Python
-          uses: actions/setup-python@v5
-          with:
-            python-version: '3.9' # Or your desired Python version
-        - name: Install Cython
-          run: pip install cython
-        - name: Install dependencies
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y libtinfo6
-            sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
-    
+      - name: Install Cython
+        run: pip install cython
 
-         
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libtinfo6 git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libssl-dev build-essential patch libffi-dev python3-dev python3-pip wget
 
-        - name: Install Buildozer and dependencies
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libssl-dev build-essential patch libffi-dev python3-dev python3-pip
-                            pip install buildozer
-        - name: Create build-tools directory
-          run: mkdir -p /home/runner/android-sdk/build-tools
-        - name: Install Android Build Tools
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y wget unzip
-            wget https://dl.google.com/android/repository/build-tools_r33.0.2-linux.zip
-            unzip build-tools_r33.0.2-linux.zip -d $HOME/android-sdk/build-tools
-            export PATH=$HOME/android-sdk/build-tools/33.0.0:$PATH
-        - name: Set up working directory
-          run: cd ${{ github.workspace }}
+      - name: Create symlink for libtinfo
+        run: sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
 
+      - name: Install Buildozer
+        run: pip install buildozer
 
+      - name: Set up Android SDK directories
+        run: |
+          mkdir -p $HOME/android-sdk/build-tools
+          mkdir -p $HOME/android/cmdline-tools
 
-            
-        - name: Generate buildozer.spec if missing
-          run: |
-           if [ ! -f buildozer.spec ]; then
-           buildozer init
-           fi
-        - name: Set up working directory
-          run: cd ${{ github.workspace }}
-        - name: Install Android SDK Command-line Tools
-          run: |
-           sudo apt-get update
-           sudo apt-get install -y wget unzip
-           wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
-           mkdir -p $HOME/android/cmdline-tools
-           unzip cmdline-tools.zip -d $HOME/android/cmdline-tools
-           export ANDROID_SDK_ROOT=$HOME/android
-           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/bin:$PATH
-           echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-           echo "PATH=$PATH" >> $GITHUB_ENV
+      - name: Download Android Command Line Tools
+        run: |
+          wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O $HOME/android/cmdline-tools/commandlinetools.zip
 
+      - name: Unzip Android command line tools
+        run: |
+          cd $HOME/android/cmdline-tools
+          unzip -o commandlinetools.zip
+          mv cmdline-tools latest
 
+      - name: Set Android environment variables
+        run: |
+          echo "ANDROID_SDK_ROOT=$HOME/android" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$HOME/android" >> $GITHUB_ENV
+          echo "$HOME/android/cmdline-tools/latest/bin" >> $GITHUB_PATH
 
-        - name: Install Android SDK Command-line Tools
-          run: |
-           mkdir -p $ANDROID_HOME/cmdline-tools
-           cd $ANDROID_HOME/cmdline-tools
-           wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
-           unzip cmdline-tools.zip
-           mv cmdline-tools latest
+      - name: Accept Android SDK licenses
+        run: yes | $HOME/android/cmdline-tools/latest/bin/sdkmanager --licenses
 
-        - name: Set up PATH for sdkmanager
-          run: echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+      - name: Install Android SDK components
+        run: |
+          $HOME/android/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
+          $HOME/android/cmdline-tools/latest/bin/sdkmanager "platform-tools"
+          $HOME/android/cmdline-tools/latest/bin/sdkmanager "platforms;android-33"
 
+      - name: Generate buildozer.spec if missing
+        run: |
+          if [ ! -f buildozer.spec ]; then
+            buildozer init
+          fi
 
-         # last cmmand below
-
-        
-      
-
-    #-----------
-        - name: Download Android Command Line Tools
-          run: |
-            wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O commandlinetools.zip
-
-        #--------
-
-        - name: Unzip Android command line tools
-          run: unzip -o commandlinetools.zip
-
-        
-
-  
-        - name: Set up Android SDK
-          run: |
-           mkdir -p $ANDROID_HOME/cmdline-tools
-           cd $ANDROID_HOME/cmdline-tools
-           curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-           unzip commandlinetools.zip -d latest
-           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-
-        
-
-        - name: Install Android SDK Build Tools
-          run: |
-           sdkmanager "build-tools;33.0.0"  # Use the required version for your project
-           sdkmanager --install "platform-tools"
-           sdkmanager --install "platforms;android-33"
-
-        - name: Set ANDROID_HOME
-          run: echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-        - name: Install Android Build Tools
-          run: |
-           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "build-tools;34.0.0"
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-          
-        - name: Build with Buildozer
-          run: buildozer android debug
-         
-          
-
-        
-       
-
+      - name: Build with Buildozer
+        run: buildozer android debug
