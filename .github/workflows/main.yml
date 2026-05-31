@@ -70,5 +70,5 @@ jobs:
         run: |
           rm -rf .buildozer/
           rm -rf ~/.buildozer/
-          buildozer android clean
+          # buildozer android clean
           buildozer -v android debug
