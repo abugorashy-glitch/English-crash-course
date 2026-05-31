@@ -64,5 +64,7 @@ jobs:
             buildozer init
           fi
 
-      - name: Build with Buildozer
-        run: buildozer android debug
+      - name: Build Android APK
+        run: |
+          buildozer android clean
+          buildozer -v android debug
