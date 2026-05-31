@@ -71,4 +71,4 @@ jobs:
           rm -rf .buildozer/
           rm -rf ~/.buildozer/
           # buildozer android clean
-          ~/.local/bin/buildozer -v android debug
+          buildozer -v android debug
