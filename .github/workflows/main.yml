@@ -70,8 +70,9 @@ jobs:
             buildozer init
           fi
 
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        with:
-          command: buildozer -v android debug
-          buildozer_version: stable
+      - name: Build Android APK
+        run: |
+          rm -rf .buildozer/
+          rm -rf ~/.buildozer/
+          # buildozer android clean
+          buildozer -v android debug
