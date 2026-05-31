@@ -71,9 +71,22 @@ jobs:
             buildozer init
           fi
 
+
+
+      - name: Install Pip Packages
+        run: |
+          pip3 install --user --upgrade Cython==0.29.33 virtualenv buildozer
+
       - name: Build Android APK
         run: |
           rm -rf .buildozer/
           rm -rf ~/.buildozer/
           # buildozer android clean
           buildozer -v android debug
+
+          
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-string
+          path: bin/*.apk 
