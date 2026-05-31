@@ -63,6 +63,7 @@ jobs:
           $HOME/android/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
           $HOME/android/cmdline-tools/latest/bin/sdkmanager "platform-tools"
           $HOME/android/cmdline-tools/latest/bin/sdkmanager "platforms;android-33"
+          
 
       - name: Generate buildozer.spec if missing
         run: |
