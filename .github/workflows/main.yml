@@ -33,7 +33,8 @@ jobs:
         run: sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
 
       - name: Install Buildozer
-        run: pip install buildozer
+        run: |
+          pip install buildozer==1.5.0
 
       - name: Set up Android SDK directories
         run: |
