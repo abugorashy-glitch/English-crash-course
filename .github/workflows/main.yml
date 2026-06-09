@@ -15,7 +15,7 @@ jobs:
       - name: Install Buildozer dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y autoconf libtool autopoint build-essential libffi-dev libssl-dev
+          sudo apt-get install -y autoconf libtool autopoint build-essential libffi-dev libssl-dev pkg-config libltdl-dev
 
     
           
