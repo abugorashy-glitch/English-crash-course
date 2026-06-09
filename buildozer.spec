@@ -37,7 +37,7 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = kivy==2.3.0, kivymd==0.104.2,cython==3.0.10, pillow
+requirements = kivy==2.3.0, kivymd==0.104.2,cython==3.0.10,sqlite3, pillow
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -349,7 +349,7 @@ p4a.branch = develop
 #p4a.setup_py = false
 
 # (str) extra command line arguments to pass when invoking pythonforandroid.toolchain
-p4a.extra_args = --blacklist-requirements=sqlite3
+#p4a.extra_args =
 
 
 
