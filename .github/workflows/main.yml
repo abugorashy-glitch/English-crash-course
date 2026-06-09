@@ -5,66 +5,30 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-          
-
-      - name: Install Cython
-        run: pip install cython
 
       - name: Install system dependencies
         run: |
-          sudo apt-get clean
-          sudo rm -rf /var/lib/apt/lists/*
           sudo apt-get update -y
-          sudo apt-get install -y libtinfo6 git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libssl-dev build-essential patch libffi-dev python3-dev python3-pip wget
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk autoconf libtool pkg-config \
+            zlib1g-dev libncurses5-dev libncursesw5-dev libssl-dev \
+            build-essential patch libffi-dev python3-dev python3-pip wget \
+            libtinfo6 libtinfo5
 
-      - name: Create symlink for libtinfo
-        run: sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
-
-      - name: Install Buildozer
-        run: pip install buildozer
-
-      - name: Set up Android SDK directories
+      - name: Install Buildozer and Dependencies
         run: |
-          mkdir -p $HOME/android-sdk/build-tools
-          mkdir -p $HOME/android/cmdline-tools
-
-      - name: Download Android Command Line Tools
-        run: |
-          wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O $HOME/android/cmdline-tools/commandlinetools.zip
-
-      - name: Unzip Android command line tools
-        run: |
-          cd $HOME/android/cmdline-tools
-          unzip -o commandlinetools.zip
-          mv cmdline-tools latest
-
-      - name: Set Android environment variables
-        run: |
-          echo "ANDROID_SDK_ROOT=$HOME/android" >> $GITHUB_ENV
-          echo "ANDROID_HOME=$HOME/android" >> $GITHUB_ENV
-          echo "$HOME/android/cmdline-tools/latest/bin" >> $GITHUB_PATH
-
-      - name: Accept Android SDK licenses
-        run: yes | $HOME/android/cmdline-tools/latest/bin/sdkmanager --licenses
-
-      - name: Install Android SDK components
-        run: |
-          $HOME/android/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
-          $HOME/android/cmdline-tools/latest/bin/sdkmanager "platform-tools"
-          $HOME/android/cmdline-tools/latest/bin/sdkmanager "platforms;android-33"
-          
+          pip install --upgrade pip
+          pip install "cython<3.0.0" virtualenv buildozer
 
       - name: Generate buildozer.spec if missing
         run: |
@@ -72,25 +36,16 @@ jobs:
             buildozer init
           fi
 
-     
-
-      - name: Install Pip Packages
-        run: |
-          pip3 install --user --upgrade Cython==0.29.33 virtualenv buildozer
-
-      
-
-
       - name: Build Android APK
         run: |
+          # Clean old build caches to prevent conflicts
           rm -rf .buildozer/
           rm -rf ~/.buildozer/
-          # buildozer android clean
+          # Run buildozer
           buildozer -v android debug
 
-          
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: package-string
-          path: bin/*.apk 
+          name: kivy-apk-package
+          path: bin/*.apk
