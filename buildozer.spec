@@ -37,7 +37,7 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy==2.3.0, kivymd, cython==3.0.10, sqlite3, pillow==10.4.0
+requirements = python3==3.11.0, hostpython3==3.11.0, kivy==2.3.0, kivymd, cython==3.0.10, sqlite3, pillow
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -110,7 +110,7 @@ android.api = 34
 #android.sdk = 20
 
 # (str) Android NDK version to use
-android.ndk = 26c
+android.ndk = 28c
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 android.ndk_api = 21
