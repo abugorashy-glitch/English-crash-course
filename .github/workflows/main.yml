@@ -88,10 +88,7 @@ jobs:
         run: |
           pip3 install --user --upgrade Cython==0.29.33 virtualenv buildozer
 
-      - name: Clear Buildozer Local Cache
-        run: |
-          buildozer android clean
-          buildozer appclean
+     
 
 
 
