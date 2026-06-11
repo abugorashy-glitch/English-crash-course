@@ -111,8 +111,8 @@ jobs:
           rm -rf .buildozer/
           rm -rf ~/.buildozer/
           # buildozer android clean
-          export PIP_REQUIRE_VIRTUALENV=false
-          unset VIRTUAL_ENV
+          export PIP_TARGET=""
+          export PIP_USER=false
           buildozer -v android debug
 
           
