@@ -108,6 +108,7 @@ jobs:
         env:
           # Downgrades implicit function declaration errors back to warnings
           APP_CFLAGS: "-Wno-error=implicit-function-declaration"
+          CFLAGS: "-Wno-error=implicit-function-declaration"
           PIP_TARGET: ${{ github.workspace }}/.buildozer_pip_target
         run: |
           rm -rf .buildozer/
