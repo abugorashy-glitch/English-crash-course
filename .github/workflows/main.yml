@@ -119,6 +119,7 @@ jobs:
           echo "Build complete or failed. Saving logs..."
           grep -n -C 3 "error:" buildozer_output.txt
           exit 1  # Force the workflow step to fail cleanly
+          
 
           
       - name: Upload APK Artifact
