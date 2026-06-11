@@ -113,7 +113,10 @@ jobs:
           # buildozer android clean
           export PIP_TARGET=""
           export PIP_USER=false
-          buildozer -v android debug
+          buildozer -v android debug > buildozer_output.txt 2>&1 || true
+          echo "=== SEARCHING FOR CLANG COMPILER ERRORS ==="
+          grep -n -C 3 "error:" buildozer_output.txt
+          exit 1  # Force the workflow step to fail cleanly
 
           
       - name: Upload APK Artifact
