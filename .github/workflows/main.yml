@@ -44,8 +44,11 @@ jobs:
       - name: Create symlink for libtinfo
         run: sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
 
-      - name: Install Buildozer
-        run: pip install buildozer
+      - name: Install Latest Buildozer
+        run: |
+          pip install --upgrade pip
+          pip install git+https://github.com/kivy/buildozer.git@master
+
 
       - name: Set up Android SDK directories
         run: |
