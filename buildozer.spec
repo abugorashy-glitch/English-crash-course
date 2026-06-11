@@ -8,7 +8,7 @@ package.name = crashcourse
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
-
+android.extra_cflags = -Wno-error=implicit-function-declaration
 #(str) Source code where the main.py live
 source.dir = .
 
