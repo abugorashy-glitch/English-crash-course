@@ -101,14 +101,11 @@ jobs:
       
 
 
-      - name: Build Android APK
-        env:
-          PIP_TARGET: ${{ github.workspace }}/.buildozer_pip_target
-        run: |
-          rm -rf .buildozer/
-          rm -rf ~/.buildozer/
-          # buildozer android clean
-          buildozer -v android debug
+      - name: Build APK with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          buildozer_version: stable
+          command: buildozer android debug
 
           
       - name: Upload APK Artifact
