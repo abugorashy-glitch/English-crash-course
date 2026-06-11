@@ -112,7 +112,7 @@ jobs:
         run: |
           rm -rf .buildozer/
           rm -rf ~/.buildozer/
-          rm -rf .buildozer/android/platform/build-*
+          
           buildozer android clean
           export PIP_TARGET=""
           export PIP_USER=false
