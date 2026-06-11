@@ -8,7 +8,9 @@ package.name = crashcourse
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
-android.extra_cflags = -Wno-error=implicit-function-declaration
+# Ensure there are no spaces immediately around the '=' character except as shown below
+android.extra_cflags = "-Wno-error=implicit-function-declaration -Wno-implicit-function-declaration"
+
 #(str) Source code where the main.py live
 source.dir = .
 
