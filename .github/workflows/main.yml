@@ -113,14 +113,19 @@ jobs:
           # buildozer android clean
           export PIP_TARGET=""
           export PIP_USER=false
+          set +e
           buildozer -v android debug > buildozer_output.txt 2>&1 || true
           echo "=== SEARCHING FOR CLANG COMPILER ERRORS ==="
+          echo "Build complete or failed. Saving logs..."
           grep -n -C 3 "error:" buildozer_output.txt
           exit 1  # Force the workflow step to fail cleanly
 
           
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: package-string
-          path: bin/*.apk 
+          name: buildozer-error-log
+          path: |
+            buildozer_output.txt
+            bin/*.apk 
