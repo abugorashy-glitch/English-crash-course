@@ -107,15 +107,7 @@ jobs:
 
 
       - name: Build Android APK
-        env:
         
-          # Tell Python's autoconf script directly that Android DOES NOT have group database functions
-          ac_cv_func_endgrent: "no"
-          ac_cv_func_getgrent: "no"
-          ac_cv_func_setgrent: "no"
-          # Re-apply the warning downgrades
-          CFLAGS: "-Wno-error=implicit-function-declaration -Wno-implicit-function-declaration"
-          PIP_TARGET: ${{ github.workspace }}/.buildozer_pip_target
         run: |
           rm -rf .buildozer/
           rm -rf ~/.buildozer/
