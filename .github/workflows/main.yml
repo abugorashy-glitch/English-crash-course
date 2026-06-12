@@ -108,7 +108,10 @@ jobs:
       - name: Build Android APK
         env:
           # Downgrades implicit function declaration errors back to warnings
-          
+          # Explicitly disable building modules that cause POSIX standard conflicts
+          PYTHON_DISABLE_MODULES: "_crypt crypt"
+          # Fallback to bypass implicit errors if the flag is respected by the setup script
+          CFLAGS: "-Wno-error=implicit-function-declaration"
           PIP_TARGET: ${{ github.workspace }}/.buildozer_pip_target
         run: |
           rm -rf .buildozer/
