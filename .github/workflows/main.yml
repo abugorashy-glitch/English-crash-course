@@ -102,13 +102,7 @@ jobs:
         run: |
            python -m pip install --upgrade pip setuptools wheel virtualenv Cython
       
-      - name: Remove _crypt module from Python setup scripts
-        run: |
-          # Seed the buildozer platform directory structure so we can edit files
-          
-    
-          # Locate setup.py inside the p4a Python compilation recipes and comment out the crypt extension
-          find ~/.buildozer/ -name "setup.py" -exec sed -i '/Extension('\''_crypt'\''/d' {} + || true
+      
 
 
 
