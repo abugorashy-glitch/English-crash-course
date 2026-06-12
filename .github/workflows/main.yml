@@ -105,7 +105,7 @@ jobs:
       - name: Remove _crypt module from Python setup scripts
         run: |
           # Seed the buildozer platform directory structure so we can edit files
-          buildozer android clean || true
+          
     
           # Locate setup.py inside the p4a Python compilation recipes and comment out the crypt extension
           find ~/.buildozer/ -name "setup.py" -exec sed -i '/Extension('\''_crypt'\''/d' {} + || true
