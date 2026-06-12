@@ -39,7 +39,7 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3==3.12.0, hostpython3==3.12.0, kivy==2.3.0, kivymd, cython==3.0.10, sqlite3, pillow
+requirements = python3==3.10.12,hostpython3==3.10.12,kivy==2.3.0,kivymd,cython==3.0.10,sqlite3,pillow
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -103,7 +103,7 @@ fullscreen = 0
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-android.api = 34
+android.api = 33
 
 # (int) Minimum API your APK / AAB will support.
 #android.minapi = 21
