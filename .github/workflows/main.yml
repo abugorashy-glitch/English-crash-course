@@ -102,7 +102,17 @@ jobs:
         run: |
            python -m pip install --upgrade pip setuptools wheel virtualenv Cython
       
-      
+      - name: Install Correct Linux Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev xclip libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
+          sudo apt-get install -y openjdk-17-jdk unzip zip autoconf libtool pkg-config libncurses5-dev libncursesw5-dev libtinfo5 cmake
+
+      - name: Force Install Working Cython Version
+        run: |
+          pip install --upgrade pip
+          # This specific version fixes the missing jnius.c file error
+          pip install "cython<3.0.0" virtualenv buildozer
 
 
 
