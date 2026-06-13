@@ -10,7 +10,8 @@ package.name = crashcourse
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
 # Ensure there are no spaces immediately around the '=' character except as shown below
-android.extra_cflags = "-Wno-error=implicit-function-declaration -Wno-implicit-function-declaration"
+android.extra_cflags = -Wno-error=implicit-function-declaration -Wno-implicit-function-declaration
+
 
 #(str) Source code where the main.py live
 source.dir = .
@@ -36,7 +37,7 @@ version = 0.1
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
-version.filename = %(source.dir)s/main.py
+#version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
