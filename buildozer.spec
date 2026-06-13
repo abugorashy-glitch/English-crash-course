@@ -3,6 +3,7 @@
 # (str) Title of your application
 title = EnglishCrashCourse
 
+
 # (str) Package name
 package.name = crashcourse
 
