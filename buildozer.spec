@@ -16,7 +16,7 @@ android.extra_cflags = "-Wno-error=implicit-function-declaration -Wno-implicit-f
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = png,jpg,kv,atlas,txt,py,emp3,emp4,ttf,icon,db
+source.include_exts = png,jpg,kv,atlas,txt,py,mp3,mp4,ttf,icon,db
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -40,7 +40,7 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3==3.11.9,hostpython3==3.11.9,kivy==2.3.0,kivymd,cython==3.0.10,sqlite3,pillow,android
+requirements = python3, kivy,arabic_reshaper,python-bidi,future,sqlite3,android
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
