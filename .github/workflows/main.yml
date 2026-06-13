@@ -1,4 +1,4 @@
-name: Build Kivy APK
+name: Stable Kivy APK Build
 
 on:
   push:
@@ -6,25 +6,40 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    
-    # This locks down the exact environment versions to prevent compiler errors
-    container:
-      image: ghcr.io/misl7/docker-buildozer:latest
+    runs-on: ubuntu-22.04 # Pinning to a highly stable LTS Linux environment
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Clean out old bad caches that cause conflicting logs
-      - name: Clear Old Cache Files
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Clean Old Broken Caches
         run: |
           rm -rf .buildozer/
           rm -rf ~/.buildozer/
 
+      - name: Install Fundamental Compiler Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev xclip libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
+          sudo apt-get install -y openjdk-17-jdk unzip zip autoconf libtool pkg-config libncurses5-dev libncursesw5-dev libtinfo5 cmake libgmp3-dev
+
+      - name: Lock Down Python Package Versions
+        run: |
+          pip install --upgrade pip
+          # Pinning Cython below 3.0 prevents the missing jnius.c crash
+          pip install "cython<3.0.0" virtualenv
+          # Pinning buildozer to a stable 1.5.0 version handles older architectures cleanly
+          pip install "buildozer==1.5.0"
+
       - name: Build Android APK
         run: |
-          buildozer --verbose android debug
+          # This forces buildozer to handle the android SDK licenses quietly in the cloud
+          yes | buildozer --verbose android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
