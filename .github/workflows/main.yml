@@ -18,10 +18,11 @@ jobs:
 
       - name: Purge Broken Configuration Text
         run: |
-          sed -i '/android.private_storage/d' buildozer.spec
-          sed -i '/android.enable_androidx/d' buildozer.spec
-          sed -i '/android.copy_libs/d' buildozer.spec
-          sed -i '/android.skip_update/d' buildozer.spec
+          sed -i 's/^[ \t]*//' buildozer.spec
+          sed -i 's/= 1/= true/g' buildozer.spec
+          sed -i 's/= 0/= false/g' buildozer.spec
+          sed -i 's/= True/= true/g' buildozer.spec
+          sed -i 's/= False/= false/g' buildozer.spec
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
