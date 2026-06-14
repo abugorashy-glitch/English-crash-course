@@ -14,8 +14,10 @@ jobs:
 
       - name: Purge Broken Configuration Text
         run: |
-          find . -name "buildozer.spec" -exec sed -i 's/= True/= 1/g' {} +
-          find . -name "buildozer.spec" -exec sed -i 's/= False/= 0/g' {} +
+          sed -i 's/= 1/= true/g' buildozer.spec
+          sed -i 's/= 0/= false/g' buildozer.spec
+          sed -i 's/= True/= true/g' buildozer.spec
+          sed -i 's/= False/= false/g' buildozer.spec
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
