@@ -12,6 +12,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Configure Git to bypass 403 errors
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
       - name: Purge Broken Configuration Text
         run: |
           sed -i 's/= 1/= true/g' buildozer.spec
