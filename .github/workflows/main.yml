@@ -19,8 +19,6 @@ jobs:
       - name: Purge Broken Configuration Text
         run: |
           sed -i 's/^[ \t]*//' buildozer.spec
-          sed -i 's/= 1/= true/g' buildozer.spec
-          sed -i 's/= 0/= false/g' buildozer.spec
           sed -i 's/= True/= true/g' buildozer.spec
           sed -i 's/= False/= false/g' buildozer.spec
 
