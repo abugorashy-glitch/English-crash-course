@@ -12,6 +12,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Purge Broken Configuration Text
+        run: |
+          find . -name "buildozer.spec" -exec sed -i 's/= True/= 1/g' {} +
+          find . -name "buildozer.spec" -exec sed -i 's/= False/= 0/g' {} +
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
