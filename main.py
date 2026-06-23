@@ -1,5 +1,9 @@
 import kivy
-
+import os
+import socket
+import shutil
+import threading
+import urllib.request
 
 from kivy.config import Config
 Config.set('graphics', 'width', '400')
@@ -9,7 +13,7 @@ from kivy.lang import Builder
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 import sqlite3
-from kivy.uix.screenmanager import ScreenManager,Screen
+from kivy.uix.screenmanager import ScreenManager,Screen,FadeTransition
 import random
 from kivy.utils import platform
 from kivy.core.audio import SoundLoader
@@ -28,6 +32,36 @@ from kivy.clock import Clock
 import random
 from kivy.graphics import Color, RoundedRectangle
 
+def get_android_safe_connection():
+    db_name = "book.db"
+    
+    if platform == 'android':
+        from android.storage import app_storage_path
+        
+        # 1. Define paths: writable internal storage vs read-only bundle
+        writable_dir = app_storage_path()
+        writable_db_path = os.path.join(writable_dir, db_name)
+        bundled_db_path = os.path.join(os.getcwd(), db_name)
+        
+        # 2. Copy the pre-populated database if it doesn't exist yet
+        if not os.path.exists(writable_db_path):
+            if os.path.exists(bundled_db_path):
+                shutil.copy(bundled_db_path, writable_db_path)
+            else:
+                print(f"Error: {db_name} was not found in packaged assets!")
+                
+        return sqlite3.connect(writable_db_path)
+    else:
+        # Standard local path for desktop testing
+        return sqlite3.connect(db_name)
+
+# --- Your Adjusted Code Snippet ---
+
+# Call the helper to safely open the database
+conn = get_android_safe_connection()
+cursor = conn.cursor()
+
+# Your original variable extraction
 
 
 
@@ -185,13 +219,12 @@ class Mywidget(Screen):
        truth3 = False
        global myresult1
        
-       conn = sqlite3.connect("book.db")
-       cursor= conn.cursor()
+       app = App.get_running_app()
        myvariable = self.ids.mytext.selection_text
        
        sql_query="select meaning from words10 where  lower(upper(word)) like ?"
-       cursor.execute(sql_query,(myvariable,))
-       myresult= cursor.fetchone()
+       app.cursor.execute(sql_query,(myvariable,))
+       myresult= app.cursor.fetchone()
        if myresult is None:
             content=Label(text="Not Found. Please choose the word correcly",halign='center',valign='middle')
             popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
@@ -258,20 +291,20 @@ class Secondwindow(Screen):
     global re,re1,re2,re3,re4,re5
     
          
-    db = sqlite3.connect('book.db')
-    cu = db.cursor()
-    cu1= db.cursor()
-    cu2 = db.cursor()
-    cu3 = db.cursor()
-    cu4= db.cursor()
-    cu5= db.cursor()
+    app = App.get_running_app()
+    cu = conn.cursor()
+    cu1= conn.cursor()
+    cu2 = conn.cursor()
+    cu3 = conn.cursor()
+    cu4= conn.cursor()
+    cu5= conn.cursor()
     
-    cu1.execute("select wronganswer1 from intermediate")
-    cu.execute("select questions from intermediate")
-    cu2.execute("select wronganswer2 from intermediate")
-    cu3.execute("select rightanswer from intermediate")
-    cu4.execute("select option from intermediate")
-    cu5.execute("select num from intermediate")
+    cu1= conn.execute("select wronganswer1 from intermediate")
+    cu= conn.execute("select questions from intermediate")
+    cu2=conn.execute("select wronganswer2 from intermediate")
+    cu3=conn.execute("select rightanswer from intermediate")
+    cu4=conn.execute("select option from intermediate")
+    cu5=conn.execute("select num from intermediate")
     re1= cu1.fetchall()
     re2= cu2.fetchall()
     re= cu.fetchall()
@@ -364,13 +397,13 @@ class Thirdwindow(Screen):
     global results,result1,result2,result3,result4,result5
     
             
-    db = sqlite3.connect('book.db')
-    cur = db.cursor()
-    cur1= db.cursor()
-    cur2 = db.cursor()
-    cur3 = db.cursor()
-    cur4 = db.cursor()
-    cur5= db.cursor()
+    app = App.get_running_app()
+    cur = conn.cursor()
+    cur1= conn.cursor()
+    cur2 = conn.cursor()
+    cur3 = conn.cursor()
+    cur4 = conn.cursor()
+    cur5= conn.cursor()
     cur1.execute("select wronganswer1 from advanced")
     cur.execute("select questions from advanced")
     cur2.execute("select wronganswer2 from advanced")
@@ -482,19 +515,19 @@ class Windowfirst(Screen):
     global s,s1,s2,s3,s4,s5
     
             
-    db = sqlite3.connect('book.db')
-    b = db.cursor()
-    b1= db.cursor()
-    b2 = db.cursor()
-    b3 = db.cursor()
-    b4= db.cursor()
-    b5= db.cursor()
-    b1.execute("select wronganswer1 from beginner")
-    b.execute("select questions from beginner")
-    b2.execute("select wronganswer2 from beginner")
-    b3.execute("select rightanswer from beginner")
-    b4.execute("select option from beginner")
-    b5.execute("select num from beginner")
+    app = App.get_running_app()
+    b = conn.cursor()
+    b1= conn.cursor()
+    b2 = conn.cursor()
+    b3 = conn.cursor()
+    b4= conn.cursor()
+    b5= conn.cursor()
+    b1= conn.execute("select wronganswer1 from beginner")
+    b=conn.execute("select questions from beginner")
+    b2=conn.execute("select wronganswer2 from beginner")
+    b3=conn.execute("select rightanswer from beginner")
+    b4=conn.execute("select option from beginner")
+    b5=conn.execute("select num from beginner")
     s1= b1.fetchall()
     s2= b2.fetchall()
     s= b.fetchall()
@@ -1358,13 +1391,13 @@ class Mode(Screen):
        truth1 = False
        truth2 = True
        truth3 = False
-       conn = sqlite3.connect("book.db")
-       cursor= conn.cursor()
+       app = App.get_running_app()
+       
        myvariable = self.ids.mytext.selection_text
        
        sql_query="select meaning from words10 where  lower(upper(word)) like ?"
-       cursor.execute(sql_query,(myvariable,))
-       myresult= cursor.fetchone()
+       app.cursor.execute(sql_query,(myvariable,))
+       myresult= app.cursor.fetchone()
        if myresult is None:
             content=Label(text="Not Found. Please choose the word correcly",halign='center',valign='middle')
             popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
@@ -1488,7 +1521,7 @@ class Modea(Screen):
        truth1 = False
        truth2 = False
        truth3 = True
-       conn = sqlite3.connect("book.db")
+       app = App.get_running_app()
        cursor= conn.cursor()
        myvariable = self.ids.mytext.selection_text
        
@@ -4913,19 +4946,19 @@ class PhrasalVerb(Screen):
      global p,p1,p2,p3,p4,id
     
             
-     db = sqlite3.connect('book.db')
-     b = db.cursor()
-     b1= db.cursor()
-     b2 = db.cursor()
-     b3 = db.cursor()
-     b4= db.cursor()
-     b5 = db.cursor()
-     b.execute("select questions from phrasalverbs")
-     b1.execute("select wronganswer from phrasalverbs")
-     b2.execute("select wronganswer1 from phrasalverbs")
-     b3.execute("select rightanswer from phrasalverbs")
-     b4.execute("select option from phrasalverbs")
-     b5.execute("select num from phrasalverbs")
+     app = App.get_running_app()
+     b = conn.cursor()
+     b1= conn.cursor()
+     b2 = conn.cursor()
+     b3 = conn.cursor()
+     b4= conn.cursor()
+     b5 = conn.cursor()
+     b=conn.execute("select questions from phrasalverbs")
+     b1=conn.execute("select wronganswer from phrasalverbs")
+     b2=conn.execute("select wronganswer1 from phrasalverbs")
+     b3=conn.execute("select rightanswer from phrasalverbs")
+     b4=conn.execute("select option from phrasalverbs")
+     b5=conn.execute("select num from phrasalverbs")
      p= b.fetchall()
      p1= b1.fetchall()
      p2= b2.fetchall()
@@ -5014,19 +5047,19 @@ class PhrasalVerb1(Screen):
      global p,p1,p2,p3,p4,id
     
             
-     db = sqlite3.connect('book.db')
-     b = db.cursor()
-     b1= db.cursor()
-     b2 = db.cursor()
-     b3 = db.cursor()
-     b4= db.cursor()
-     b5 = db.cursor()
-     b.execute("select questions from phrasalverbs")
-     b1.execute("select wronganswer from phrasalverbs")
-     b2.execute("select wronganswer1 from phrasalverbs")
-     b3.execute("select rightanswer from phrasalverbs")
-     b4.execute("select option from phrasalverbs")
-     b5.execute("select num from phrasalverbs")
+     app = App.get_running_app()
+     b = conn.cursor()
+     b1= conn.cursor()
+     b2 = conn.cursor()
+     b3 = conn.cursor()
+     b4= conn.cursor()
+     b5 = conn.cursor()
+     b=conn.execute("select questions from phrasalverbs")
+     b1=conn.execute("select wronganswer from phrasalverbs")
+     b2=conn.execute("select wronganswer1 from phrasalverbs")
+     b3=conn.execute("select rightanswer from phrasalverbs")
+     b4=conn.execute("select option from phrasalverbs")
+     b5=conn.execute("select num from phrasalverbs")
      p= b.fetchall()
      p1= b1.fetchall()
      p2= b2.fetchall()
@@ -5114,19 +5147,19 @@ class PhrasalVerb2(Screen):
      global p,p1,p2,p3,p4,id
     
             
-     db = sqlite3.connect('book.db')
-     b = db.cursor()
-     b1= db.cursor()
-     b2 = db.cursor()
-     b3 = db.cursor()
-     b4= db.cursor()
-     b5 = db.cursor()
-     b.execute("select questions from phrasalverbs")
-     b1.execute("select wronganswer from phrasalverbs")
-     b2.execute("select wronganswer1 from phrasalverbs")
-     b3.execute("select rightanswer from phrasalverbs")
-     b4.execute("select option from phrasalverbs")
-     b5.execute("select num from phrasalverbs")
+     app = App.get_running_app()
+     b = conn.cursor()
+     b1= conn.cursor()
+     b2 = conn.cursor()
+     b3 = conn.cursor()
+     b4= conn.cursor()
+     b5 = conn.cursor()
+     b=conn.execute("select questions from phrasalverbs")
+     b1=conn.execute("select wronganswer from phrasalverbs")
+     b2=conn.execute("select wronganswer1 from phrasalverbs")
+     b3=conn.execute("select rightanswer from phrasalverbs")
+     b4=conn.execute("select option from phrasalverbs")
+     b5=conn.execute("select num from phrasalverbs")
      p= b.fetchall()
      p1= b1.fetchall()
      p2= b2.fetchall()
@@ -24747,19 +24780,19 @@ class Vocabulary_a(Screen):
     global vo,vo1,vo2,vo3,vo4,vo_id
     
             
-    db = sqlite3.connect('book.db')
-    b = db.cursor()
-    b1= db.cursor()
-    b2 = db.cursor()
-    b3 = db.cursor()
-    b4= db.cursor()
-    b5 = db.cursor()
-    b.execute("select question from vocabulary")
-    b1.execute("select wronganswer1 from vocabulary")
-    b2.execute("select wronganswer2 from vocabulary")
-    b3.execute("select rightanswer from vocabulary")
-    b4.execute("select option from vocabulary")
-    b5.execute("select num from vocabulary")
+    app = App.get_running_app()
+    b = conn.cursor()
+    b1= conn.cursor()
+    b2 = conn.cursor()
+    b3 = conn.cursor()
+    b4= conn.cursor()
+    b5 = conn.cursor()
+    b=conn.execute("select question from vocabulary")
+    b1=conn.execute("select wronganswer1 from vocabulary")
+    b2=conn.execute("select wronganswer2 from vocabulary")
+    b3=conn.execute("select rightanswer from vocabulary")
+    b4=conn.execute("select option from vocabulary")
+    b5=conn.execute("select num from vocabulary")
     vo= b.fetchall()
     vo1= b1.fetchall()
     vo2= b2.fetchall()
@@ -24853,19 +24886,19 @@ class Vocabulary_b(Screen):
     global vo,vo1,vo2,vo3,vo4,vo_id
     
             
-    db = sqlite3.connect('book.db')
-    b = db.cursor()
-    b1= db.cursor()
-    b2 = db.cursor()
-    b3 = db.cursor()
-    b4= db.cursor()
-    b5 = db.cursor()
-    b.execute("select question from vocabulary")
-    b1.execute("select wronganswer1 from vocabulary")
-    b2.execute("select wronganswer2 from vocabulary")
-    b3.execute("select rightanswer from vocabulary")
-    b4.execute("select option from vocabulary")
-    b5.execute("select num from vocabulary")
+    app = App.get_running_app()
+    b = conn.cursor()
+    b1= conn.cursor()
+    b2 = conn.cursor()
+    b3 = conn.cursor()
+    b4= conn.cursor()
+    b5 = conn.cursor()
+    b=conn.execute("select question from vocabulary")
+    b1=conn.execute("select wronganswer1 from vocabulary")
+    b2=conn.execute("select wronganswer2 from vocabulary")
+    b3=conn.execute("select rightanswer from vocabulary")
+    b4=conn.execute("select option from vocabulary")
+    b5=conn.execute("select num from vocabulary")
     vo= b.fetchall()
     vo1= b1.fetchall()
     vo2= b2.fetchall()
@@ -24957,19 +24990,19 @@ class Vocabulary_c(Screen):
     global o,o1,o2,o3,o4,vo_id
     
             
-    db = sqlite3.connect('book.db')
-    b = db.cursor()
-    b1= db.cursor()
-    b2 = db.cursor()
-    b3 = db.cursor()
-    b4= db.cursor()
-    b5 = db.cursor()
-    b.execute("select question from vocabulary")
-    b1.execute("select wronganswer1 from vocabulary")
-    b2.execute("select wronganswer2 from vocabulary")
-    b3.execute("select rightanswer from vocabulary")
-    b4.execute("select option from vocabulary")
-    b5.execute("select num from vocabulary")
+    app = App.get_running_app()
+    b = conn.cursor()
+    b1= conn.cursor()
+    b2 = conn.cursor()
+    b3 = conn.cursor()
+    b4= conn.cursor()
+    b5 = conn.cursor()
+    b=conn.execute("select question from vocabulary")
+    b1=conn.execute("select wronganswer1 from vocabulary")
+    b2=conn.execute("select wronganswer2 from vocabulary")
+    b3=conn.execute("select rightanswer from vocabulary")
+    b4=conn.execute("select option from vocabulary")
+    b5=conn.execute("select num from vocabulary")
     o= b.fetchall()
     o1= b1.fetchall()
     o2= b2.fetchall()
@@ -26022,21 +26055,21 @@ class Punctuation1(Screen):
      global punc,punc1,punc2,punc3,punc4,punc_id,r
     
             
-     db = sqlite3.connect('book.db')
-     b = db.cursor()
-     b1= db.cursor()
-     b2 = db.cursor()
-     b3 = db.cursor()
-     b4= db.cursor()
-     b5 = db.cursor()
-     b6 = db.cursor()
-     b.execute("select one from punctuation")
-     b1.execute("select two from punctuation")
-     b2.execute("select three from punctuation")
-     b3.execute("select four from punctuation")
-     b4.execute("select option from punctuation")
-     b5.execute("select num from punctuation")
-     b6.execute("select rightanswer from punctuation")
+     app = App.get_running_app()
+     b = conn.cursor()
+     b1= conn.cursor()
+     b2 = conn.cursor()
+     b3 = conn.cursor()
+     b4= conn.cursor()
+     b5 = conn.cursor()
+     b6 = conn.cursor()
+     b=conn.execute("select one from punctuation")
+     b1=conn.execute("select two from punctuation")
+     b2=conn.execute("select three from punctuation")
+     b3=conn.execute("select four from punctuation")
+     b4=conn.execute("select option from punctuation")
+     b5=conn.execute("select num from punctuation")
+     b6=conn.execute("select rightanswer from punctuation")
      punc= b.fetchall()
      punc1= b1.fetchall()
      punc2= b2.fetchall()
@@ -26149,21 +26182,21 @@ class Punctuation2(Screen):
      global punc,punc1,punc2,punc3,punc4,punc_idl,r
     
             
-     db = sqlite3.connect('book.db')
-     b = db.cursor()
-     b1= db.cursor()
-     b2 = db.cursor()
-     b3 = db.cursor()
-     b4= db.cursor()
-     b5 = db.cursor()
-     b6= db.cursor()
-     b.execute("select one from punctuation")
-     b1.execute("select two from punctuation")
-     b2.execute("select three from punctuation")
-     b3.execute("select four from punctuation")
-     b4.execute("select option from punctuation")
-     b5.execute("select num from punctuation")
-     b6.execute("select rightanswer from punctuation")
+     app = App.get_running_app()
+     b = conn.cursor()
+     b1= conn.cursor()
+     b2 = conn.cursor()
+     b3 = conn.cursor()
+     b4= conn.cursor()
+     b5 = conn.cursor()
+     b6= conn.cursor()
+     b=conn.execute("select one from punctuation")
+     b1=conn.execute("select two from punctuation")
+     b2=conn.execute("select three from punctuation")
+     b3=conn.execute("select four from punctuation")
+     b4=conn.execute("select option from punctuation")
+     b5=conn.execute("select num from punctuation")
+     b6=conn.execute("select rightanswer from punctuation")
      punc= b.fetchall()
      punc1= b1.fetchall()
      punc2= b2.fetchall()
@@ -26271,21 +26304,21 @@ class Punctuation3(Screen):
      global punc,punc1,punc2,punc3,punc4,punc_id,r
     
             
-     db = sqlite3.connect('book.db')
-     b = db.cursor()
-     b1= db.cursor()
-     b2 = db.cursor()
-     b3 = db.cursor()
-     b4= db.cursor()
-     b5 = db.cursor()
-     b6= db.cursor()
-     b.execute("select one from punctuation")
-     b1.execute("select two from punctuation")
-     b2.execute("select three from punctuation")
-     b3.execute("select four from punctuation")
-     b4.execute("select option from punctuation")
-     b5.execute("select num from punctuation")
-     b6.execute("select rightanswer from punctuation")
+     app = App.get_running_app()
+     b = conn.cursor()
+     b1= conn.cursor()
+     b2 = conn.cursor()
+     b3 = conn.cursor()
+     b4= conn.cursor()
+     b5 = conn.cursor()
+     b6= conn.cursor()
+     b=conn.execute("select one from punctuation")
+     b1=conn.execute("select two from punctuation")
+     b2=conn.execute("select three from punctuation")
+     b3=conn.execute("select four from punctuation")
+     b4=conn.execute("select option from punctuation")
+     b5=conn.execute("select num from punctuation")
+     b6=conn.execute("select rightanswer from punctuation")
      punc= b.fetchall()
      punc1= b1.fetchall()
      punc2= b2.fetchall()
@@ -27528,7 +27561,165 @@ class Translation(Screen):
         if truth3:
             self.manager.current= "con_b"
 
+class SplashScreen(Screen):
+    
+    
+    
+    
+    
+    def on_enter(self, *args):
+        
+        Clock.schedule_once(self.start_download_process, 0) 
+        
+    if platform == 'android':
+        from android.storage import app_storage_path
+        
+    def start_download_process(self,dt=0):
+        self.ids.status_label.text = "Checking file systems..."
+        self.ids.icon_label.text = "📥"
+        self.ids.progress_bar.value = 0
+        self.ids.percent_label.text = "0%"
+        self.ids.progress_layout.opacity = 1
+        self.ids.retry_layout.opacity = 0
+        self.ids.retry_layout.disabled = True
+        # ENVIRONMENT GUARD SYSTEM:
+        if platform == 'android':
+            from android.storage import app_context
+            base_dir = app_context.getFilesDir().getAbsolutePath()
+        else:
+            # This block executes EXCLUSIVELY on your desktop computer window.
+            base_dir = App.get_running_app().user_data_dir
 
+        self.audio_folder = os.path.join(base_dir, "my_audio_album")
+        if not os.path.exists(self.audio_folder):
+            os.makedirs(self.audio_folder)
+
+        # 1. Define Download Items along with their sizes in BYTES
+        # Track 1 size: ~5.3 MB (5,510,757 bytes), Track 2 size: ~6.8 MB (7,185,553 bytes)
+        self.download_queue = {
+            "track1.mp3": {"url": "https://drive.google.com/uc?export=download&id=1GFw-FkZIDDRxpbdGhZuHiFqUzIakxzYq", "size": 5510757},
+            "track2.mp3": {"url1": "https://drive.google.com/uc?export=download&id=11ujBIVoeVuOujWe7V6bmEwspj01vTAs3", "size": 7185553},
+            "track3.mp3":{"url2": "https://drive.google.com/uc?export=download&id=1N7jX66yBjJj5bJMpupnp-vpkS6Y6T-N9", "size": 7185553},
+            "track4.mp3": {"url3": "https://drive.google.com/uc?export=download&id=1lor0JzuHakGp-Cyw8-0IzfWi0VlLUDvi", "size": 7185553},
+             "track5.mp3": {"url4": "https://drive.google.com/uc?export=download&id=1-0irL9XItqym1K57uR0jDvfBIawtcmIo", "size": 7185553},
+        }
+
+        self.total_files = len(self.download_queue)
+        self.current_file_index = 0
+
+        threading.Thread(target=self.download_folder_worker, daemon=True).start()
+
+    def has_enough_storage(self):
+        """
+        Calculates total bytes needed for files that are not already cached
+        and compares it against the partition's available free storage space.
+        """
+        bytes_needed = 0
+        for file_name, file_data in self.download_queue.items():
+            local_file_path = os.path.join(self.audio_folder, file_name)
+            # Only count file size toward our requirements if the file isn't downloaded yet
+            if not os.path.exists(local_file_path):
+                bytes_needed += file_data["size"]
+
+        # Add a 5MB safety buffer to prevent filling the internal partition to 100%
+        bytes_needed += (5 * 1024 * 1024)
+
+        # Query the application directory's available partition bytes
+        # returns named tuple with total, used, and free attributes
+        disk_stats = shutil.disk_usage(self.audio_folder)
+        
+        if disk_stats.free < bytes_needed:
+            # Formats human-readable string values for output context debugging
+            free_mb = round(disk_stats.free / (1024 * 1024), 1)
+            needed_mb = round(bytes_needed / (1024 * 1024), 1)
+            return False, f"Insufficient Storage Space!\nAvailable: {free_mb}MB | Needed: {needed_mb}MB"
+        
+        return True, ""
+
+    def is_connected(self):
+        try:
+            socket.setdefaulttimeout(4)
+            host = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            host.connect(("8.8.8.8", 53))
+            host.close()
+            return True
+        except (socket.timeout, OSError):
+            return False
+
+    def download_folder_worker(self):
+        # 1. RUN STORAGE DIAGNOSTIC FIRST
+        storage_passed, storage_error_msg = self.has_enough_storage()
+        if not storage_passed:
+            Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", storage_error_msg), 0)
+            return
+
+        # 2. CHECK NETWORK STATUS SECOND
+        if not self.is_connected():
+            Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", "No Connection! Check your network settings."), 0)
+            return
+
+        socket.setdefaulttimeout(10)
+
+        for file_name, file_data in self.download_queue.items():
+            self.current_file_index += 1
+            self.current_file_name = file_name
+            local_file_path = os.path.join(self.audio_folder, file_name)
+            remote_url = file_data["url"]
+
+            try:
+                if os.path.exists(local_file_path) and os.path.getsize(local_file_path) < 5000:
+                    os.remove(local_file_path)
+
+                if not os.path.exists(local_file_path):
+                    urllib.request.urlretrieve(remote_url, local_file_path, reporthook=self.progress_hook)
+                    
+                    with open(local_file_path, 'rb') as f:
+                        if b"<!DOCTYPE html>" in f.read(100):
+                            raise ValueError("Carrier redirect page detected.")
+                else:
+                    self.progress_hook(1, 100, 100)
+
+            except Exception as e:
+                print(f"Interrupted stream error: {e}")
+                if os.path.exists(local_file_path):
+                    try: os.remove(local_file_path)
+                    except: pass
+                
+                error_msg = "Download interrupted!\nPlease check your connection."
+                Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", error_msg), 0)
+                return
+
+        Clock.schedule_once(lambda dt: self.finish_process(success=True), 0)
+
+    def progress_hook(self, count, block_size, total_size):
+        if total_size <= 0: return
+        downloaded = count * block_size
+        file_percent = min(100, int((downloaded / total_size) * 100))
+        
+        base_progress = ((self.current_file_index - 1) / self.total_files) * 100
+        current_contribution = (file_percent / 100) * (100 / self.total_files)
+        overall_percent = int(base_progress + current_contribution)
+
+        Clock.schedule_once(lambda dt: self.update_progress_ui(overall_percent, self.current_file_name), 0)
+
+    def update_progress_ui(self, value, file_name):
+        self.ids.progress_bar.value = value
+        self.ids.percent_label.text = f"{value}%"
+        self.ids.status_label.text = f"Syncing ({self.current_file_index}/{self.total_files})\nDownloading: {file_name}"
+
+    def handle_failure_state(self, icon, message):
+        self.ids.icon_label.text = icon
+        self.ids.status_label.text = message
+        self.ids.progress_layout.opacity = 0
+        self.ids.retry_layout.opacity = 1
+        self.ids.retry_layout.disabled = False
+
+    def finish_process(self, success):
+        if success:
+            self.manager.get_screen('main').ids.target_folder_info.text = (
+                f"Files verified locally at:\n{self.audio_folder}"
+            )
+            self.manager.current = 'home_screen'
 
 
 
@@ -27686,6 +27877,11 @@ class WindowManager(ScreenManager):
         
 class CrashCourse(App):
     def build(self):
+        # 1. Open the database ONCE right here on startup
+        self.conn = get_android_safe_connection()
+        self.cursor = self.conn.cursor()
+        
+        
         self.icon = 'crash.png'
         if(platform=='android' or platform == 'ios'):
             Window.maximize()
