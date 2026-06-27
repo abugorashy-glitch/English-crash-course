@@ -1,4 +1,6 @@
 <WindowManager>:
+     
+     SplashScreen:
      Firstwindow:
      Secondwindow:
      Thirdwindow:
@@ -30,62 +32,69 @@
      Translation:
 
 <Firstwindow>:
-     canvas:
-          Rectangle:
-               source:"down.jpg"
-               size: self.size
      name: "home_screen"
      id: home_screen
-     
-     Button:
+     canvas.before:
+          Color:
+               rgba: 0.95, 0.95, 0.95, 1
+          Rectangle:
+               pos: self.pos
+               size: self.size
 
-          background_normal:''
-          background_down:''
-          border:20,20,20,20
-          id: b1
-          font_size:40
-          bold:True
-          text: 'Beginner'
-          color:"purple"
-          pos:130,300
-          size_hint:(0.5,0.1)
-          
-          
-          on_release:
-               app.root.transition.direction = 'right'
-               
-               app.root.current="w_screen"
+     BoxLayout:
+          orientation: 'vertical'
+          padding: [40, 60, 40, 60]  # Left/Right, Top/Bottom margins
+          spacing: 25                # Space between the buttons
 
-     Button:
-          background_normal:''
-          background_down:''
-          border:20,20,20,20
-          id: b2
-          text:"Intermediate"
-          font_size:30
-          bold:True
-          color:"purple"
-          pos:130,230
-          size_hint:(0.5,0.1)
-          on_release:
-               app.root.transition.direction = 'right'
+          Label:
+               text: "English Crash Course"
+               font_size: '28sp'
+               bold: True
+               color:  0, 0, 1, 1  # Sets background to blue
+               size_hint_y: 0.3
+
+          # Button 1: Settings
+          RoundedButton:
+               text: "Beginner Level"
+               on_release:
+                    app.root.transition.direction = 'right'
                
-               app.root.current="menu_screen"
-               
-     Button:
-          background_normal:'normal.png'
-          background_down:'down.png'
-          border:20,20,20,20
-          id: b3
-          text:"Advanced"
-          color:"purple"
-          font_size:40
-          bold:True
-          pos:130,160
-          size_hint:(0.5,0.1)
-          on_release:
-               app.root.transition.direction = 'right'
-               app.root.current="game_screen"
+                    app.root.current="w_screen"
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "Intermediate Level"
+               on_release:
+                    app.root.transition.direction = 'right'
+                    app.root.current="menu_screen"
+
+        # Button 3: Exit
+          RoundedButton:
+               text: "Advanced Level"
+               on_release:
+                    app.root.transition.direction = 'right'
+                    app.root.current="game_screen"
+
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
+
           
      
                
@@ -204,41 +213,45 @@
           
      BoxLayout:
                
-          Button:
-               
-               text:"Move Next"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
+           # Button 1: Settings
+          RoundedButton:
+               text: "Move Next"
                on_press: 
                     root.on_pre_enter()
                on_press:
                     root.on_estate_check()
-               
-                    
-          
-          Button:
-               
-               text:"STOPE HERE"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
-               
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "STOPE HERE"
                on_press: 
                     root.stophere1()
-                    app.root.transition.direction = 'right'
-                    
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Explain"
+
+        # Button 3: Exit
+          RoundedButton:
+               text: "Explain"
                on_press:
                     app.root.current="b"
-                    app.root.transition.direction = 'right'
-                    
-                    
+
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
                           
      
 <Thirdwindow>:
@@ -285,10 +298,12 @@
      BoxLayout:
           orientation: 'vertical'
           Label:
+               color: 0, 0, 0, 0
                text:''
                id:record
                height:dp(30)
                text_size:self.size
+               
           BoxLayout:
                size_hint_y:None
                heigh:dp(30)
@@ -306,6 +321,7 @@
                     halign:'left'
                     valign:'center'
                     text:''
+
                     
           BoxLayout:
                size_hint_y:None
@@ -346,43 +362,46 @@
                     text:''
                
      BoxLayout:
-               
-          Button:
-               
-               text:"Move Next"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
+          padding: [0, 0, 0, 20]     
+           # Button 1: Settings
+          RoundedButton:
+               text: "Move Next"
                on_press: 
                     root.on_pre_enter()
                on_press:
                     root.on_estate_check()
-               
-                    
-                    
-          
-          Button:
-               
-               text:"STOPE HERE"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
-               
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "STOPE HERE"
                on_press: 
                     root.stophere2()
-                    app.root.transition.direction = 'right'
-                    
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Explain"
+
+        # Button 3: Exit
+          RoundedButton:
+               text: "Explain"
                on_press:
                     app.root.current="video"
-                    app.root.transition.direction = 'right'
-                    
-                    
+
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
                     
 <Windowfirst>:
      name: "w_screen"
@@ -489,44 +508,47 @@
                     text:''
                
      BoxLayout:
-               
-          Button:
-               
-               text:"Move Next"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
-               
+           # Button 1: Settings
+          RoundedButton:
+               text: "Move Next"
                on_press: 
                     root.on_pre_enter()
                on_press:
                     root.on_estate_check()
-               
-               
-                   
-                    
-          
-          Button:
-               
-               text:"STOPE HERE"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
-               
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "STOPE HERE"
                on_press: 
                     root.stophere()
-                    app.root.transition.direction = 'right'
-                    
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Explain"
+
+        # Button 3: Exit
+          RoundedButton:
+               text: "Explain"
                on_press:
                     app.root.current="a"
-                    app.root.transition.direction = 'right'
+
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
+    
+          
                     
 <Mywidget>:
      name:"ww"
@@ -542,14 +564,14 @@
                     with_previous: False
                     on_press:
                          app.root.current="w_screen"
-                         root.sound.stop()
+                         root.stop_sound()
                ActionOverflow:
                     dropdown_width:'200'
                     
                ActionButton:
-                    text: 'University Conversation'
+                    text: 'University Conversationaaa'
                     id: university
-                    on_press:root.play(self.text)
+                    on_press:root.root.play_audio("track1.mp3")
                ActionButton:
                     text: 'Studying For Exam'
                     id: studying
@@ -941,24 +963,37 @@
           
           
      BoxLayout:
-          Button:
-               
-               text:"Translate"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
+           # Button 1: Settings
+          RoundedButton:
+               text: "Translate"
                on_press:root.selection()
 
-               
-                    
-          Button:
-               id:all
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Translate All"
+        # Button 2: Profile
+          RoundedButton:
+               text: "Translate All"
                on_release:app.root.current="arabic"
 
+        
+
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
               
 <Playvideo>:
      name:"video"
@@ -1400,25 +1435,38 @@
                     multiline: True
                     font_name:"data/arial.ttf"
      BoxLayout:
-          Button:
-               
-               text:"Translateeee"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
-               
+           # Button 1: Settings
+          RoundedButton:
+               text: "Translateeee"
                on_press: 
                     root.selection1()
-                    app.root.transition.direction = 'right'
-                    
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Translate All"
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "Translate All"
                on_release:app.root.current="arabic1"
 
+        
+
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
 
 
 <Modea>:
@@ -1829,25 +1877,38 @@
                     multiline: True
                     font_name:"data/arial.ttf"
      BoxLayout:
-          Button:
-               
-               text:"Translateaaa"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
-               
+           # Button 1: Settings
+          RoundedButton:
+               text: "Translateaaa"
                on_press: 
                     root.selection2()
-                    app.root.transition.direction = 'right'
-                    
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Translate All"
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "Translate All"
                on_release:app.root.current="arabic2"
 
+        
+
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
           
 
 
@@ -4909,46 +4970,53 @@
                
      BoxLayout:
                
-          Button:
-               
-               text:"Move Next"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
+           # Button 1: Settings
+          RoundedButton:
+               text: "Move Next"
                on_press: 
                     root.on_pre_enter()
                on_press: 
-                    root.on_estate_check()    
-                    
-          
-          Button:
-               
-               text:"STOPE HERE"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
+                    root.on_estate_check() 
+
+        # Button 2: Profile
+          RoundedButton:
                on_press: 
                     root.writeit()
-                    app.root.transition.direction = 'right'
-                    
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Explain"
+
+     BoxLayout:
+          # Button 1: Settings
+          RoundedButton:
+               text: "Explain"
                on_press:
                     app.root.current="showphr"
 
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
+        # Button 2: Profile
+          RoundedButton:
                text:"Go Back"
                on_press:
                     app.root.current="w_screen"
 
+        
 
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
 
 
 
@@ -5028,46 +5096,45 @@
                
      BoxLayout:
                
-          Button:
-               
-               text:"Move Next"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
+           # Button 1: Settings
+          RoundedButton:
+               text: "Move Next"
                on_press: 
                     root.on_pre_enter()
                on_press:
                     root.on_estate_check()
-                    
-          
-          Button:
-               
-               text:"STOPE HERE"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
-               
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "STOPE HERE"
                on_press: 
                     root.writeit()
-                    app.root.transition.direction = 'right'
-                    
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Explain"
+
+        # Button 3: Exit
+          RoundedButton:
+               text: "Explain"
                on_press:
                     app.root.current="showphr"
-                    app.root.transition.direction = 'right'
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Go Back"
-               on_press:
-                    app.root.current="menu_screen"
+
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
 
 
 
@@ -5158,54 +5225,46 @@
                
      BoxLayout:
                
-          Button:
-               
-               text:"Move Next"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
+           # Button 1: Settings
+          RoundedButton:
+               text: "Move Next"
                on_press:
                     root.on_pre_enter()
 
                on_press:
                     root.on_estate_check()
-              
-                    
-               
-                    
-                    
-          
-          Button:
-               
-               text:"STOPE HERE"
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               
-               
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "STOPE HERE"
                on_press: 
                     root.writeit()
-                    app.root.transition.direction = 'right'
-                    
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Explain"
+
+        # Button 3: Exit
+          RoundedButton:
+               text: "Explain"
                on_press:
                     app.root.current="showphr"
-                    app.root.transition.direction = 'right'
-          
-          Button:
-               size_hint:(0.1,0.1)
-               color:(1,1,1,1)
-               background_color:(0,1,0,1)
-               text:"Go Back"
-               on_press:
-                    app.root.current="game_screen"
 
 
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
 
 
 
@@ -5307,50 +5366,52 @@
                     text:''
           BoxLayout:
                
-               Button:
-               
-                    text:"Move Next"
-                    size_hint:(0.1,0.1)
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-               
-                    on_press: 
-                         root.on_pre_enter()
-                    on_press:
-                         root.on_estate_check()
-                         app.root.transition.direction = 'right'
-                    
-          
-               Button:
-               
-                    text:"STOPE HERE"
-                    size_hint:(0.1,0.1)
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-               
-               
-                    on_press: 
-                         root.writeit()
-                         app.root.transition.direction = 'right'
-                    
-               Button:
-                    size_hint:(0.1,0.1)
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-                    text:"Explain"
-                    on_press:
-                         app.root.current="show_v"
-                         app.root.transition.direction = 'right'
-          
-               Button:
-                    size_hint:(0.1,0.1)
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-                    text:"Go Back"
-                    on_press:
-                         app.root.current="game_screen"
+                # Button 1: Settings
+          RoundedButton:
+               text: "Move Next"
+               on_press: 
+                    root.on_pre_enter()
+               on_press:
+                    root.on_estate_check()
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "STOPE HERE"
+               on_press: 
+                    root.writeit()
+
+          BoxLayout
+
+        # Button 3: Exit
+          RoundedButton:
+               text: "Explain"
+               on_press:
+                    app.root.current="show_v"
+          # Button 4: Exit
+          RoundedButton:
+               text: "Go Back"
+               on_press:
+                    app.root.current="game_screen"
 
 
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
 
 
 
@@ -5420,57 +5481,53 @@
                     text:''
           BoxLayout:
                
-               Button:
-               
-                    text:"Move Nextxx"
-                    pos_hint:{'x':0,'y':0.5}
-                    size_hint:(0.1,0.1)
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-               
-                    on_press: 
-                         root.on_pre_enter()
-                    on_press:
-                         root.on_estate_check()
-                         app.root.transition.direction = 'right'
-                    
+                # Button 1: Settings
+          RoundedButton:
+               text: "Move Nextxx"
+               on_press: 
+                    root.on_pre_enter()
+               on_press:
+                    root.on_estate_check()
           
-               Button:
-               
-                    text:"STOPE HERE"
-                    pos_hint:{'x':0.5,'y':0.5} 
-                    size_hint:(0.1,0.1)
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-               
-               
-                    on_press: 
-                         root.writeit()
-                         app.root.transition.direction = 'right'
-          BoxLayout:         
-               Button:
-                    size_hint:(0.1,0.1)
-                    pos_hint:{'x':0.5,'y':0.5} 
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-                    text:"Explain"
-                    on_press:
-                         app.root.current="show_v"
-                         app.root.transition.direction = 'right'
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "STOPE HERE"
+               on_press: 
+                    root.writeit()
+          BoxLayout:
+
+        # Button 3: Exit
+          RoundedButton:
+               text: "Explain"
+               on_press:
+                    app.root.current="show_v"
           
-               Button:
-                    size_hint:(0.1,0.1)
-                    pos_hint:{'x':0.5,'y':0.5} 
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-                    text:"Go Back"
-                    on_press:
-                         app.root.current="menu_screen"
-          
-               
-          
-               
-          
+          # Button 4: Exit
+          RoundedButton:
+               text: "Go Back"
+               on_press:
+                    app.root.current="menu_screen"
+
+
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
 
 
 
@@ -5534,48 +5591,51 @@
                     valign:'center'
                     text:''
           BoxLayout:
-               Button:
-                    text:"Move Next"
-                    pos_hint:{'x':0,'y':0.5}
-                    size_hint:(0.1,0.1)
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-               
-                    on_press: 
-                         root.on_pre_enter()
-                    on_press:
-                         root.on_estate_check()
-                         app.root.transition.direction = 'right'
-               Button:
-                    text:"STOPE HERE"
-                    pos_hint:{'x':0.5,'y':0.5} 
-                    size_hint:(0.1,0.1)
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-                    on_press: 
-                         root.writeit()
-                         app.root.transition.direction = 'right'
-          BoxLayout:
-               Button:
-                    size_hint:(0.1,0.1)
-                    pos_hint:{'x':0,'y':0.5}
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-                    text:"Explain"
+                # Button 1: Settings
+          RoundedButton:
+               text: "Move Next"
+               on_press: 
+                    root.on_pre_enter()
+               on_press:
+                    root.on_estate_check()
+
+        # Button 2: Profile
+          RoundedButton:
+               text: "STOPE HERE"
+               on_press: 
+                    root.writeit()
+          BoxLayout
+
+        # Button 3: Exit
+               RoundedButton:
+                    text: "Explain"
                     on_press:
                          app.root.current="show_v"
-                         app.root.transition.direction = 'right'
-               Button:
-                    size_hint:(0.1,0.1)
-                    pos_hint:{'x':0.5,'y':0.5} 
-                    color:(1,1,1,1)
-                    background_color:(0,1,0,1)
-                    text:"Go Back"
+          #Button 4: Exit
+               RoundedButton:
+                    text: "Go Back"
                     on_press:
-                         app.root.current="w_screen"          
-               
+                         app.root.current="w_screen"
 
 
+# Custom Reusable Rounded Button Component
+<RoundedButton@Button>:
+     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
+     background_normal: ''         # 2. Clears default button behavior tints
+     color: 1, 1, 1, 1             # White text color
+     font_size: '18sp'
+     bold: True
+     size_hint_y: None
+     height: '60dp'                # Explicit touch-friendly mobile height
+
+     canvas.before:
+          Color:
+            # Changes color dynamically when clicked (state is 'down')
+               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+          RoundedRectangle:
+               pos: self.pos
+               size: self.size
+               radius: [20]          # The corner roundness radius in pixels
 
 
 
@@ -5996,6 +6056,75 @@
                on_press:
                     root.checkwindow()
 
+
+
+
+<SplashScreen>:
+     name:'splash'
+    
+     BoxLayout:
+          orientation: 'vertical'
+          canvas.before:
+               Color:
+                    rgba: 0.1, 0.5, 0.8, 1  # Sky blue background
+               Rectangle:
+                    pos: self.pos
+                    size: self.size
+                
+          BoxLayout:
+               orientation: 'vertical'
+               padding: 40
+               spacing: 20
+
+          Label:
+               id: icon_label
+               text: "📥"
+               font_size: '60sp'
+               size_hint_y: None
+               height: '80dp'
+
+          Label:
+               id: status_label
+               text: "Initializing configuration..."
+               font_size: '18sp'
+               color: 1, 1, 1, 1
+               halign: 'center'
+               size_hint_y: None
+               height: '40dp'
+
+          BoxLayout:
+               id: progress_layout
+               orientation: 'vertical'
+               size_hint_y: None
+               height: '60dp'
+               spacing: 5
+            
+               ProgressBar:
+                    id: progress_bar
+                    max: 100
+                    value: 0
+                    size_hint_y: None
+                    height: '20dp'
+                
+               Label:
+                    id: percent_label
+                    text: "0%"
+                    font_size: '14sp'
+                    color: 0.7, 0.7, 0.7, 1
+
+          BoxLayout:
+               id: retry_layout
+               size_hint_y: None
+               height: '50dp'
+               opacity: 0
+               disabled: True
+            
+               Button:
+                    text: "🔄 Tap to Retry Setup"
+                    font_size: '16sp'
+                    background_normal: ''
+                    background_color: 0.12, 0.43, 0.93, 1
+                    on_release: root.start_download_process()
        
 
 

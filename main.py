@@ -100,119 +100,41 @@ advancedid =""
     
 
 class Mywidget(Screen):
-   def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.sound = SoundLoader.load("audio/1.mp3")
-   
-       
-       
-        
-        
-        
-        
-        
+    sound_object = None   
     
-    
-   def play(self, text):
+    def play(self, filename):
         
-        global translatedfile
-        audio_file = {'Newspaper and Magazine': {'audio': "audio/1.mp3", 'file': 'listening/newspaper.txt'},
-                      'A practical skill': {'audio': "audio/17.mp3", 'file': 'listening/a practical skill.txt'},
-                      'Presents':  {'audio': "audio/presents.mp3", 'file': 'listening/presents.txt'},
-                      'Favourite Rooms':  {'audio': "audio/favorite rooms.mp3", 'file': 'listening/favourite rooms.txt'},
-                     'Historical Places':  {'audio': "audio/HISTORICAL PLACE.mp3", 'file': 'listening/historical places.txt'},
-                    'Sports':  {'audio': "audio/18.mp3", 'file': 'listening/sports.txt'},
-                    'A school':  {'audio': "audio/19.mp3", 'file': 'listening/a school.txt'},
-                    'Festival':  {'audio': "audio/20.mp3", 'file': 'listening/festival.txt'},
-                    'Restaurant':  {'audio': "audio/restaurant.mp3", 'file': 'listening/restaurant.txt'},
-                    'Website':  {'audio': "audio/website.mp3", 'file': 'listening/website.txt'},
-                    'Holiday':  {'audio': "audio/15.mp3", 'file': 'listening/holiday.txt'},
-                    'Travel':  {'audio': "audio/travel.mp3", 'file': 'listening/travel.txt'},
-                    'Books':  {'audio': "audio/books.mp3", 'file': 'listening/books.txt'},
-                    'An Accident':  {'audio': "audio/accident.mp3", 'file': 'listening/accident.txt'},
-                   'Animals':  {'audio': "audio/16.mp3", 'file': 'listening/animals.txt'},
-                  'A hotel':  {'audio': "audio/10.mp3", 'file': 'listening/a hotel.txt'},
-                  'Letter':  {'audio': "audio/11.mp3", 'file': 'listening/a letter.txt'},
-                 'Hobbies':  {'audio': "audio/12.mp3", 'file': 'listening/hobbies.txt'},
-                 'Music':  {'audio': "audio/13.mp3", 'file': 'listening/music.txt'},
-                 'Shopping':  {'audio': "audio/14.mp3", 'file': 'listening/shopping.txt'},
-                 'A Memorable':  {'audio': "audio/2.mp3", 'file': 'listening/a memorable event.txt'},
-                 'Favourite Subject':  {'audio': "audio/3.mp3", 'file': 'listening/favorite subject.txt'},
-                 'Museums':  {'audio': "audio/4.mp3", 'file': 'listening/museumes.txt'},
-                 'Movie':  {'audio': "audio/5.mp3", 'file': 'listening/movie.txt'},
-                 'Foreign Country':  {'audio': "audio/6.mp3", 'file': 'listening/a foreign country.txt'},
-                 'Parties':  {'audio': "audio/7.mp3", 'file': 'listening/parties.txt'},
-                 'Teacher':  {'audio': "audio/8.mp3", 'file': 'listening/a teacher.txt'},
-                 'A friend':  {'audio': "audio/9.mp3", 'file': 'listening/a friend.txt'},
-                 'Favourite Things':  {'audio': "audio/favorite things.mp3", 'file': 'listening-intermediate/lesson#01.txt'},
-                 'Activity':  {'audio': "audio/activity.mp3", 'file': 'listening-intermediate/lesson#02.txt'},
-                 'Working Out':  {'audio': "audio/working out.mp3", 'file': 'listening-intermediate/lesson#03.txt'},
-                 'Introductions':  {'audio': "audio/introductions.mp3", 'file': 'listening-intermediate/lesson#04.txt'},
-                 'Register For A Class':  {'audio': "audio/registering for class.mp3", 'file': 'listening-intermediate/lesson#05.txt'},
-                 'Registration':  {'audio': "audio/registration.mp3", 'file': 'listening-intermediate/lesson#06.txt'},
-                 'Grades':  {'audio': "audio/grades.mp3", 'file': 'listening-intermediate/lesson#07.txt'},
-                'Summer Vacation':  {'audio': "audio/summer vacation.mp3", 'file': 'listening-intermediate/lesson#08.txt'},
-                'Exams':  {'audio': "audio/exams.mp3", 'file': 'listening-intermediate/lesson#09.txt'},
-                'Smoking':  {'audio': "audio/somking.mp3", 'file': 'listening-intermediate/lesson#10.txt'},
-               'Drinking':  {'audio': "audio/drinking.mp3", 'file': 'listening-intermediate/lesson#11.txt'},
-              'After Birth':  {'audio': "audio/after birth.mp3", 'file': 'listening-intermediate/lesson#12.txt'},
-              'Allergies':  {'audio': "audio/allergies.mp3", 'file': 'listening-intermediate/lesson#13.txt'},
-             'Losing Weight':  {'audio': "audio/losing weight.mp3", 'file': 'listening-intermediate/lesson#14.txt'},
-             'Dieting':  {'audio': "audio/dieting.mp3", 'file': 'listening-intermediate/lesson#15.txt'},
-             'Asking For A Date':  {'audio': "audio/asking for a date.mp3", 'file': 'listening-intermediate/lesson#16.txt'},
-             'Proposing':  {'audio': "audio/proposing.mp3", 'file': 'listening-intermediate/lesson#17.txt'},
-             'Baseball':  {'audio': "audio/baseball.mp3", 'file': 'listening-intermediate/lesson#18.txt'} ,
-             'General Sports':  {'audio': "audio/general sports.mp3", 'file': 'listening-intermediate/lesson#19.txt'},
-             'Golf':  {'audio': "audio/golf.mp3", 'file': 'listening-intermediate/lesson#20.txt'},
-             'Mall Shopping':  {'audio': "audio/mall shopping.mp3", 'file': 'listening-intermediate/lesson#21.txt'},
-             'Jewerly Gift':  {'audio': "audio/jewelry gift.mp3", 'file': 'listening-intermediate/lesson#23.txt'},
-             'Jewerly':  {'audio': "audio/jewelry.mp3", 'file': 'listening-intermediate/lesson#24.txt'} ,
-            'Jewerly Watch':  {'audio': "audio/jewelry watch.mp3", 'file': 'listening-intermediate/lesson#25.txt'},
-            'Having A Baby':  {'audio': "audio/having a baby.mp3", 'file': 'listening-intermediate/lesson#26.txt'}, 
-            'Sick Dad':  {'audio': "audio/sick dad.mp3", 'file': 'listening-intermediate/lesson#27.txt'},
-            'Stressful Parents':  {'audio': "audio/stressful parents.mp3", 'file': 'listening-intermediate/lesson#28.txt'}, 
-           'Grandmother Passing Away':  {'audio': "audio/grandmother passing away.mp3", 'file': 'listening-intermediate/lesson#29.txt'},
-           'University Conversation':  {'audio': "audio/university conversation.mp3", 'file': 'listening-advanced/lesson#01.txt'},
-           'Studying For Exam':  {'audio': "audio/studying for exam.mp3", 'file': 'listening-advanced/lesson#02.txt'},
-           'Roommates':  {'audio': "audio/roommates.mp3", 'file': 'listening-advanced/lesson#03.txt'},
-           'Doormitory':  {'audio': "audio/dormitory.mp3", 'file': 'listening-advanced/lesson#04.txt'},
-           'Renting A Room':  {'audio': "audio/renting a room.mp3", 'file': 'listening-advanced/lesson#05.txt'},
-           'Quit Smoking':  {'audio': "audio/quit smoking.mp3", 'file': 'listening-advanced/lesson#06.txt'},
-           'Running Into A Friend':  {'audio': "audio/running into a friend.mp3", 'file': 'listening-advanced/lesson#07.txt'},
-          'Small Talk':  {'audio': "audio/small talk.mp3", 'file': 'listening-advanced/lesson#08.txt'},
-          'Hang Out':  {'audio': "audio/hang out.mp3", 'file': 'listening-advanced/lesson#09.txt'},
-          'First Date':  {'audio': "audio/first date.mp3", 'file': 'listening-advanced/lesson#10.txt'},
-          'Honneymoon Planning':  {'audio': "audio/honeymoon planning.mp3", 'file': 'listening-advanced/lesson#11.txt'},
-         'Weight Lose':  {'audio': "audio/weight loss.mp3", 'file': 'listening-advanced/lesson#13.txt'},
-          'Marriage Proposal':  {'audio': "audio/marriage proposal.mp3", 'file': 'listening-advanced/lesson#14.txt'},
-          'Watching Baseball':  {'audio': "audio/watching baseball.mp3", 'file': 'listening-advanced/lesson#15.txt'},
-          'Watching Football':  {'audio': "audio/watching football.mp3", 'file': 'listening-advanced/lesson#17.txt'},
-          'Poker':  {'audio': "audio/poker.mp3", 'file': 'listening-advanced/lesson#18.txt'},
-          'Talking About Guys':  {'audio': "audio/talking about guys.mp3", 'file': 'listening-advanced/lesson#19.txt'},
-          'Practicing Golf':  {'audio': "audio/practicing golf.mp3", 'file': 'listening-advanced/lesson#20.txt'},
-          'Favourite Hobby':  {'audio': "audio/favority hobby.mp3", 'file': 'listening-advanced/lesson#21.txt'},
-          'Life After Breaking Up':  {'audio': "audio/life after breaking up.mp3", 'file': 'listening-advanced/lesson#22.txt'},
-          'Heart Broken':  {'audio': "audio/heart broken.mp3", 'file': 'listening-advanced/lesson#23.txt'},
-          'Being Afraid':  {'audio': "audio/being afraid.mp3", 'file': 'listening-advanced/lesson#24.txt'},
-          'Restless':  {'audio': "audio/restless.mp3", 'file': 'listening-advanced/lesson#25.txt'},
-          'Infatuation':  {'audio': "audio/infatuation.mp3", 'file': 'listening-advanced/lesson#26.txt'},
-          'Class Friend':  {'audio': "audio/class friend.mp3", 'file': 'listening-advanced/lesson#27.txt'},
-          'General Advanced':  {'audio': "audio/general advanced.mp3", 'file': 'listening-advanced/lesson#28.txt'},
-          'Joining Health Club':  {'audio': "audio/joining health club.mp3", 'file': 'listening-advanced/lesson#29.txt'},
-          'Watching Basketball':  {'audio': "audio/watching basketball.mp3", 'file': 'listening-advanced/lesson#31.txt'}}
-        file = audio_file[text]['file']
-        audio = audio_file[text]['audio']
-
-        if self.sound:
-            self.sound.stop()
-        self.sound = SoundLoader.load(audio)
-        self.sound.play()
-        self.sound.loop=True
-        with open(file) as f:
-            translatedfile= file
+        self.stop_audio()
         
-            self.ids.mytext.text = f.read()
-   def selection(self):
+        # 2. Grab your safe, permission-free sandbox storage folder path
+        folder_path = App.get_running_app().audio_folder
+        
+        # 3. Create the absolute path directly targeting the exact filename passed from the ActionBar
+        absolute_file_path = os.path.join(folder_path, filename)
+        
+        # 4. Check if the file is physically present in the sandbox cache
+        if os.path.exists(absolute_file_path):
+            self.sound_object = SoundLoader.load(absolute_file_path)
+            
+            if self.sound_object:
+                self.ids.current_track_label.text = f"Playing: {filename}"
+                self.sound_object.play()
+            else:
+                self.ids.current_track_label.text = "Error: Failed to load audio codec."
+        else:
+            self.ids.current_track_label.text = f"Error: {filename} not found in sandbox."
+            
+            
+            
+    def stop_audio(self):
+        if self.sound_object:
+            self.sound_object.stop()
+            self.sound_object.unload()  # Releases memory on mobile RAM immediately
+            self.sound_object = None
+            self.ids.current_track_label.text = "Playback stopped"
+            
+            
+    def selection(self):
        global truth1,truth2,truth3
        truth1 = True
        truth2 = False
@@ -236,7 +158,7 @@ class Mywidget(Screen):
 
        
 
-   def translatall(self):
+    def translatall(self):
         if self.ids.all.text=="Translate All":
             self.ids.all.text="Translate All"
             self.ids.yourtext.size=400,450
@@ -27597,11 +27519,11 @@ class SplashScreen(Screen):
         # 1. Define Download Items along with their sizes in BYTES
         # Track 1 size: ~5.3 MB (5,510,757 bytes), Track 2 size: ~6.8 MB (7,185,553 bytes)
         self.download_queue = {
-            "track1.mp3": {"url": "https://drive.google.com/uc?export=download&id=1GFw-FkZIDDRxpbdGhZuHiFqUzIakxzYq", "size": 5510757},
-            "track2.mp3": {"url1": "https://drive.google.com/uc?export=download&id=11ujBIVoeVuOujWe7V6bmEwspj01vTAs3", "size": 7185553},
-            "track3.mp3":{"url2": "https://drive.google.com/uc?export=download&id=1N7jX66yBjJj5bJMpupnp-vpkS6Y6T-N9", "size": 7185553},
-            "track4.mp3": {"url3": "https://drive.google.com/uc?export=download&id=1lor0JzuHakGp-Cyw8-0IzfWi0VlLUDvi", "size": 7185553},
-             "track5.mp3": {"url4": "https://drive.google.com/uc?export=download&id=1-0irL9XItqym1K57uR0jDvfBIawtcmIo", "size": 7185553},
+            "track1.mp3": {"url": "https://drive.google.com/uc?export=download&id=1GFw-FkZIDDRxpbdGhZuHiFqUzIakxzYq", "size":787456},
+            "track2.mp3": {"url1": "https://drive.google.com/uc?export=download&id=11ujBIVoeVuOujWe7V6bmEwspj01vTAs3", "size": 626688},
+            "track3.mp3":{"url2": "https://drive.google.com/uc?export=download&id=1N7jX66yBjJj5bJMpupnp-vpkS6Y6T-N9", "size": 719872},
+            "track4.mp3": {"url3": "https://drive.google.com/uc?export=download&id=1lor0JzuHakGp-Cyw8-0IzfWi0VlLUDvi", "size": 743424},
+             "track5.mp3": {"url4": "https://drive.google.com/uc?export=download&id=1-0irL9XItqym1K57uR0jDvfBIawtcmIo", "size": 748544},
         }
 
         self.total_files = len(self.download_queue)
