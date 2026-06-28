@@ -9,7 +9,7 @@ from kivy.config import Config
 Config.set('graphics', 'width', '400')
 Config.set('graphics', 'height', '500')
 from kivy.app import App
-from kivy.lang import Builder
+
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 import sqlite3
@@ -27809,7 +27809,7 @@ class CrashCourse(App):
             Window.maximize()
         
         global counter1,counter2,counter3,c1,vcounter,punc_counter
-        Builder.load_file("crashcourse.kv")
+        
         file1 = open('stophere.txt','r')
         counter1 = int(file1.read())
         counter1 = counter1 -2
