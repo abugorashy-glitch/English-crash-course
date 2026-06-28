@@ -353,7 +353,7 @@ p4a.branch = v2024.01.21
 #p4a.setup_py = false
 
 # (str) extra command line arguments to pass when invoking pythonforandroid.toolchain
-#p4a.extra_args =
+p4a.extra_args = --allow-minsdk-ndkapi-mismatch
 
 
 
