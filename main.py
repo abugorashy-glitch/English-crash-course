@@ -32,6 +32,43 @@ from kivy.clock import Clock
 import random
 from kivy.graphics import Color, RoundedRectangle
 
+class MyScreenManager(ScreenManager): pass
+class SplashScreen(Screen): pass
+class Firstwindow(Screen): pass
+class Secondwindow(Screen): pass
+class Thirdwindow(Screen): pass
+class Windowfirst(Screen): pass
+class Mywidget(Screen): pass
+class Playvideo(Screen): pass
+
+
+class Mode(Screen): pass
+class Modea(Screen): pass
+class Video_a(Screen): pass
+class Video_b(Screen): pass
+class ArabicText(Screen): pass
+class ArabicText1(Screen): pass
+class ArabicText2(Screen): pass
+class GramarPage(Screen): pass
+class GramarPage1(Screen): pass
+class GramarPage2(Screen): pass
+class PhrasalVerb(Screen): pass
+class PhrasalVerb1(Screen): pass
+class PhrasalVerb2(Screen): pass
+class ShowphrResult(Screen): pass
+class PhraVocabulary_a(Screen): pass
+class Vocabulary_b(Screen): pass
+class Vocabulary_c(Screen): pass
+class ShowVocabulary(Screen): pass
+class Punctuation1(Screen): pass
+class Punctuation2(Screen): pass
+class Punctuation3(Screen): pass
+class ShowPunctuation(Screen): pass
+class Translation(Screen): pass
+
+
+
+
 def get_android_safe_connection():
     db_name = "book.db"
     
@@ -27791,7 +27828,7 @@ class SplashScreen(Screen):
             
             
             
-class WindowManager(ScreenManager):
+class MyScreenManager(ScreenManager): 
     global theoption
     def screen_manager_method(self):
         pass
@@ -27836,7 +27873,7 @@ class CrashCourse(App):
 
 
 
-        return WindowManager()
+        return MyScreenManager()
     
     
 if __name__ == '__main__':
