@@ -53,9 +53,7 @@ jobs:
           pip install "buildozer==1.5.0"
 
       - name: Build Android APK
-        run: |
-          # This forces buildozer to handle the android SDK licenses quietly in the cloud
-          yes | buildozer --verbose android debug
+        run:  buildozer --verbose android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
