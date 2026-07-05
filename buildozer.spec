@@ -51,7 +51,7 @@ requirements = python3, kivy,arabic_reshaper,python-bidi,future,sqlite3,android,
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/crash.png
+icon.filename = %(source.dir)s/crash.png
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse

@@ -27834,7 +27834,7 @@ class MyScreenManager(ScreenManager):
         pass
     
         
-class CrashCourse(App):
+class CrashCourseApp(App):
     def build(self):
         # 1. Open the database ONCE right here on startup
         self.conn = get_android_safe_connection()
@@ -27877,4 +27877,4 @@ class CrashCourse(App):
     
     
 if __name__ == '__main__':
-    CrashCourse().run()
+    CrashCourseApp().run()
