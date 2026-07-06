@@ -37,7 +37,7 @@ class SplashScreen(Screen): pass
 class Firstwindow(Screen): pass
 class Secondwindow(Screen): pass
 class Thirdwindow(Screen): pass
-class Windowfirst(Screen): pass
+class WindowFirst(Screen): pass
 class Mywidget(Screen): pass
 class Playvideo(Screen): pass
 
@@ -56,7 +56,7 @@ class PhrasalVerb(Screen): pass
 class PhrasalVerb1(Screen): pass
 class PhrasalVerb2(Screen): pass
 class ShowphrResult(Screen): pass
-class PhraVocabulary_a(Screen): pass
+class Vocabulary_a(Screen): pass
 class Vocabulary_b(Screen): pass
 class Vocabulary_c(Screen): pass
 class ShowVocabulary(Screen): pass
@@ -245,9 +245,9 @@ class Firstwindow(Screen):
             
 class Secondwindow(Screen):
         
-
-    global x1
     global re,re1,re2,re3,re4,re5
+    global x1
+    
     
          
     app = App.get_running_app()
@@ -27528,12 +27528,15 @@ class SplashScreen(Screen):
     
     def on_enter(self, *args):
         
-        Clock.schedule_once(self.start_download_process, 0) 
+        Clock.schedule_once(self.start_download_process, 0.5) 
         
     if platform == 'android':
         from android.storage import app_storage_path
         
     def start_download_process(self,dt=0):
+        if not self.ids or 'status_label' not in self.ids:
+            Clock.schedule_once(self.start_download_process, 0.1)
+            return
         self.ids.status_label.text = "Checking file systems..."
         self.ids.icon_label.text = "📥"
         self.ids.progress_bar.value = 0
@@ -27834,7 +27837,30 @@ class MyScreenManager(ScreenManager):
         pass
     
         
-class MainApp(App):
+class CrashCourseApp(App):
+    audio_folder = ""
+    conn = None
+    cursor = None
+
+    def on_start(self):
+        """ Runs dynamically AFTER the app starts, preventing startup crashes. """
+        db_name = "book.db"
+        
+        if platform == 'android':
+            from android.storage import app_storage_path
+            writable_dir = app_storage_path()
+            writable_db_path = os.path.join(writable_dir, db_name)
+            bundled_db_path = os.path.join(os.getcwd(), db_name)
+            
+            if not os.path.exists(writable_db_path):
+                if os.path.exists(bundled_db_path):
+                    shutil.copy(bundled_db_path, writable_db_path)
+                    
+            self.conn = sqlite3.connect(writable_db_path)
+        else:
+            self.conn = sqlite3.connect(db_name)
+            
+        self.cursor = self.conn.cursor()
     def build(self):
         # 1. Open the database ONCE right here on startup
         self.conn = get_android_safe_connection()
@@ -27877,4 +27903,4 @@ class MainApp(App):
     
     
 if __name__ == '__main__':
-    MainApp().run()
+    CrashCourseApp().run()
