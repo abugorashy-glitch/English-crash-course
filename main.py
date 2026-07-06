@@ -31,7 +31,7 @@ from kivy.uix.popup import Popup
 from kivy.clock import Clock
 import random
 from kivy.graphics import Color, RoundedRectangle
-
+from kivy.lang import Builder
 class MyScreenManager(ScreenManager): pass
 class SplashScreen(Screen): pass
 class Firstwindow(Screen): pass
@@ -27834,12 +27834,12 @@ class MyScreenManager(ScreenManager):
         pass
     
         
-class CrashCourseApp(App):
+class MainApp(App):
     def build(self):
         # 1. Open the database ONCE right here on startup
         self.conn = get_android_safe_connection()
         self.cursor = self.conn.cursor()
-        
+        Builder.load_file("crashcourse.kv")
         
         self.icon = 'crash.png'
         if(platform=='android' or platform == 'ios'):
@@ -27877,4 +27877,4 @@ class CrashCourseApp(App):
     
     
 if __name__ == '__main__':
-    CrashCourseApp().run()
+    MainApp().run()
