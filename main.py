@@ -245,31 +245,7 @@ class Firstwindow(Screen):
             
 class Secondwindow(Screen):
         
-    global re,re1,re2,re3,re4,re5
-    global x1
     
-    
-         
-    app = App.get_running_app()
-    cu = conn.cursor()
-    cu1= conn.cursor()
-    cu2 = conn.cursor()
-    cu3 = conn.cursor()
-    cu4= conn.cursor()
-    cu5= conn.cursor()
-    
-    cu1= conn.execute("select wronganswer1 from intermediate")
-    cu= conn.execute("select questions from intermediate")
-    cu2=conn.execute("select wronganswer2 from intermediate")
-    cu3=conn.execute("select rightanswer from intermediate")
-    cu4=conn.execute("select option from intermediate")
-    cu5=conn.execute("select num from intermediate")
-    re1= cu1.fetchall()
-    re2= cu2.fetchall()
-    re= cu.fetchall()
-    re3 = cu3.fetchall()
-    re4 = cu4.fetchall()
-    re5 = cu5.fetchall()
 
     
     def on_pre_enter(self,*args):
@@ -27521,22 +27497,15 @@ class Translation(Screen):
             self.manager.current= "con_b"
 
 class SplashScreen(Screen):
-    
-    
-    
-    
-    
     def on_enter(self, *args):
-        
+        # Queues initial load configurations cleanly 0.5s after window draws
         Clock.schedule_once(self.start_download_process, 0.5) 
         
-    if platform == 'android':
-        from android.storage import app_storage_path
-        
-    def start_download_process(self,dt=0):
+    def start_download_process(self, dt=0):
         if not self.ids or 'status_label' not in self.ids:
             Clock.schedule_once(self.start_download_process, 0.1)
             return
+            
         self.ids.status_label.text = "Checking file systems..."
         self.ids.icon_label.text = "📥"
         self.ids.progress_bar.value = 0
@@ -27544,26 +27513,25 @@ class SplashScreen(Screen):
         self.ids.progress_layout.opacity = 1
         self.ids.retry_layout.opacity = 0
         self.ids.retry_layout.disabled = True
+        
         # ENVIRONMENT GUARD SYSTEM:
         if platform == 'android':
             from android.storage import app_context
             base_dir = app_context.getFilesDir().getAbsolutePath()
         else:
-            # This block executes EXCLUSIVELY on your desktop computer window.
             base_dir = App.get_running_app().user_data_dir
 
         self.audio_folder = os.path.join(base_dir, "my_audio_album")
         if not os.path.exists(self.audio_folder):
             os.makedirs(self.audio_folder)
 
-        # 1. Define Download Items along with their sizes in BYTES
-        # Track 1 size: ~5.3 MB (5,510,757 bytes), Track 2 size: ~6.8 MB (7,185,553 bytes)
+        # FIX: Unified all link references to use 'url' identically
         self.download_queue = {
-            "track1.mp3": {"url": "https://drive.google.com/uc?export=download&id=1GFw-FkZIDDRxpbdGhZuHiFqUzIakxzYq", "size":787456},
-            "track2.mp3": {"url1": "https://drive.google.com/uc?export=download&id=11ujBIVoeVuOujWe7V6bmEwspj01vTAs3", "size": 626688},
-            "track3.mp3":{"url2": "https://drive.google.com/uc?export=download&id=1N7jX66yBjJj5bJMpupnp-vpkS6Y6T-N9", "size": 719872},
-            "track4.mp3": {"url3": "https://drive.google.com/uc?export=download&id=1lor0JzuHakGp-Cyw8-0IzfWi0VlLUDvi", "size": 743424},
-             "track5.mp3": {"url4": "https://drive.google.com/uc?export=download&id=1-0irL9XItqym1K57uR0jDvfBIawtcmIo", "size": 748544},
+            "track1.mp3": {"url": "https://drive.google.com/uc?export=download&id=1GFw-FkZIDDRxpbdGhZuHiFqUzIakxzYq", "size": 787456},
+            "track2.mp3": {"url": "https://drive.google.com/uc?export=download&id=11ujBIVoeVuOujWe7V6bmEwspj01vTAs3", "size": 626688},
+            "track3.mp3": {"url": "https://drive.google.com/uc?export=download&id=1N7jX66yBjJj5bJMpupnp-vpkS6Y6T-N9", "size": 719872},
+            "track4.mp3": {"url": "https://drive.google.com/uc?export=download&id=1lor0JzuHakGp-Cyw8-0IzfWi0VlLUDvi", "size": 743424},
+            "track5.mp3": {"url": "https://drive.google.com/uc?export=download&id=1-0irL9XItqym1K57uR0jDvfBIawtcmIo", "size": 748544}
         }
 
         self.total_files = len(self.download_queue)
@@ -27572,26 +27540,16 @@ class SplashScreen(Screen):
         threading.Thread(target=self.download_folder_worker, daemon=True).start()
 
     def has_enough_storage(self):
-        """
-        Calculates total bytes needed for files that are not already cached
-        and compares it against the partition's available free storage space.
-        """
         bytes_needed = 0
         for file_name, file_data in self.download_queue.items():
             local_file_path = os.path.join(self.audio_folder, file_name)
-            # Only count file size toward our requirements if the file isn't downloaded yet
             if not os.path.exists(local_file_path):
                 bytes_needed += file_data["size"]
 
-        # Add a 5MB safety buffer to prevent filling the internal partition to 100%
-        bytes_needed += (5 * 1024 * 1024)
-
-        # Query the application directory's available partition bytes
-        # returns named tuple with total, used, and free attributes
+        bytes_needed += (5 * 1024 * 1024) # 5MB Buffer space configuration
         disk_stats = shutil.disk_usage(self.audio_folder)
         
         if disk_stats.free < bytes_needed:
-            # Formats human-readable string values for output context debugging
             free_mb = round(disk_stats.free / (1024 * 1024), 1)
             needed_mb = round(bytes_needed / (1024 * 1024), 1)
             return False, f"Insufficient Storage Space!\nAvailable: {free_mb}MB | Needed: {needed_mb}MB"
@@ -27609,13 +27567,33 @@ class SplashScreen(Screen):
             return False
 
     def download_folder_worker(self):
-        # 1. RUN STORAGE DIAGNOSTIC FIRST
         storage_passed, storage_error_msg = self.has_enough_storage()
         if not storage_passed:
             Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", storage_error_msg), 0)
             return
+        
+        # 1. ASYNC DATABASE BOOTSTRAP PRE-LOAD (Keeps Main loop rendering smoothly)
+        app = App.get_running_app()
+        global re, re1, re2, re3, re4, re5
+        
+        try:
+            if app.conn:
+                cu1 = app.conn.execute("select wronganswer1 from intermediate")
+                re1 = cu1.fetchall()
+                cu = app.conn.execute("select questions from intermediate")
+                re = cu.fetchall()
+                cu2 = app.conn.execute("select wronganswer2 from intermediate")
+                re2 = cu2.fetchall()
+                cu3 = app.conn.execute("select rightanswer from intermediate")
+                re3 = cu3.fetchall()
+                cu4 = app.conn.execute("select option from intermediate")
+                re4 = cu4.fetchall()
+                cu5 = app.conn.execute("select num from intermediate")
+                re5 = cu5.fetchall()
+        except Exception as e:
+            print(f"Database pre-load failure: {e}")
 
-        # 2. CHECK NETWORK STATUS SECOND
+        # 2. RUN CONNECTIVITY NETWORK VERIFICATION LAYER
         if not self.is_connected():
             Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", "No Connection! Check your network settings."), 0)
             return
@@ -27626,7 +27604,7 @@ class SplashScreen(Screen):
             self.current_file_index += 1
             self.current_file_name = file_name
             local_file_path = os.path.join(self.audio_folder, file_name)
-            remote_url = file_data["url"]
+            remote_url = file_data["url"] # Safe extraction hook loop mapping
 
             try:
                 if os.path.exists(local_file_path) and os.path.getsize(local_file_path) < 5000:
@@ -27651,23 +27629,22 @@ class SplashScreen(Screen):
                 Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", error_msg), 0)
                 return
 
-        Clock.schedule_once(lambda dt: self.finish_process(success=True), 0)
+        # FIX: Cleared out parameters to match zero-argument execution layout definitions
+        Clock.schedule_once(lambda dt: self.finish_process(), 0)
 
     def progress_hook(self, count, block_size, total_size):
         if total_size <= 0: return
         downloaded = count * block_size
         file_percent = min(100, int((downloaded / total_size) * 100))
-        
         base_progress = ((self.current_file_index - 1) / self.total_files) * 100
         current_contribution = (file_percent / 100) * (100 / self.total_files)
         overall_percent = int(base_progress + current_contribution)
-
         Clock.schedule_once(lambda dt: self.update_progress_ui(overall_percent, self.current_file_name), 0)
 
     def update_progress_ui(self, value, file_name):
         self.ids.progress_bar.value = value
         self.ids.percent_label.text = f"{value}%"
-        self.ids.status_label.text = f"Syncing ({self.current_file_index}/{self.total_files})\nDownloading: {file_name}"
+        self.ids.status_label.text = f"Syncing tracks ({self.current_file_index}/{self.total_files})\nDownloading: {file_name}"
 
     def handle_failure_state(self, icon, message):
         self.ids.icon_label.text = icon
@@ -27676,12 +27653,9 @@ class SplashScreen(Screen):
         self.ids.retry_layout.opacity = 1
         self.ids.retry_layout.disabled = False
 
-    def finish_process(self, success):
-        if success:
-            self.manager.get_screen('main').ids.target_folder_info.text = (
-                f"Files verified locally at:\n{self.audio_folder}"
-            )
-            self.manager.current = 'home_screen'
+    def finish_process(self):
+        self.manager.current = 'home_screen'
+
 
 
 
