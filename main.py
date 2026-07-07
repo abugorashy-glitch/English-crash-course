@@ -73,7 +73,7 @@ def get_android_safe_connection():
     db_name = "book.db"
     
     if platform == 'android':
-        from android.storage import app_storage_path
+        from android.storage import app_storage_path # type: ignore
         
         # 1. Define paths: writable internal storage vs read-only bundle
         writable_dir = app_storage_path()
@@ -134,7 +134,97 @@ the_punctuation_id=""
 biginnerid=""
 intermediateid =""
 advancedid ="" 
-    
+
+vo = []
+vo1 = []
+vo2 = []
+vo3 = []
+vo4 = []
+vo_id = []
+
+
+re = []
+re1 = []
+re2 = []
+re3 = []
+re4 = []
+re5 = []
+ 
+ 
+vvo = []
+vvo1 = []
+vvo2 = []
+vvo3 = []
+vvo4=[]
+vvo_id=[]
+
+o=[]
+o1=[]
+o2=[]
+o3=[]
+o4=[]
+o_id=[]
+
+results = []
+result1 = []
+result2 = []
+result3 = []
+result4 = []
+result5 = []
+
+s = []
+s1 = []
+s2 = []
+s3 = []
+s4 = []
+s5 = []
+
+
+p = []
+p1 = []
+p2 = []
+p3 = []
+p4 = []
+id = []
+
+pp = []
+pp1 =[]
+pp2 =[]
+pp3 =[]
+pp4 =[]
+pid =[]
+
+ph =[]
+ph1=[]
+ph2=[]
+ph3=[]
+ph4=[]
+phid=[]
+
+
+punc=[]
+punc1=[]
+punc2=[]
+punc3=[]
+punc4=[]
+punc_id=[]
+r=[]
+
+ppunc=[]
+ppunc1=[]
+ppunc2=[]
+ppunc3=[]
+ppunc4=[]
+punc_idl=[]
+pr=[]
+
+pc=[]
+pc1=[]
+pc2=[]
+pc3=[]
+pc4=[]
+pc_id=[]
+pcr = [] 
 
 class Mywidget(Screen):
     sound_object = None   
@@ -172,26 +262,58 @@ class Mywidget(Screen):
             
             
     def selection(self):
-       global truth1,truth2,truth3
-       truth1 = True
-       truth2 = False
-       truth3 = False
-       global myresult1
-       
-       app = App.get_running_app()
-       myvariable = self.ids.mytext.selection_text
-       
-       sql_query="select meaning from words10 where  lower(upper(word)) like ?"
-       app.cursor.execute(sql_query,(myvariable,))
-       myresult= app.cursor.fetchone()
-       if myresult is None:
-            content=Label(text="Not Found. Please choose the word correcly",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        global truth1, truth2, truth3
+        truth1 = True
+        truth2 = False
+        truth3 = False
+        
+        # 1. Grab the selected text from the UI while on the main thread
+        myvariable = self.ids.mytext.selection_text
+        
+        # 2. Spin the database lookup off into a background thread
+        threading.Thread(target=self.async_db_lookup, args=(myvariable,), daemon=True).start()
+
+    def async_db_lookup(self, search_word):
+        # 3. Open a separate, thread-isolated database connection for safety
+        db_name = "book.db"
+        if platform == 'android':
+            from android.storage import app_storage_path # type: ignore
+            db_path = os.path.join(app_storage_path(), db_name)
+        else:
+            db_path = db_name
+
+        try:
+            # Connect, execute the query, and fetch the single record
+            thread_conn = sqlite3.connect(db_path)
+            thread_cursor = thread_conn.cursor()
+            
+            sql_query = "select meaning from words10 where lower(upper(word)) like ?"
+            thread_cursor.execute(sql_query, (search_word,))
+            myresult = thread_cursor.fetchone()
+            
+            thread_conn.close()
+            
+            # 4. Use Clock to pass the result back to the main UI thread safely
+            Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
+            
+        except Exception as e:
+            print(f"Lookup thread error: {e}")
+            # Fallback error message if something fails
+            Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
+
+    def process_lookup_result(self, myresult):
+        global myresult1
+        
+        # 5. This runs back on Kivy's main thread, making UI changes 100% safe
+        if myresult is None:
+            content = Label(text="Not Found. Please choose the word correctly", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)
-       else:
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        else:
             myresult1 = ''.join(myresult)
             self.manager.current = 'trans'
+
 
        
 
@@ -249,6 +371,7 @@ class Secondwindow(Screen):
 
     
     def on_pre_enter(self,*args):
+        global re, re1, re2, re3, re4, re5
         global counter1
         global theoption
         global intermediateid
@@ -328,29 +451,11 @@ class Secondwindow(Screen):
 class Thirdwindow(Screen):
 
       
-    global x 
-    global results,result1,result2,result3,result4,result5
+    
+    
     
             
-    app = App.get_running_app()
-    cur = conn.cursor()
-    cur1= conn.cursor()
-    cur2 = conn.cursor()
-    cur3 = conn.cursor()
-    cur4 = conn.cursor()
-    cur5= conn.cursor()
-    cur1.execute("select wronganswer1 from advanced")
-    cur.execute("select questions from advanced")
-    cur2.execute("select wronganswer2 from advanced")
-    cur3.execute("select rightanswer from advanced")
-    cur4.execute("select option from advanced")
-    cur5.execute("select num from advanced")
-    result1= cur1.fetchall()
-    result2= cur2.fetchall()
-    results= cur.fetchall()
-    result3 = cur3.fetchall()
-    result4= cur4.fetchall()
-    result5 = cur5.fetchall()
+    
     
     
     
@@ -359,6 +464,7 @@ class Thirdwindow(Screen):
      
     
     def on_pre_enter(self,*args):
+        global results,result1,result2,result3,result4,result5
         global theoption3
         global counter3
         global advancedid
@@ -447,28 +553,10 @@ class Windowfirst(Screen):
 
       
     
-    global s,s1,s2,s3,s4,s5
+    
     
             
-    app = App.get_running_app()
-    b = conn.cursor()
-    b1= conn.cursor()
-    b2 = conn.cursor()
-    b3 = conn.cursor()
-    b4= conn.cursor()
-    b5= conn.cursor()
-    b1= conn.execute("select wronganswer1 from beginner")
-    b=conn.execute("select questions from beginner")
-    b2=conn.execute("select wronganswer2 from beginner")
-    b3=conn.execute("select rightanswer from beginner")
-    b4=conn.execute("select option from beginner")
-    b5=conn.execute("select num from beginner")
-    s1= b1.fetchall()
-    s2= b2.fetchall()
-    s= b.fetchall()
-    s3 = b3.fetchall()
-    s4 = b4.fetchall()
-    s5= b5.fetchall()
+    
     
     
     
@@ -476,7 +564,7 @@ class Windowfirst(Screen):
      
     
     def on_pre_enter(self, *args):
-        
+        global s,s1,s2,s3,s4,s5
         global counter2
         global theoption1
         global beginnerid
@@ -1321,26 +1409,58 @@ class Mode(Screen):
             self.ids.mytext.text = f.read()
 
     def selection1(self):
-       global myresult1
-       global truth1,truth2,truth3
-       truth1 = False
-       truth2 = True
-       truth3 = False
-       app = App.get_running_app()
-       
-       myvariable = self.ids.mytext.selection_text
-       
-       sql_query="select meaning from words10 where  lower(upper(word)) like ?"
-       app.cursor.execute(sql_query,(myvariable,))
-       myresult= app.cursor.fetchone()
-       if myresult is None:
-            content=Label(text="Not Found. Please choose the word correcly",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        global truth1, truth2, truth3
+        truth1 = True
+        truth2 = False
+        truth3 = False
+        
+        # 1. Grab the selected text from the UI while on the main thread
+        myvariable = self.ids.mytext.selection_text
+        
+        # 2. Spin the database lookup off into a background thread
+        threading.Thread(target=self.async_db_lookup, args=(myvariable,), daemon=True).start()
+
+    def async_db_lookup(self, search_word):
+        # 3. Open a separate, thread-isolated database connection for safety
+        db_name = "book.db"
+        if platform == 'android':
+            from android.storage import app_storage_path # type: ignore
+            db_path = os.path.join(app_storage_path(), db_name)
+        else:
+            db_path = db_name
+
+        try:
+            # Connect, execute the query, and fetch the single record
+            thread_conn = sqlite3.connect(db_path)
+            thread_cursor = thread_conn.cursor()
+            
+            sql_query = "select meaning from words10 where lower(upper(word)) like ?"
+            thread_cursor.execute(sql_query, (search_word,))
+            myresult = thread_cursor.fetchone()
+            
+            thread_conn.close()
+            
+            # 4. Use Clock to pass the result back to the main UI thread safely
+            Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
+            
+        except Exception as e:
+            print(f"Lookup thread error: {e}")
+            # Fallback error message if something fails
+            Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
+
+    def process_lookup_result(self, myresult):
+        global myresult1
+        
+        # 5. This runs back on Kivy's main thread, making UI changes 100% safe
+        if myresult is None:
+            content = Label(text="Not Found. Please choose the word correctly", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)
-       else:
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        else:
             myresult1 = ''.join(myresult)
             self.manager.current = 'trans'
+
             
         
 
@@ -1451,26 +1571,58 @@ class Modea(Screen):
             self.ids.mytext.text = f.read()
 
     def selection2(self):
-       global myresult1
-       global truth1,truth2,truth3
-       truth1 = False
-       truth2 = False
-       truth3 = True
-       app = App.get_running_app()
-       cursor= conn.cursor()
-       myvariable = self.ids.mytext.selection_text
-       
-       sql_query="select meaning from words10 where  lower(upper(word)) like ?"
-       cursor.execute(sql_query,(myvariable,))
-       myresult= cursor.fetchone()
-       if myresult is None:
-            content=Label(text="Not Found. Please choose the word correcly",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        global truth1, truth2, truth3
+        truth1 = True
+        truth2 = False
+        truth3 = False
+        
+        # 1. Grab the selected text from the UI while on the main thread
+        myvariable = self.ids.mytext.selection_text
+        
+        # 2. Spin the database lookup off into a background thread
+        threading.Thread(target=self.async_db_lookup, args=(myvariable,), daemon=True).start()
+
+    def async_db_lookup(self, search_word):
+        # 3. Open a separate, thread-isolated database connection for safety
+        db_name = "book.db"
+        if platform == 'android':
+            from android.storage import app_storage_path # type: ignore
+            db_path = os.path.join(app_storage_path(), db_name)
+        else:
+            db_path = db_name
+
+        try:
+            # Connect, execute the query, and fetch the single record
+            thread_conn = sqlite3.connect(db_path)
+            thread_cursor = thread_conn.cursor()
+            
+            sql_query = "select meaning from words10 where lower(upper(word)) like ?"
+            thread_cursor.execute(sql_query, (search_word,))
+            myresult = thread_cursor.fetchone()
+            
+            thread_conn.close()
+            
+            # 4. Use Clock to pass the result back to the main UI thread safely
+            Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
+            
+        except Exception as e:
+            print(f"Lookup thread error: {e}")
+            # Fallback error message if something fails
+            Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
+
+    def process_lookup_result(self, myresult):
+        global myresult1
+        
+        # 5. This runs back on Kivy's main thread, making UI changes 100% safe
+        if myresult is None:
+            content = Label(text="Not Found. Please choose the word correctly", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)
-       else:
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        else:
             myresult1 = ''.join(myresult)
             self.manager.current = 'trans'
+
 class Video_a(Screen):
     def on_pre_enter(self, *args):
         
@@ -4878,28 +5030,10 @@ class GramarPage2(Screen):
         
 class PhrasalVerb(Screen):
      
-     global p,p1,p2,p3,p4,id
+     
     
             
-     app = App.get_running_app()
-     b = conn.cursor()
-     b1= conn.cursor()
-     b2 = conn.cursor()
-     b3 = conn.cursor()
-     b4= conn.cursor()
-     b5 = conn.cursor()
-     b=conn.execute("select questions from phrasalverbs")
-     b1=conn.execute("select wronganswer from phrasalverbs")
-     b2=conn.execute("select wronganswer1 from phrasalverbs")
-     b3=conn.execute("select rightanswer from phrasalverbs")
-     b4=conn.execute("select option from phrasalverbs")
-     b5=conn.execute("select num from phrasalverbs")
-     p= b.fetchall()
-     p1= b1.fetchall()
-     p2= b2.fetchall()
-     p3 = b3.fetchall()
-     p4 = b4.fetchall()
-     id= b5.fetchall()
+    
     
     
     
@@ -4907,7 +5041,7 @@ class PhrasalVerb(Screen):
      
     
      def on_pre_enter(self, *args):
-        
+        global p,p1,p2,p3,p4,id
         global c1
         global theoption1phrasal
         global theid
@@ -4979,36 +5113,17 @@ class PhrasalVerb(Screen):
 
 
 class PhrasalVerb1(Screen):
-     global p,p1,p2,p3,p4,id
+     
     
             
-     app = App.get_running_app()
-     b = conn.cursor()
-     b1= conn.cursor()
-     b2 = conn.cursor()
-     b3 = conn.cursor()
-     b4= conn.cursor()
-     b5 = conn.cursor()
-     b=conn.execute("select questions from phrasalverbs")
-     b1=conn.execute("select wronganswer from phrasalverbs")
-     b2=conn.execute("select wronganswer1 from phrasalverbs")
-     b3=conn.execute("select rightanswer from phrasalverbs")
-     b4=conn.execute("select option from phrasalverbs")
-     b5=conn.execute("select num from phrasalverbs")
-     p= b.fetchall()
-     p1= b1.fetchall()
-     p2= b2.fetchall()
-     p3 = b3.fetchall()
-     p4 = b4.fetchall()
-     id= b5.fetchall()
-    
+     
     
     
     
      
     
      def on_pre_enter(self, *args):
-        
+        global pp,pp1,pp2,pp3,pp4,pid
         global c1
         global theoption1phrasal
         global theid
@@ -5017,19 +5132,19 @@ class PhrasalVerb1(Screen):
             c1 = 1
         myinteger = random.randint(1,2)
         if myinteger == 1:
-            self.ids.record3.text = str (p[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab1.text = str (p1[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab2.text = str (p2[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab3.text = str (p3[c1]).strip("()").strip(",").strip("''")
-            theoption1phrasal = str(p4[c1]).strip("()").strip(",").strip("''")
-            theid = str(id[c1]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str (pp[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab1.text = str (pp1[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab2.text = str (pp2[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab3.text = str (pp3[c1]).strip("()").strip(",").strip("''")
+            theoption1phrasal = str(pp4[c1]).strip("()").strip(",").strip("''")
+            theid = str(pid[c1]).strip("()").strip(",").strip("''")
         else:
-            self.ids.record3.text = str (p[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab1.text = str (p3[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab2.text = str (p2[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab3.text = str (p1[c1]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str (pp[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab1.text = str (pp3[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab2.text = str (pp2[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab3.text = str (pp1[c1]).strip("()").strip(",").strip("''")
             theoption1phrasal = str(p4[c1]).strip("()").strip(",").strip("''")
-            theid = str(id[c1]).strip("()").strip(",").strip("''")
+            theid = str(pid[c1]).strip("()").strip(",").strip("''")
         
         
         
@@ -5079,36 +5194,17 @@ class PhrasalVerb1(Screen):
 
 
 class PhrasalVerb2(Screen):
-     global p,p1,p2,p3,p4,id
+     
     
             
-     app = App.get_running_app()
-     b = conn.cursor()
-     b1= conn.cursor()
-     b2 = conn.cursor()
-     b3 = conn.cursor()
-     b4= conn.cursor()
-     b5 = conn.cursor()
-     b=conn.execute("select questions from phrasalverbs")
-     b1=conn.execute("select wronganswer from phrasalverbs")
-     b2=conn.execute("select wronganswer1 from phrasalverbs")
-     b3=conn.execute("select rightanswer from phrasalverbs")
-     b4=conn.execute("select option from phrasalverbs")
-     b5=conn.execute("select num from phrasalverbs")
-     p= b.fetchall()
-     p1= b1.fetchall()
-     p2= b2.fetchall()
-     p3 = b3.fetchall()
-     p4 = b4.fetchall()
-     id= b5.fetchall()
-    
+     
     
     
     
      
     
      def on_pre_enter(self, *args):
-        
+        global ph,ph1,ph2,ph3,ph4,phid
         global c1
         global theoption1phrasal
         global theid
@@ -5117,19 +5213,19 @@ class PhrasalVerb2(Screen):
             c1 = 1
         myinteger = random.randint(1,2)
         if myinteger == 1:
-            self.ids.record3.text = str (p[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab1.text = str (p1[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab2.text = str (p2[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab3.text = str (p3[c1]).strip("()").strip(",").strip("''")
-            theoption1phrasal = str(p4[c1]).strip("()").strip(",").strip("''")
-            theid = str(id[c1]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str (ph[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab1.text = str (ph1[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab2.text = str (ph2[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab3.text = str (ph3[c1]).strip("()").strip(",").strip("''")
+            theoption1phrasal = str(ph4[c1]).strip("()").strip(",").strip("''")
+            theid = str(phid[c1]).strip("()").strip(",").strip("''")
         else:
-            self.ids.record3.text = str (p[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab1.text = str (p3[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab2.text = str (p2[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab3.text = str (p1[c1]).strip("()").strip(",").strip("''")
-            theoption1phrasal = str(p4[c1]).strip("()").strip(",").strip("''")
-            theid = str(id[c1]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str (ph[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab1.text = str (ph3[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab2.text = str (ph2[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab3.text = str (ph1[c1]).strip("()").strip(",").strip("''")
+            theoption1phrasal = str(ph4[c1]).strip("()").strip(",").strip("''")
+            theid = str(phid[c1]).strip("()").strip(",").strip("''")
         
         
         
@@ -24712,28 +24808,10 @@ class ShowphrResult(Screen):
 
 
 class Vocabulary_a(Screen):
-    global vo,vo1,vo2,vo3,vo4,vo_id
+    
     
             
-    app = App.get_running_app()
-    b = conn.cursor()
-    b1= conn.cursor()
-    b2 = conn.cursor()
-    b3 = conn.cursor()
-    b4= conn.cursor()
-    b5 = conn.cursor()
-    b=conn.execute("select question from vocabulary")
-    b1=conn.execute("select wronganswer1 from vocabulary")
-    b2=conn.execute("select wronganswer2 from vocabulary")
-    b3=conn.execute("select rightanswer from vocabulary")
-    b4=conn.execute("select option from vocabulary")
-    b5=conn.execute("select num from vocabulary")
-    vo= b.fetchall()
-    vo1= b1.fetchall()
-    vo2= b2.fetchall()
-    vo3 = b3.fetchall()
-    vo4 = b4.fetchall()
-    vo_id= b5.fetchall()
+    
     
     
     
@@ -24741,7 +24819,7 @@ class Vocabulary_a(Screen):
      
     
     def on_pre_enter(self, *args):
-        
+        global vvo,vvo1,vvo2,vvo3,vvo4,vvo_id
         global vcounter
         
         global the_potion_vocabulary
@@ -24752,19 +24830,19 @@ class Vocabulary_a(Screen):
             vcounter = 1
         myinteger = random.randint(1,2)
         if myinteger == 1:
-            self.ids.vocabu.text = str (vo[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v1.text = str (vo1[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v2.text = str (vo2[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v3.text = str (vo3[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.vocabu.text = str (vvo[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v1.text = str (vvo1[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v2.text = str (vvo2[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v3.text = str (vvo3[vcounter]).strip("()").strip(",").strip("''")
             the_potion_vocabulary = str(vo4[vcounter]).strip("()").strip(",").strip("''")
-            the_voc_id = str(vo_id[vcounter]).strip("()").strip(",").strip("''")
+            the_voc_id = str(vvo_id[vcounter]).strip("()").strip(",").strip("''")
         else:
-            self.ids.vocabu.text = str (vo[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v1.text = str (vo3[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v2.text = str (vo2[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v3.text = str (vo1[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.vocabu.text = str (vvo[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v1.text = str (vvo3[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v2.text = str (vvo2[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v3.text = str (vvo1[vcounter]).strip("()").strip(",").strip("''")
             the_potion_vocabulary = str(vo4[vcounter]).strip("()").strip(",").strip("''")
-            the_voc_id = str(vo_id[vcounter]).strip("()").strip(",").strip("''")
+            the_voc_id = str(vvo_id[vcounter]).strip("()").strip(",").strip("''")
 
     def writeit(self):
         
@@ -24821,25 +24899,6 @@ class Vocabulary_b(Screen):
     global vo,vo1,vo2,vo3,vo4,vo_id
     
             
-    app = App.get_running_app()
-    b = conn.cursor()
-    b1= conn.cursor()
-    b2 = conn.cursor()
-    b3 = conn.cursor()
-    b4= conn.cursor()
-    b5 = conn.cursor()
-    b=conn.execute("select question from vocabulary")
-    b1=conn.execute("select wronganswer1 from vocabulary")
-    b2=conn.execute("select wronganswer2 from vocabulary")
-    b3=conn.execute("select rightanswer from vocabulary")
-    b4=conn.execute("select option from vocabulary")
-    b5=conn.execute("select num from vocabulary")
-    vo= b.fetchall()
-    vo1= b1.fetchall()
-    vo2= b2.fetchall()
-    vo3 = b3.fetchall()
-    vo4 = b4.fetchall()
-    vo_id= b5.fetchall()
     
     
     
@@ -24847,28 +24906,34 @@ class Vocabulary_b(Screen):
      
     
     def on_pre_enter(self, *args):
+        global vcounter, the_potion_vocabulary, the_voc_id
+        global vo, vo1, vo2, vo3, vo4, vo_id
         
-        global vcounter
-        
-        global the_potion_vocabulary
-        global the_voc_id
+        # SAFEGUARD: If background thread hasn't finished reading the database yet,
+        # wait 0.2 seconds and retry. This completely prevents Android black screens and crashes!
+        if not vo or len(vo) == 0:
+            Clock.schedule_once(lambda dt: self.on_pre_enter(), 0.2)
+            return
+
         vcounter = vcounter + 1
         
-        if vcounter == 203:
+        # Bounds check to make sure vcounter doesn't go out of range of the database size
+        if vcounter >= len(vo) or vcounter == 203:
             vcounter = 1
-        myinteger = random.randint(1,2)
+            
+        myinteger = random.randint(1, 2)
         if myinteger == 1:
-            self.ids.vocabu.text = str (vo[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v1.text = str (vo1[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v2.text = str (vo2[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v3.text = str (vo3[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.vocabu.text = str(vo[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v1.text = str(vo1[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v2.text = str(vo2[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v3.text = str(vo3[vcounter]).strip("()").strip(",").strip("''")
             the_potion_vocabulary = str(vo4[vcounter]).strip("()").strip(",").strip("''")
             the_voc_id = str(vo_id[vcounter]).strip("()").strip(",").strip("''")
         else:
-            self.ids.vocabu.text = str (vo[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v1.text = str (vo3[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v2.text = str (vo2[vcounter]).strip("()").strip(",").strip("''")
-            self.ids.v3.text = str (vo1[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.vocabu.text = str(vo[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v1.text = str(vo3[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v2.text = str(vo2[vcounter]).strip("()").strip(",").strip("''")
+            self.ids.v3.text = str(vo1[vcounter]).strip("()").strip(",").strip("''")
             the_potion_vocabulary = str(vo4[vcounter]).strip("()").strip(",").strip("''")
             the_voc_id = str(vo_id[vcounter]).strip("()").strip(",").strip("''")
 
@@ -24922,36 +24987,14 @@ class Vocabulary_b(Screen):
         
 
 class Vocabulary_c(Screen):
-    global o,o1,o2,o3,o4,vo_id
+    
     
             
-    app = App.get_running_app()
-    b = conn.cursor()
-    b1= conn.cursor()
-    b2 = conn.cursor()
-    b3 = conn.cursor()
-    b4= conn.cursor()
-    b5 = conn.cursor()
-    b=conn.execute("select question from vocabulary")
-    b1=conn.execute("select wronganswer1 from vocabulary")
-    b2=conn.execute("select wronganswer2 from vocabulary")
-    b3=conn.execute("select rightanswer from vocabulary")
-    b4=conn.execute("select option from vocabulary")
-    b5=conn.execute("select num from vocabulary")
-    o= b.fetchall()
-    o1= b1.fetchall()
-    o2= b2.fetchall()
-    o3 = b3.fetchall()
-    o4 = b4.fetchall()
-    vo_id= b5.fetchall()
-    
-    
-    
     
      
     
     def on_pre_enter(self, *args):
-        
+        global o,o1,o2,o3,o4,o_id
         global vcounter
         
         global the_potion_vocabulary
@@ -24967,14 +25010,14 @@ class Vocabulary_c(Screen):
             self.ids.v2.text = str (o2[vcounter]).strip("()").strip(",").strip("''")
             self.ids.v3.text = str (o3[vcounter]).strip("()").strip(",").strip("''")
             the_potion_vocabulary = str(o4[vcounter]).strip("()").strip(",").strip("''")
-            the_voc_id = str(vo_id[vcounter]).strip("()").strip(",").strip("''")
+            the_voc_id = str(o_id[vcounter]).strip("()").strip(",").strip("''")
         else:
             self.ids.vocabu.text = str (o[vcounter]).strip("()").strip(",").strip("''")
             self.ids.v1.text = str (o3[vcounter]).strip("()").strip(",").strip("''")
             self.ids.v2.text = str (o2[vcounter]).strip("()").strip(",").strip("''")
             self.ids.v3.text = str (o1[vcounter]).strip("()").strip(",").strip("''")
             the_potion_vocabulary = str(o4[vcounter]).strip("()").strip(",").strip("''")
-            the_voc_id = str(vo_id[vcounter]).strip("()").strip(",").strip("''")
+            the_voc_id = str(o_id[vcounter]).strip("()").strip(",").strip("''")
 
     def writeit(self):
         
@@ -25987,31 +26030,10 @@ class ShowVocabulary(Screen):
             self.ids.ph.text = get_display(arabic_reshaper.reshape(p190))
 
 class Punctuation1(Screen):
-     global punc,punc1,punc2,punc3,punc4,punc_id,r
+     
     
             
-     app = App.get_running_app()
-     b = conn.cursor()
-     b1= conn.cursor()
-     b2 = conn.cursor()
-     b3 = conn.cursor()
-     b4= conn.cursor()
-     b5 = conn.cursor()
-     b6 = conn.cursor()
-     b=conn.execute("select one from punctuation")
-     b1=conn.execute("select two from punctuation")
-     b2=conn.execute("select three from punctuation")
-     b3=conn.execute("select four from punctuation")
-     b4=conn.execute("select option from punctuation")
-     b5=conn.execute("select num from punctuation")
-     b6=conn.execute("select rightanswer from punctuation")
-     punc= b.fetchall()
-     punc1= b1.fetchall()
-     punc2= b2.fetchall()
-     punc3 = b3.fetchall()
-     punc4 = b4.fetchall()
-     punc_id= b5.fetchall()
-     r = b6.fetchall()
+     
     
     
     
@@ -26019,7 +26041,7 @@ class Punctuation1(Screen):
      
     
      def on_pre_enter(self, *args):
-        
+        global punc,punc1,punc2,punc3,punc4,punc_id,r
         global punc_counter
         global the_punctuation
         global the_rightanswer
@@ -26114,39 +26136,15 @@ class Punctuation1(Screen):
 
         
 class Punctuation2(Screen):
-     global punc,punc1,punc2,punc3,punc4,punc_idl,r
+     
     
             
-     app = App.get_running_app()
-     b = conn.cursor()
-     b1= conn.cursor()
-     b2 = conn.cursor()
-     b3 = conn.cursor()
-     b4= conn.cursor()
-     b5 = conn.cursor()
-     b6= conn.cursor()
-     b=conn.execute("select one from punctuation")
-     b1=conn.execute("select two from punctuation")
-     b2=conn.execute("select three from punctuation")
-     b3=conn.execute("select four from punctuation")
-     b4=conn.execute("select option from punctuation")
-     b5=conn.execute("select num from punctuation")
-     b6=conn.execute("select rightanswer from punctuation")
-     punc= b.fetchall()
-     punc1= b1.fetchall()
-     punc2= b2.fetchall()
-     punc3 = b3.fetchall()
-     punc4 = b4.fetchall()
-     punc_id= b5.fetchall()
-     r= b6.fetchall()
-    
-    
-    
+     
     
      
     
      def on_pre_enter(self, *args):
-        
+        global ppunc,ppunc1,ppunc2,ppunc3,ppunc4,punc_idl,pr
         global punc_counter
         global the_punctuation
         global the_punctuation_id
@@ -26154,13 +26152,13 @@ class Punctuation2(Screen):
         punc_counter = punc_counter + 1
         if punc_counter == 224:
             punc_counter = 0
-        self.ids.punc1.text = str (punc[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc2.text = str (punc1[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc3.text = str (punc2[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc4.text = str (punc3[punc_counter]).strip("()").strip(",").strip("''")
-        the_punctuation = str(punc4[punc_counter]).strip("()").strip(",").strip("''")
-        the_punctuation_id = str(punc_id[punc_counter]).strip("()").strip(",").strip("''")
-        the_rightanswer = str(r[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc1.text = str (ppunc[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc2.text = str (ppunc1[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc3.text = str (ppunc2[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc4.text = str (ppunc3[punc_counter]).strip("()").strip(",").strip("''")
+        the_punctuation = str(ppunc4[punc_counter]).strip("()").strip(",").strip("''")
+        the_punctuation_id = str(punc_idl[punc_counter]).strip("()").strip(",").strip("''")
+        the_rightanswer = str(pr[punc_counter]).strip("()").strip(",").strip("''")
      
      def writepunc(self):
         
@@ -26236,38 +26234,16 @@ class Punctuation2(Screen):
         else:
             pass
 class Punctuation3(Screen):
-     global punc,punc1,punc2,punc3,punc4,punc_id,r
+     
     
             
-     app = App.get_running_app()
-     b = conn.cursor()
-     b1= conn.cursor()
-     b2 = conn.cursor()
-     b3 = conn.cursor()
-     b4= conn.cursor()
-     b5 = conn.cursor()
-     b6= conn.cursor()
-     b=conn.execute("select one from punctuation")
-     b1=conn.execute("select two from punctuation")
-     b2=conn.execute("select three from punctuation")
-     b3=conn.execute("select four from punctuation")
-     b4=conn.execute("select option from punctuation")
-     b5=conn.execute("select num from punctuation")
-     b6=conn.execute("select rightanswer from punctuation")
-     punc= b.fetchall()
-     punc1= b1.fetchall()
-     punc2= b2.fetchall()
-     punc3 = b3.fetchall()
-     punc4 = b4.fetchall()
-     punc_id= b5.fetchall()
-     r= b6.fetchall()
-    
+     
     
     
      
     
      def on_pre_enter(self, *args):
-        
+        global pc,pc1,pc2,pc3,pc4,pc_id,pcr
         global punc_counter
         global the_punctuation
         global the_punctuation_id
@@ -26276,12 +26252,12 @@ class Punctuation3(Screen):
         
         if punc_counter == 224:
             punc_counter = 0
-        self.ids.punc1.text = str (punc[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc2.text = str (punc1[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc3.text = str (punc2[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc4.text = str (punc3[punc_counter]).strip("()").strip(",").strip("''")
-        the_punctuation = str(punc4[punc_counter]).strip("()").strip(",").strip("''")
-        the_rightanswer = str(r[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc1.text = str (pc[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc2.text = str (pc1[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc3.text = str (pc2[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc4.text = str (pc3[punc_counter]).strip("()").strip(",").strip("''")
+        the_punctuation = str(pc4[punc_counter]).strip("()").strip(",").strip("''")
+        the_rightanswer = str(pcr[punc_counter]).strip("()").strip(",").strip("''")
      def writepunc(self):
         
         f = open("punctuation.txt","w")
@@ -27516,7 +27492,7 @@ class SplashScreen(Screen):
         
         # ENVIRONMENT GUARD SYSTEM:
         if platform == 'android':
-            from android.storage import app_context
+            from android.storage import app_context # type: ignore
             base_dir = app_context.getFilesDir().getAbsolutePath()
         else:
             base_dir = App.get_running_app().user_data_dir
@@ -27574,24 +27550,139 @@ class SplashScreen(Screen):
         
         # 1. ASYNC DATABASE BOOTSTRAP PRE-LOAD (Keeps Main loop rendering smoothly)
         app = App.get_running_app()
+                # 1. THREAD-SAFE SEPARATE DATABASE CONNECTION (Pre-loads both tables)
         global re, re1, re2, re3, re4, re5
+        global vo, vo1, vo2, vo3, vo4, vo_id  # Added vocabulary globals
+        global vvo,vvo1,vvo2,vvo3,vvo4,vvo_id
+        global o,o1,o2,o3,o4,o_id
+        global results,result1,result2,result3,result4,result5
+        global s,s1,s2,s3,s4,s5
+        global p,p1,p2,p3,p4,id
+        global pp,pp1,pp2,pp3,pp4,pid
+        global ph,ph1,ph2,ph3,ph4,phid
+        global punc,punc1,punc2,punc3,punc4,punc_id,r
+        global ppunc,ppunc1,ppunc2,ppunc3,ppunc4,punc_idl,pr
+        global pc,pc1,pc2,pc3,pc4,pc_id,pcr
         
+        
+        db_name = "book.db"
         try:
-            if app.conn:
-                cu1 = app.conn.execute("select wronganswer1 from intermediate")
-                re1 = cu1.fetchall()
-                cu = app.conn.execute("select questions from intermediate")
-                re = cu.fetchall()
-                cu2 = app.conn.execute("select wronganswer2 from intermediate")
-                re2 = cu2.fetchall()
-                cu3 = app.conn.execute("select rightanswer from intermediate")
-                re3 = cu3.fetchall()
-                cu4 = app.conn.execute("select option from intermediate")
-                re4 = cu4.fetchall()
-                cu5 = app.conn.execute("select num from intermediate")
-                re5 = cu5.fetchall()
+            if platform == 'android':
+                from android.storage import app_storage_path # type: ignore
+                db_path = os.path.join(app_storage_path(), db_name)
+            else:
+                db_path = db_name
+
+            thread_conn = sqlite3.connect(db_path)
+            
+            # --- Load Intermediate Table Data ---
+            re1 = thread_conn.execute("select wronganswer1 from intermediate").fetchall()
+            re  = thread_conn.execute("select questions from intermediate").fetchall()
+            re2 = thread_conn.execute("select wronganswer2 from intermediate").fetchall()
+            re3 = thread_conn.execute("select rightanswer from intermediate").fetchall()
+            re4 = thread_conn.execute("select option from intermediate").fetchall()
+            re5 = thread_conn.execute("select num from intermediate").fetchall()
+            
+            # --- Load advanced Table Data (NEW ADDITION) ---
+            
+            result = thread_conn.execute("select wronganswer1 from advanced").fetchall()
+            result1  = thread_conn.execute("select questions from advanced").fetchall()
+            result2 = thread_conn.execute("select wronganswer2 from advanced").fetchall()
+            result3 = thread_conn.execute("select rightanswer from advanced").fetchall()
+            result4 = thread_conn.execute("select option from advanced").fetchall()
+            result5 = thread_conn.execute("select num from advancede").fetchall()
+            thread_conn.close()
+            print("All database tables pre-loaded successfully in background thread!")
+            
+            # load beginner table
+            s = thread_conn.execute("select wronganswer1 from beginner").fetchall()
+            s1  = thread_conn.execute("select questions from beginner").fetchall()
+            s2 = thread_conn.execute("select wronganswer2 from beginner").fetchall()
+            s3 = thread_conn.execute("select rightanswer from beginner").fetchall()
+            s4 = thread_conn.execute("select option from beginner").fetchall()
+            s5 = thread_conn.execute("select num from beginner").fetchall()
+            
+            #load phrasalverbs table
+            p = thread_conn.execute("select questions from phrasalverbs").fetchall()
+            p1 = thread_conn.execute("select wronganswer from phrasalverbs").fetchall()
+            p2 = thread_conn.execute("select wronganswer1 from phrasalverbs").fetchall()
+            p3 = thread_conn.execute("select rightanswer from phrasalverbs").fetchall()
+            p4 = thread_conn.execute("select option from phrasalverbs").fetchall()
+            id = thread_conn.execute("select num from phrasalverbs").fetchall()
+            
+            #load phrasalverbs table
+            pp = thread_conn.execute("select questions from phrasalverbs").fetchall()
+            pp1 = thread_conn.execute("select wronganswer from phrasalverbs").fetchall()
+            pp2 = thread_conn.execute("select wronganswer1 from phrasalverbs").fetchall()
+            pp3 = thread_conn.execute("select rightanswer from phrasalverbs").fetchall()
+            pp4 = thread_conn.execute("select option from phrasalverbs").fetchall()
+            pid = thread_conn.execute("select num from phrasalverbs").fetchall()
+            
+            
+            #load phrasalverbs table
+            ph = thread_conn.execute("select questions from phrasalverbs").fetchall()
+            ph1 = thread_conn.execute("select wronganswer from phrasalverbs").fetchall()
+            ph2 = thread_conn.execute("select wronganswer1 from phrasalverbs").fetchall()
+            ph3 = thread_conn.execute("select rightanswer from phrasalverbs").fetchall()
+            ph4 = thread_conn.execute("select option from phrasalverbs").fetchall()
+            phid = thread_conn.execute("select num from phrasalverbs").fetchall()
+            
+            #load vocabulary table
+            vo = thread_conn.execute("select question from vocabulary").fetchall()
+            vo1 = thread_conn.execute("select wronganswer1 from vocabulary").fetchall()
+            vo2 = thread_conn.execute("select wronganswer2 from vocabulary").fetchall()
+            vo3 = thread_conn.execute("select rightanswer from vocabulary").fetchall()
+            vo4 = thread_conn.execute("select option from vocabulary").fetchall()
+            vo_id  = thread_conn.execute("select num from vocabulary").fetchall()
+            
+            
+            #load vocabulary table
+            vvo = thread_conn.execute("select question from vocabulary").fetchall()
+            vvo1 = thread_conn.execute("select wronganswer1 from vocabulary").fetchall()
+            vvo2 = thread_conn.execute("select wronganswer2 from vocabulary").fetchall()
+            vvo3 = thread_conn.execute("select rightanswer from vocabulary").fetchall()
+            vvo4 = thread_conn.execute("select option from vocabulary").fetchall()
+            vvo_id  = thread_conn.execute("select num from vocabulary").fetchall()
+            
+            #load vocabulary table
+            o = thread_conn.execute("select question from vocabulary").fetchall()
+            o1 = thread_conn.execute("select wronganswer1 from vocabulary").fetchall()
+            o2 = thread_conn.execute("select wronganswer2 from vocabulary").fetchall()
+            o3 = thread_conn.execute("select rightanswer from vocabulary").fetchall()
+            o4 = thread_conn.execute("select option from vocabulary").fetchall()
+            o_id  = thread_conn.execute("select num from vocabulary").fetchall()
+            
+            
+            #load punctuation table
+            punc= thread_conn.execute("select one from punctuation")
+            punc1= thread_conn.execute("select two from punctuation")
+            punc2= thread_conn.execute("select three from punctuation")
+            punc3= thread_conn.execute("select four from punctuation")
+            punc4= thread_conn.execute("select option from punctuation")
+            punc_id= thread_conn.execute("select num from punctuation")
+            r= thread_conn.execute("select rightanswer from punctuation")
+            
+            #load punctuation table
+            ppunc= thread_conn.execute("select one from punctuation")
+            ppunc1= thread_conn.execute("select two from punctuation")
+            ppunc2= thread_conn.execute("select three from punctuation")
+            ppunc3= thread_conn.execute("select four from punctuation")
+            ppunc4= thread_conn.execute("select option from punctuation")
+            punc_idl= thread_conn.execute("select num from punctuation")
+            pr= thread_conn.execute("select rightanswer from punctuation")
+            
+            #load punctuation table
+            pc= thread_conn.execute("select one from punctuation")
+            pc1= thread_conn.execute("select two from punctuation")
+            pc2= thread_conn.execute("select three from punctuation")
+            pc3= thread_conn.execute("select four from punctuation")
+            p4= thread_conn.execute("select option from punctuation")
+            pc_id= thread_conn.execute("select num from punctuation")
+            pcr= thread_conn.execute("select rightanswer from punctuation")
+            
         except Exception as e:
-            print(f"Database pre-load failure: {e}")
+            print(f"Database thread load exception error: {e}")
+
 
         # 2. RUN CONNECTIVITY NETWORK VERIFICATION LAYER
         if not self.is_connected():
@@ -27821,7 +27912,7 @@ class CrashCourseApp(App):
         db_name = "book.db"
         
         if platform == 'android':
-            from android.storage import app_storage_path
+            from android.storage import app_storage_path # type: ignore
             writable_dir = app_storage_path()
             writable_db_path = os.path.join(writable_dir, db_name)
             bundled_db_path = os.path.join(os.getcwd(), db_name)
