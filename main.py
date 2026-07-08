@@ -275,15 +275,13 @@ class Mywidget(Screen):
 
     def async_db_lookup(self, search_word):
         # 3. Open a separate, thread-isolated database connection for safety
+        
         db_name = "book.db"
-        if platform == 'android':
-            from android.storage import app_storage_path # type: ignore
-            db_path = os.path.join(app_storage_path(), db_name)
-        else:
-            db_path = db_name
+        
+        # Clean and direct: uses the saved global path automatically on Windows or Android!
+        db_path = os.path.join(App.get_running_app().internal_sandbox_dir, db_name)
 
         try:
-            # Connect, execute the query, and fetch the single record
             thread_conn = sqlite3.connect(db_path)
             thread_cursor = thread_conn.cursor()
             
@@ -292,13 +290,10 @@ class Mywidget(Screen):
             myresult = thread_cursor.fetchone()
             
             thread_conn.close()
-            
-            # 4. Use Clock to pass the result back to the main UI thread safely
             Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
             
         except Exception as e:
             print(f"Lookup thread error: {e}")
-            # Fallback error message if something fails
             Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
 
     def process_lookup_result(self, myresult):
@@ -1423,14 +1418,11 @@ class Mode(Screen):
     def async_db_lookup(self, search_word):
         # 3. Open a separate, thread-isolated database connection for safety
         db_name = "book.db"
-        if platform == 'android':
-            from android.storage import app_storage_path # type: ignore
-            db_path = os.path.join(app_storage_path(), db_name)
-        else:
-            db_path = db_name
+        
+        # Clean and direct: uses the saved global path automatically on Windows or Android!
+        db_path = os.path.join(App.get_running_app().internal_sandbox_dir, db_name)
 
         try:
-            # Connect, execute the query, and fetch the single record
             thread_conn = sqlite3.connect(db_path)
             thread_cursor = thread_conn.cursor()
             
@@ -1439,13 +1431,10 @@ class Mode(Screen):
             myresult = thread_cursor.fetchone()
             
             thread_conn.close()
-            
-            # 4. Use Clock to pass the result back to the main UI thread safely
             Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
             
         except Exception as e:
             print(f"Lookup thread error: {e}")
-            # Fallback error message if something fails
             Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
 
     def process_lookup_result(self, myresult):
@@ -1585,14 +1574,11 @@ class Modea(Screen):
     def async_db_lookup(self, search_word):
         # 3. Open a separate, thread-isolated database connection for safety
         db_name = "book.db"
-        if platform == 'android':
-            from android.storage import app_storage_path # type: ignore
-            db_path = os.path.join(app_storage_path(), db_name)
-        else:
-            db_path = db_name
+        
+        # Clean and direct: uses the saved global path automatically on Windows or Android!
+        db_path = os.path.join(App.get_running_app().internal_sandbox_dir, db_name)
 
         try:
-            # Connect, execute the query, and fetch the single record
             thread_conn = sqlite3.connect(db_path)
             thread_cursor = thread_conn.cursor()
             
@@ -1601,13 +1587,10 @@ class Modea(Screen):
             myresult = thread_cursor.fetchone()
             
             thread_conn.close()
-            
-            # 4. Use Clock to pass the result back to the main UI thread safely
             Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
             
         except Exception as e:
             print(f"Lookup thread error: {e}")
-            # Fallback error message if something fails
             Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
 
     def process_lookup_result(self, myresult):
@@ -27490,12 +27473,8 @@ class SplashScreen(Screen):
         self.ids.retry_layout.opacity = 0
         self.ids.retry_layout.disabled = True
         
-        # ENVIRONMENT GUARD SYSTEM:
-        if platform == 'android':
-            from android.storage import app_context # type: ignore
-            base_dir = app_context.getFilesDir().getAbsolutePath()
-        else:
-            base_dir = App.get_running_app().user_data_dir
+         # FIX: Directly read the safe unified storage folder property
+        base_dir = App.get_running_app().internal_sandbox_dir
 
         self.audio_folder = os.path.join(base_dir, "my_audio_album")
         if not os.path.exists(self.audio_folder):
@@ -27567,12 +27546,10 @@ class SplashScreen(Screen):
         
         db_name = "book.db"
         try:
-            if platform == 'android':
-                from android.storage import app_storage_path # type: ignore
-                db_path = os.path.join(app_storage_path(), db_name)
-            else:
-                db_path = db_name
+            # Grabs the verified absolute path of the secure internal sandbox file
+            db_path = os.path.join(App.get_running_app().internal_sandbox_dir, db_name)
 
+            # Open a completely separate connection isolated for this specific background thread
             thread_conn = sqlite3.connect(db_path)
             
             # --- Load Intermediate Table Data ---
@@ -27679,10 +27656,11 @@ class SplashScreen(Screen):
             p4= thread_conn.execute("select option from punctuation")
             pc_id= thread_conn.execute("select num from punctuation")
             pcr= thread_conn.execute("select rightanswer from punctuation")
-            
+            thread_conn.close()
+            print("All database tables pre-loaded asynchronously from internal storage!")
         except Exception as e:
             print(f"Database thread load exception error: {e}")
-
+            
 
         # 2. RUN CONNECTIVITY NETWORK VERIFICATION LAYER
         if not self.is_connected():
@@ -27908,23 +27886,31 @@ class CrashCourseApp(App):
     cursor = None
 
     def on_start(self):
-        """ Runs dynamically AFTER the app starts, preventing startup crashes. """
+        """ App-level initialization database check routine block """
         db_name = "book.db"
         
+        # Resolve the restriction-free, private internal storage sandbox path
         if platform == 'android':
-            from android.storage import app_storage_path # type: ignore
-            writable_dir = app_storage_path()
-            writable_db_path = os.path.join(writable_dir, db_name)
-            bundled_db_path = os.path.join(os.getcwd(), db_name)
-            
-            if not os.path.exists(writable_db_path):
-                if os.path.exists(bundled_db_path):
-                    shutil.copy(bundled_db_path, writable_db_path)
-                    
-            self.conn = sqlite3.connect(writable_db_path)
+            from android.storage import app_context
+            base_dir = app_context.getFilesDir().getAbsolutePath()
         else:
-            self.conn = sqlite3.connect(db_name)
-            
+            base_dir = self.user_data_dir
+
+        # Unified path tracking property accessible globally across all classes
+        self.internal_sandbox_dir = base_dir
+        
+        writable_db_path = os.path.join(base_dir, db_name)
+        bundled_db_path = os.path.join(os.getcwd(), db_name)
+        
+        # Copy the pre-populated database safely into internal storage
+        if not os.path.exists(writable_db_path) and os.path.exists(bundled_db_path):
+            try:
+                shutil.copy(bundled_db_path, writable_db_path)
+            except Exception as e:
+                print(f"Failed to copy bundled database asset: {e}")
+                
+        # Main thread database connection
+        self.conn = sqlite3.connect(writable_db_path)
         self.cursor = self.conn.cursor()
     def build(self):
         # 1. Open the database ONCE right here on startup
