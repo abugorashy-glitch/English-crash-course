@@ -275,13 +275,15 @@ class Mywidget(Screen):
 
     def async_db_lookup(self, search_word):
         # 3. Open a separate, thread-isolated database connection for safety
-        
         db_name = "book.db"
-        
-        # Clean and direct: uses the saved global path automatically on Windows or Android!
-        db_path = os.path.join(App.get_running_app().internal_sandbox_dir, db_name)
+        if platform == 'android':
+            from android.storage import app_storage_path # type: ignore
+            db_path = os.path.join(app_storage_path(), db_name)
+        else:
+            db_path = db_name
 
         try:
+            # Connect, execute the query, and fetch the single record
             thread_conn = sqlite3.connect(db_path)
             thread_cursor = thread_conn.cursor()
             
@@ -290,10 +292,13 @@ class Mywidget(Screen):
             myresult = thread_cursor.fetchone()
             
             thread_conn.close()
+            
+            # 4. Use Clock to pass the result back to the main UI thread safely
             Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
             
         except Exception as e:
             print(f"Lookup thread error: {e}")
+            # Fallback error message if something fails
             Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
 
     def process_lookup_result(self, myresult):
@@ -397,40 +402,65 @@ class Secondwindow(Screen):
 
     def on_estate_check(self):
         
-        if self.ids.check1.active is True:
-            if self.ids.ll1.text == str(re3[counter1]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
+        global result3, counter3
         
-        if self.ids.check3.active is True:
-            if self.ids.ll3.text == str(re3[counter1]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
+
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
+        if self.ids.check1.active is True:
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-
-
-        if self.ids.check2.active is True:
-            content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+            else:
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
 
     
     
@@ -493,41 +523,65 @@ class Thirdwindow(Screen):
 
     def on_estate_check(self):
         
+        global result3, counter3
+        
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
+
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
         if self.ids.check1.active is True:
-            if self.ids.l1.text == str(result3[counter3]).strip("()").strip(",").strip("''"):
-                sound = SoundLoader.load("answers/rightanswer.mp3")
-                sound.play()
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
         
-
-        if self.ids.check3.active is True:
-            if self.ids.l3.text == str(result3[counter3]).strip("()").strip(",").strip("''"):
-                sound = SoundLoader.load("answers/rightanswer.mp3")
-                sound.play()
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
         
-
-        if self.ids.check2.active is True:
-            content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
      
             
         
@@ -591,47 +645,65 @@ class Windowfirst(Screen):
 
     def on_estate_check(self):
 
+        global result3, counter3
+        
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
+
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
         if self.ids.check1.active is True:
-            if self.ids.lll1.text == str(s3[counter2]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-                
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
         
-            
-        
-    
-
-        if self.ids.check3.active is True:
-            if self.ids.lll3.text == str(s3[counter2]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-                
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            
-            pass
-
-
-        if self.ids.check2.active is True:
-            content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
 
             
             
@@ -1418,11 +1490,14 @@ class Mode(Screen):
     def async_db_lookup(self, search_word):
         # 3. Open a separate, thread-isolated database connection for safety
         db_name = "book.db"
-        
-        # Clean and direct: uses the saved global path automatically on Windows or Android!
-        db_path = os.path.join(App.get_running_app().internal_sandbox_dir, db_name)
+        if platform == 'android':
+            from android.storage import app_storage_path # type: ignore
+            db_path = os.path.join(app_storage_path(), db_name)
+        else:
+            db_path = db_name
 
         try:
+            # Connect, execute the query, and fetch the single record
             thread_conn = sqlite3.connect(db_path)
             thread_cursor = thread_conn.cursor()
             
@@ -1431,10 +1506,13 @@ class Mode(Screen):
             myresult = thread_cursor.fetchone()
             
             thread_conn.close()
+            
+            # 4. Use Clock to pass the result back to the main UI thread safely
             Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
             
         except Exception as e:
             print(f"Lookup thread error: {e}")
+            # Fallback error message if something fails
             Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
 
     def process_lookup_result(self, myresult):
@@ -1574,11 +1652,14 @@ class Modea(Screen):
     def async_db_lookup(self, search_word):
         # 3. Open a separate, thread-isolated database connection for safety
         db_name = "book.db"
-        
-        # Clean and direct: uses the saved global path automatically on Windows or Android!
-        db_path = os.path.join(App.get_running_app().internal_sandbox_dir, db_name)
+        if platform == 'android':
+            from android.storage import app_storage_path # type: ignore
+            db_path = os.path.join(app_storage_path(), db_name)
+        else:
+            db_path = db_name
 
         try:
+            # Connect, execute the query, and fetch the single record
             thread_conn = sqlite3.connect(db_path)
             thread_cursor = thread_conn.cursor()
             
@@ -1587,10 +1668,13 @@ class Modea(Screen):
             myresult = thread_cursor.fetchone()
             
             thread_conn.close()
+            
+            # 4. Use Clock to pass the result back to the main UI thread safely
             Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
             
         except Exception as e:
             print(f"Lookup thread error: {e}")
+            # Fallback error message if something fails
             Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
 
     def process_lookup_result(self, myresult):
@@ -5023,7 +5107,7 @@ class PhrasalVerb(Screen):
     
      
     
-     def on_pre_enter(self, *args):
+    def on_pre_enter(self, *args):
         global p,p1,p2,p3,p4,id
         global c1
         global theoption1phrasal
@@ -5049,48 +5133,73 @@ class PhrasalVerb(Screen):
         
         
         
-     def writeit(self):
+    def writeit(self):
         
         f = open("phrasal1.txt","w")
         
         f.write(theid)
         f.close()
-     def on_estate_check(self):
+    def on_estate_check(self):
         
-        if self.ids.ch1.active is True:
-            if self.ids.lab1.text == str(p3[c1]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this.",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
+        global result3, counter3
         
-        if self.ids.ch3.active is True:
-            if self.ids.lab3.text == str(p3[c1]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
+
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
+        if self.ids.check1.active is True:
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-
-
-        if self.ids.ch2.active is True:
-            content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+            else:
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)    
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)    
         
          
 
@@ -5105,7 +5214,7 @@ class PhrasalVerb1(Screen):
     
      
     
-     def on_pre_enter(self, *args):
+    def on_pre_enter(self, *args):
         global pp,pp1,pp2,pp3,pp4,pid
         global c1
         global theoption1phrasal
@@ -5131,48 +5240,73 @@ class PhrasalVerb1(Screen):
         
         
         
-     def writeit(self):
+    def writeit(self):
         
         f = open("phrasal1.txt","w")
         
         f.write(theid)
         f.close()
-     def on_estate_check(self):
+    def on_estate_check(self):
         
-        if self.ids.ch1.active is True:
-            if self.ids.lab1.text == str(p3[c1]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this.",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
+        global result3, counter3
         
-        if self.ids.ch3.active is True:
-            if self.ids.lab3.text == str(p3[c1]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
+
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
+        if self.ids.check1.active is True:
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-
-
-        if self.ids.ch2.active is True:
-            content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+            else:
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
 
 
 
@@ -5186,7 +5320,7 @@ class PhrasalVerb2(Screen):
     
      
     
-     def on_pre_enter(self, *args):
+    def on_pre_enter(self, *args):
         global ph,ph1,ph2,ph3,ph4,phid
         global c1
         global theoption1phrasal
@@ -5212,48 +5346,73 @@ class PhrasalVerb2(Screen):
         
         
         
-     def writeit(self):
+    def writeit(self):
         
         f = open("phrasal1.txt","w")
         
         f.write(theid)
         f.close()
-     def on_estate_check(self):
+    def on_estate_check(self):
         
-        if self.ids.ch1.active is True:
-            if self.ids.lab1.text == str(p3[c1]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this.",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
+        global result3, counter3
         
-        if self.ids.ch3.active is True:
-            if self.ids.lab3.text == str(p3[c1]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
+
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
+        if self.ids.check1.active is True:
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-
-
-        if self.ids.ch2.active is True:
-            content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+            else:
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
 
 
 
@@ -24841,40 +25000,65 @@ class Vocabulary_a(Screen):
 
     def on_estate_check(self):
         
-        if self.ids.check1.active is True:
-            if self.ids.v1.text == str(vo3[vcounter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
+        global result3, counter3
         
-        if self.ids.check3.active is True:
-            if self.ids.v3.text == str(vo3[vcounter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
 
-          
-        if self.ids.check2.active is True:
-            content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
+        if self.ids.check1.active is True:
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
+            else:
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+            else:
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
 
 
 
@@ -24931,41 +25115,65 @@ class Vocabulary_b(Screen):
 
     def on_estate_check(self):
         
-        if self.ids.check1.active is True:
-            if self.ids.v1.text == str(vo3[vcounter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
+        global result3, counter3
         
-        if self.ids.check3.active is True:
-            if self.ids.v3.text == str(vo3[vcounter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
 
-          
-        if self.ids.check2.active is True:
-            content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
+        if self.ids.check1.active is True:
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
+            else:
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+            else:
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)
-    
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
 
         
 
@@ -25013,40 +25221,65 @@ class Vocabulary_c(Screen):
 
     def on_estate_check(self):
         
-        if self.ids.check1.active is True:
-            if self.ids.v1.text == str(o3[vcounter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
+        global result3, counter3
         
-        if self.ids.check3.active is True:
-            if self.ids.v3.text == str(o3[vcounter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
 
-          
-        if self.ids.check2.active is True:
-            content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-            popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
+        if self.ids.check1.active is True:
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
+            else:
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+            else:
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+                popup.open()
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(),3)
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
 
 
 class ShowVocabulary(Screen):
@@ -26023,7 +26256,7 @@ class Punctuation1(Screen):
     
      
     
-     def on_pre_enter(self, *args):
+    def on_pre_enter(self, *args):
         global punc,punc1,punc2,punc3,punc4,punc_id,r
         global punc_counter
         global the_punctuation
@@ -26039,80 +26272,73 @@ class Punctuation1(Screen):
         the_punctuation = str(punc4[punc_counter]).strip("()").strip(",").strip("''")
         the_punctuation_id = str(punc_id[punc_counter]).strip("()").strip(",").strip("''")
         the_righanswer= str(r[punc_counter]).strip("()").strip(",").strip("''")
-     def writepunc(self):
+    def writepunc(self):
         
         f = open("punctuation.txt","w")
         
         f.write(the_punctuation_id)
         f.close()
 
-     def on_estate_check(self):
+    def on_estate_check(self):
+        global result3, counter3
+        
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
+
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
         if self.ids.check1.active is True:
-            if self.ids.punc1.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
-
-
-
-
-
-        if self.ids.check2.active is True:
-            if self.ids.punc2.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
-
-
-
-        if self.ids.check3.active is True:
-            if self.ids.punc3.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
-
-
-        if self.ids.check4.active is True:
-            if self.ids.punc4.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+            popup.open()
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
 
 
 
@@ -26126,7 +26352,7 @@ class Punctuation2(Screen):
     
      
     
-     def on_pre_enter(self, *args):
+    def on_pre_enter(self, *args):
         global ppunc,ppunc1,ppunc2,ppunc3,ppunc4,punc_idl,pr
         global punc_counter
         global the_punctuation
@@ -26143,77 +26369,72 @@ class Punctuation2(Screen):
         the_punctuation_id = str(punc_idl[punc_counter]).strip("()").strip(",").strip("''")
         the_rightanswer = str(pr[punc_counter]).strip("()").strip(",").strip("''")
      
-     def writepunc(self):
+    def writepunc(self):
         
         f = open("punctuation.txt","w")
         
         f.write(the_punctuation_id)
         f.close()
-     def on_estate_check(self):
+    def on_estate_check(self):
+        global result3, counter3
+        
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
+
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
         if self.ids.check1.active is True:
-            if self.ids.punc1.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
-
-
-
-
-
-        if self.ids.check2.active is True:
-            if self.ids.punc2.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
-
-
-
-        if self.ids.check3.active is True:
-            if self.ids.punc3.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
-
-
-        if self.ids.check4.active is True:
-            if self.ids.punc4.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+            popup.open()
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
         else:
             pass
 class Punctuation3(Screen):
@@ -26225,7 +26446,7 @@ class Punctuation3(Screen):
     
      
     
-     def on_pre_enter(self, *args):
+    def on_pre_enter(self, *args):
         global pc,pc1,pc2,pc3,pc4,pc_id,pcr
         global punc_counter
         global the_punctuation
@@ -26241,77 +26462,72 @@ class Punctuation3(Screen):
         self.ids.punc4.text = str (pc3[punc_counter]).strip("()").strip(",").strip("''")
         the_punctuation = str(pc4[punc_counter]).strip("()").strip(",").strip("''")
         the_rightanswer = str(pcr[punc_counter]).strip("()").strip(",").strip("''")
-     def writepunc(self):
+    def writepunc(self):
         
         f = open("punctuation.txt","w")
         
         f.write(the_punctuation_id)
         f.close()
-     def on_estate_check(self):
+    def on_estate_check(self):
+        global result3, counter3
+        
+        # 1. Resolve absolute path dynamically (Works on Windows and Android)
+        # Packages extracted locally on Android run relative to the current working directory
+        base_dir = os.getcwd()
+        right_sound_path = os.path.join(base_dir, "answers", "rightanswer.mp3")
+        wrong_sound_path = os.path.join(base_dir, "answers", "wronganswer.mp3") # Assumes you have a wrong clip
+
+        # Helper function to play sound effects securely without leaking phone RAM channels
+        def trigger_sound(file_path):
+            if os.path.exists(file_path):
+                sound = SoundLoader.load(file_path)
+                if sound:
+                    sound.play()
+                    # Schedule an automatic RAM unload the split second the 2-second clip finishes
+                    Clock.schedule_once(lambda dt: sound.unload(), 2)
+
+        # Ensure result data lists are populated before parsing values to avoid index crashes
+        correct_answer_str = ""
+        if result3 and counter3 < len(result3):
+            correct_answer_str = str(result3[counter3]).strip("()").strip(",").strip("''")
+
+        # --- CHECKBOX 1 EVALUATION ---
         if self.ids.check1.active is True:
-            if self.ids.punc1.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+            if self.ids.l1.text == correct_answer_str:
+                trigger_sound(right_sound_path) # Plays safely from absolute sandbox path!
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3) 
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path) # Triggers failure audio cue safely
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
-
-
-
-
-
-        if self.ids.check2.active is True:
-            if self.ids.punc2.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 3 EVALUATION ---
+        elif self.ids.check3.active is True:
+            if self.ids.l3.text == correct_answer_str:
+                trigger_sound(right_sound_path)
+                content = Label(text="Excellent. continue like this", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
             else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
+                trigger_sound(wrong_sound_path)
+                content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+                popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
                 popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
-
-
-
-        if self.ids.check3.active is True:
-            if self.ids.punc3.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
-        else:
-            pass
-
-
-        if self.ids.check4.active is True:
-            if self.ids.punc4.text == str(r[punc_counter]).strip("()").strip(",").strip("''"):
-                
-                content=Label(text="Excellent. continue like this",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3) 
-            else:
-                content=Label(text="Sorry,Wrong answer, Try again",halign='center',valign='middle')
-                popup= Popup(title='info',content=content,size_hint=(0.9,0.2),auto_dismiss=False)
-                popup.open()
-                Clock.schedule_once(lambda dt: popup.dismiss(),3)
+                Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+        
+        # --- CHECKBOX 2 EVALUATION ---
+        elif self.ids.check2.active is True:
+            trigger_sound(wrong_sound_path)
+            content = Label(text="Sorry,Wrong answer, Try again", halign='center', valign='middle')
+            popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
+            popup.open()
+            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
         else:
             pass
 
@@ -27473,8 +27689,12 @@ class SplashScreen(Screen):
         self.ids.retry_layout.opacity = 0
         self.ids.retry_layout.disabled = True
         
-         # FIX: Directly read the safe unified storage folder property
-        base_dir = App.get_running_app().internal_sandbox_dir
+        # ENVIRONMENT GUARD SYSTEM:
+        if platform == 'android':
+            from android.storage import app_context # type: ignore
+            base_dir = app_context.getFilesDir().getAbsolutePath()
+        else:
+            base_dir = App.get_running_app().user_data_dir
 
         self.audio_folder = os.path.join(base_dir, "my_audio_album")
         if not os.path.exists(self.audio_folder):
@@ -27546,10 +27766,12 @@ class SplashScreen(Screen):
         
         db_name = "book.db"
         try:
-            # Grabs the verified absolute path of the secure internal sandbox file
-            db_path = os.path.join(App.get_running_app().internal_sandbox_dir, db_name)
+            if platform == 'android':
+                from android.storage import app_storage_path # type: ignore
+                db_path = os.path.join(app_storage_path(), db_name)
+            else:
+                db_path = db_name
 
-            # Open a completely separate connection isolated for this specific background thread
             thread_conn = sqlite3.connect(db_path)
             
             # --- Load Intermediate Table Data ---
@@ -27656,11 +27878,10 @@ class SplashScreen(Screen):
             p4= thread_conn.execute("select option from punctuation")
             pc_id= thread_conn.execute("select num from punctuation")
             pcr= thread_conn.execute("select rightanswer from punctuation")
-            thread_conn.close()
-            print("All database tables pre-loaded asynchronously from internal storage!")
+            
         except Exception as e:
             print(f"Database thread load exception error: {e}")
-            
+
 
         # 2. RUN CONNECTIVITY NETWORK VERIFICATION LAYER
         if not self.is_connected():
@@ -27916,7 +28137,7 @@ class CrashCourseApp(App):
         # 1. Open the database ONCE right here on startup
         self.conn = get_android_safe_connection()
         self.cursor = self.conn.cursor()
-        Builder.load_file("crashcourse.kv")
+        
         
         self.icon = 'crash.png'
         if(platform=='android' or platform == 'ios'):

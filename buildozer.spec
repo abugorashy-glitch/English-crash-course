@@ -20,7 +20,7 @@ source.dir = .
 source.include_exts = png,jpg,kv,atlas,txt,py,mp3,mp4,ttf,icon,db
 
 # (list) List of inclusions using pattern matching
-#source.include_patterns = assets/*,images/*.png
+source.include_patterns = answers/*, data/*
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -30,7 +30,7 @@ source.include_exts = png,jpg,kv,atlas,txt,py,mp3,mp4,ttf,icon,db
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
-#source.exclude_patterns = license,images/*/*.jpg
+#source.exclude_patterns = answers/*, data/*
 
 # (str) Application versioning (method 1)
 version = 0.1
