@@ -27691,8 +27691,8 @@ class SplashScreen(Screen):
         
         # ENVIRONMENT GUARD SYSTEM:
         if platform == 'android':
-            from android.storage import app_context # type: ignore
-            base_dir = app_context.getFilesDir().getAbsolutePath()
+            
+            base_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
         else:
             base_dir = App.get_running_app().user_data_dir
 
@@ -28112,8 +28112,8 @@ class CrashCourseApp(App):
         
         # Resolve the restriction-free, private internal storage sandbox path
         if platform == 'android':
-            from android.storage import app_context
-            base_dir = app_context.getFilesDir().getAbsolutePath()
+            
+            base_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
         else:
             base_dir = self.user_data_dir
 
