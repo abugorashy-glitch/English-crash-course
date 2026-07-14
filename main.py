@@ -110,7 +110,8 @@ cursor = conn.cursor()
 
 
 # coding=utf-8 
-
+punc_counter2 = 0
+punc_counter3 = 0 
 theoption3 = ""
 theoption = ""
 theoption1 = ""
@@ -185,7 +186,7 @@ p1 = []
 p2 = []
 p3 = []
 p4 = []
-id = []
+ph_id_list = []
 
 pp = []
 pp1 =[]
@@ -366,31 +367,37 @@ class Firstwindow(Screen):
             
             
 class Secondwindow(Screen):
-        
-    
-
-    
-    def on_pre_enter(self,*args):
+    def on_pre_enter(self, *args):
         global re, re1, re2, re3, re4, re5
-        global counter1
-        global theoption
-        global intermediateid
+        global counter1, theoption, intermediateid
+        
+        # FIX 1: DELAYED RETRY SAFEGUARD
+        # If the background database pre-load thread is still loading rows into memory, 
+        # pause for 0.2 seconds and retry cleanly. Bypasses all index crashes on Android!
+        if not re or len(re) == 0:
+            Clock.schedule_once(lambda dt: self.on_pre_enter(), 0.2)
+            return
+
         counter1 = counter1 + 1
-        if counter1 == 333:
-            counter1 = 1
-        myinteger = random.randint(1,2)
+        
+        # FIX 2: DYNAMIC DATABASE LENGTH BOUNDS CHECK
+        # Replaces hardcoded 333 limits so your quiz scales automatically if rows change!
+        if counter1 >= len(re):
+            counter1 = 0
+            
+        myinteger = random.randint(1, 2)
         if myinteger == 1:
-            self.ids.record1.text= str (re[counter1]).strip("()").strip(",").strip("''")
-            self.ids.ll1.text = str (re1[counter1]).strip("()").strip(",").strip("''")
-            self.ids.ll2.text = str (re2[counter1]).strip("()").strip(",").strip("''")
-            self.ids.ll3.text = str (re3[counter1]).strip("()").strip(",").strip("''")
+            self.ids.record1.text = str(re[counter1]).strip("()").strip(",").strip("''")
+            self.ids.ll1.text = str(re1[counter1]).strip("()").strip(",").strip("''")
+            self.ids.ll2.text = str(re2[counter1]).strip("()").strip(",").strip("''")
+            self.ids.ll3.text = str(re3[counter1]).strip("()").strip(",").strip("''")
             theoption = str(re4[counter1]).strip("()").strip(",").strip("''")
             intermediateid = str(re5[counter1]).strip("()").strip(",").strip("''")
         else:
-            self.ids.record1.text= str (re[counter1]).strip("()").strip(",").strip("''")
-            self.ids.ll1.text = str (re3[counter1]).strip("()").strip(",").strip("''")
-            self.ids.ll2.text = str (re2[counter1]).strip("()").strip(",").strip("''")
-            self.ids.ll3.text = str (re1[counter1]).strip("()").strip(",").strip("''")
+            self.ids.record1.text = str(re[counter1]).strip("()").strip(",").strip("''")
+            self.ids.ll1.text = str(re3[counter1]).strip("()").strip(",").strip("''")
+            self.ids.ll2.text = str(re2[counter1]).strip("()").strip(",").strip("''")
+            self.ids.ll3.text = str(re1[counter1]).strip("()").strip(",").strip("''")
             theoption = str(re4[counter1]).strip("()").strip(",").strip("''")
             intermediateid = str(re5[counter1]).strip("()").strip(",").strip("''")
 
@@ -488,30 +495,39 @@ class Thirdwindow(Screen):
     
      
     
-    def on_pre_enter(self,*args):
-        global results,result1,result2,result3,result4,result5
-        global theoption3
-        global counter3
-        global advancedid
+    def on_pre_enter(self, *args):
+        global result, result1, result2, result3, result4, result5
+        global theoption3, counter3, advancedid
+        
+        # FIX 1: DELAYED RETRY SAFEGUARD
+        # If the background database pre-load thread is still loading rows into memory, 
+        # pause for 0.2 seconds and retry cleanly. Bypasses all index crashes on Android!
+        if not results or len(results) == 0:
+            Clock.schedule_once(lambda dt: self.on_pre_enter(), 0.2)
+            return
+
         counter3 = counter3 + 1
-        if counter3 == 246:
-            counter3 = 1
-            myinteger =""
-        myinteger = random.randint(1,2)
+        
+        # FIX 2: DYNAMIC DATABASE LENGTH BOUNDS CHECK & CLEANUP
+        # Replaces hardcoded 246 limits so your advanced quiz scales automatically if rows change!
+        if counter3 >= len(results):
+            counter3 = 0
+            
+        myinteger = random.randint(1, 2)
         if myinteger == 1:
-            self.ids.record.text = str(results[counter3]).strip("()").strip(",").strip("''")
-            self.ids.l1.text = str (result1[counter3]).strip("()").strip(",").strip("''")
-            self.ids.l2.text = str (result2[counter3]).strip("()").strip(",").strip("''")
-            self.ids.l3.text = str (result3[counter3]).strip("()").strip(",").strip("''")
-            theoption3=  str(result4[counter3]).strip("()").strip(",").strip("''") #هذا المتغير يسترد حقل من قاعدة البيانات وبناء عليه يتم تشغيل فديو معين
-            advancedid= str(result5[counter3]).strip("()").strip(",").strip("''")
+            self.ids.record.text = str(result[counter3]).strip("()").strip(",").strip("''")
+            self.ids.l1.text = str(result1[counter3]).strip("()").strip(",").strip("''")
+            self.ids.l2.text = str(result2[counter3]).strip("()").strip(",").strip("''")
+            self.ids.l3.text = str(result3[counter3]).strip("()").strip(",").strip("''")
+            theoption3 = str(result4[counter3]).strip("()").strip(",").strip("''") 
+            advancedid = str(result5[counter3]).strip("()").strip(",").strip("''")
         else:
-            self.ids.record.text = str(results[counter3]).strip("()").strip(",").strip("''")
-            self.ids.l1.text = str (result3[counter3]).strip("()").strip(",").strip("''")
-            self.ids.l2.text = str (result2[counter3]).strip("()").strip(",").strip("''")
-            self.ids.l3.text = str (result1[counter3]).strip("()").strip(",").strip("''")
-            theoption3=  str(result4[counter3]).strip("()").strip(",").strip("''") #هذا المتغير يسترد حقل من قاعدة البيانات وبناء عليه يتم تشغيل فديو معين
-            advancedid= str(result5[counter3]).strip("()").strip(",").strip("''")
+            self.ids.record.text = str(result[counter3]).strip("()").strip(",").strip("''")
+            self.ids.l1.text = str(result3[counter3]).strip("()").strip(",").strip("''")
+            self.ids.l2.text = str(result2[counter3]).strip("()").strip(",").strip("''")
+            self.ids.l3.text = str(result1[counter3]).strip("()").strip(",").strip("''")
+            theoption3 = str(result4[counter3]).strip("()").strip(",").strip("''") 
+            advancedid = str(result5[counter3]).strip("()").strip(",").strip("''")
 
 
         # الكود يستمر هنا في اختبار المتغير وتشغيل الفديو بناء عليه
@@ -608,38 +624,43 @@ class Windowfirst(Screen):
     
     
     
-    
-    
-     
-    
     def on_pre_enter(self, *args):
-        global s,s1,s2,s3,s4,s5
-        global counter2
-        global theoption1
-        global beginnerid
+        global s, s1, s2, s3, s4, s5
+        global counter2, theoption1, biginnerid  # FIX: Aligned variable name spelling to biginnerid
+        
+        # FIX 1: DELAYED RETRY SAFEGUARD
+        # If the background database pre-load thread is still loading rows into memory, 
+        # pause for 0.2 seconds and retry cleanly. Bypasses all index crashes on Android!
+        if not s or len(s) == 0:
+            Clock.schedule_once(lambda dt: self.on_pre_enter(), 0.2)
+            return
+
         counter2 = counter2 + 1
-        if counter2 == 254:
-            counter2 = 1
-            myinteger =""
-        myinteger = random.randint(1,2)
+        
+        # FIX 2: DYNAMIC DATABASE LENGTH BOUNDS CHECK & CLEANUP
+        # Replaces hardcoded 254 limits so your quiz scales automatically if rows change!
+        if counter2 >= len(s):
+            counter2 = 0
+            
+        myinteger = random.randint(1, 2)
         if myinteger == 1:
-            self.ids.record3.text = str (s[counter2]).strip("()").strip(",").strip("''")
-            self.ids.lll1.text = str (s1[counter2]).strip("()").strip(",").strip("''")
-            self.ids.lll2.text = str (s2[counter2]).strip("()").strip(",").strip("''")
-            self.ids.lll3.text = str (s3[counter2]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str(s[counter2]).strip("()").strip(",").strip("''")
+            self.ids.lll1.text = str(s1[counter2]).strip("()").strip(",").strip("''")
+            self.ids.lll2.text = str(s2[counter2]).strip("()").strip(",").strip("''")
+            self.ids.lll3.text = str(s3[counter2]).strip("()").strip(",").strip("''")
             theoption1 = str(s4[counter2]).strip("()").strip(",").strip("''")
-            beginnerid = str(s5[counter2]).strip("()").strip(",").strip("''")
+            biginnerid = str(s5[counter2]).strip("()").strip(",").strip("''")  # Fixed spelling
         else:
-            self.ids.record3.text = str (s[counter2]).strip("()").strip(",").strip("''")
-            self.ids.lll1.text = str (s3[counter2]).strip("()").strip(",").strip("''")
-            self.ids.lll2.text = str (s2[counter2]).strip("()").strip(",").strip("''")
-            self.ids.lll3.text = str (s1[counter2]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str(s[counter2]).strip("()").strip(",").strip("''")
+            self.ids.lll1.text = str(s3[counter2]).strip("()").strip(",").strip("''")
+            self.ids.lll2.text = str(s2[counter2]).strip("()").strip(",").strip("''")
+            self.ids.lll3.text = str(s1[counter2]).strip("()").strip(",").strip("''")
             theoption1 = str(s4[counter2]).strip("()").strip(",").strip("''")
-            beginnerid = str(s5[counter2]).strip("()").strip(",").strip("''")
+            biginnerid = str(s5[counter2]).strip("()").strip(",").strip("''")  # Fixed spelling
 
     def stophere(self):
         f = open("stop2.txt","w")
-        f.write(beginnerid)
+        f.write(biginnerid)
         f.close()
     
 
@@ -5108,7 +5129,7 @@ class PhrasalVerb(Screen):
      
     
     def on_pre_enter(self, *args):
-        global p,p1,p2,p3,p4,id
+        global p,p1,p2,p3,p4,ph_id_list
         global c1
         global theoption1phrasal
         global theid
@@ -5215,28 +5236,38 @@ class PhrasalVerb1(Screen):
      
     
     def on_pre_enter(self, *args):
-        global pp,pp1,pp2,pp3,pp4,pid
-        global c1
-        global theoption1phrasal
-        global theid
+        global pp, pp1, pp2, pp3, pp4, pid
+        global c1, theoption1phrasal, theid1  # FIX 1: Aligned tracking variable name to 'theid1'
+        
+        # FIX 2: DELAYED RETRY SAFEGUARD
+        # If the background database pre-load thread is still loading rows into memory, 
+        # pause for 0.2 seconds and retry cleanly. Bypasses all index crashes on Android!
+        if not pp or len(pp) == 0:
+            Clock.schedule_once(lambda dt: self.on_pre_enter(), 0.2)
+            return
+
         c1 = c1 + 1
-        if c1 == 3399:
-            c1 = 1
-        myinteger = random.randint(1,2)
+        
+        # FIX 3: DYNAMIC DATABASE LENGTH BOUNDS CHECK
+        # Replaces hardcoded 3399 limits so your quiz scales automatically if rows change!
+        if c1 >= len(pp):
+            c1 = 0
+            
+        myinteger = random.randint(1, 2)
         if myinteger == 1:
-            self.ids.record3.text = str (pp[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab1.text = str (pp1[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab2.text = str (pp2[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab3.text = str (pp3[c1]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str(pp[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab1.text = str(pp1[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab2.text = str(pp2[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab3.text = str(pp3[c1]).strip("()").strip(",").strip("''")
             theoption1phrasal = str(pp4[c1]).strip("()").strip(",").strip("''")
-            theid = str(pid[c1]).strip("()").strip(",").strip("''")
+            theid1 = str(pid[c1]).strip("()").strip(",").strip("''")
         else:
-            self.ids.record3.text = str (pp[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab1.text = str (pp3[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab2.text = str (pp2[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab3.text = str (pp1[c1]).strip("()").strip(",").strip("''")
-            theoption1phrasal = str(p4[c1]).strip("()").strip(",").strip("''")
-            theid = str(pid[c1]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str(pp[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab1.text = str(pp3[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab2.text = str(pp2[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab3.text = str(pp1[c1]).strip("()").strip(",").strip("''")
+            theoption1phrasal = str(pp4[c1]).strip("()").strip(",").strip("''") # FIX 4: Corrected 'p4' typo to 'pp4'
+            theid1 = str(pid[c1]).strip("()").strip(",").strip("''")
         
         
         
@@ -5321,28 +5352,38 @@ class PhrasalVerb2(Screen):
      
     
     def on_pre_enter(self, *args):
-        global ph,ph1,ph2,ph3,ph4,phid
-        global c1
-        global theoption1phrasal
-        global theid
+        global ph, ph1, ph2, ph3, ph4, phid
+        global c1, theoption1phrasal, theid1  # FIX 1: Aligned tracking variable name to 'theid1'
+        
+        # FIX 2: DELAYED RETRY SAFEGUARD
+        # If the background database pre-load thread is still loading rows into memory, 
+        # pause for 0.2 seconds and retry cleanly. Bypasses all index crashes on Android!
+        if not ph or len(ph) == 0:
+            Clock.schedule_once(lambda dt: self.on_pre_enter(), 0.2)
+            return
+
         c1 = c1 + 1
-        if c1 == 3399:
-            c1 = 1
-        myinteger = random.randint(1,2)
+        
+        # FIX 3: DYNAMIC DATABASE LENGTH BOUNDS CHECK
+        # Replaces hardcoded 3399 limits so your quiz scales automatically if rows change!
+        if c1 >= len(ph):
+            c1 = 0
+            
+        myinteger = random.randint(1, 2)
         if myinteger == 1:
-            self.ids.record3.text = str (ph[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab1.text = str (ph1[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab2.text = str (ph2[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab3.text = str (ph3[c1]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str(ph[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab1.text = str(ph1[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab2.text = str(ph2[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab3.text = str(ph3[c1]).strip("()").strip(",").strip("''")
             theoption1phrasal = str(ph4[c1]).strip("()").strip(",").strip("''")
-            theid = str(phid[c1]).strip("()").strip(",").strip("''")
+            theid1 = str(phid[c1]).strip("()").strip(",").strip("''")
         else:
-            self.ids.record3.text = str (ph[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab1.text = str (ph3[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab2.text = str (ph2[c1]).strip("()").strip(",").strip("''")
-            self.ids.lab3.text = str (ph1[c1]).strip("()").strip(",").strip("''")
+            self.ids.record3.text = str(ph[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab1.text = str(ph3[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab2.text = str(ph2[c1]).strip("()").strip(",").strip("''")
+            self.ids.lab3.text = str(ph1[c1]).strip("()").strip(",").strip("''")
             theoption1phrasal = str(ph4[c1]).strip("()").strip(",").strip("''")
-            theid = str(phid[c1]).strip("()").strip(",").strip("''")
+            theid1 = str(phid[c1]).strip("()").strip(",").strip("''")
         
         
         
@@ -26257,21 +26298,34 @@ class Punctuation1(Screen):
      
     
     def on_pre_enter(self, *args):
-        global punc,punc1,punc2,punc3,punc4,punc_id,r
-        global punc_counter
-        global the_punctuation
-        global the_rightanswer
-        global the_punctuation_id
+        global punc, punc1, punc2, punc3, punc4, punc_id, r
+        global punc_counter, the_punctuation, the_rightanswer, the_punctuation_id
+        
+        # FIX 1: DELAYED RETRY SAFEGUARD
+        # If the background database pre-load thread is still loading rows into memory, 
+        # pause for 0.2 seconds and retry cleanly. Bypasses all index crashes on Android!
+        if not punc or len(punc) == 0:
+            Clock.schedule_once(lambda dt: self.on_pre_enter(), 0.2)
+            return
+
         punc_counter = punc_counter + 1
-        if punc_counter == 224:
+        
+        # FIX 2: DYNAMIC DATABASE LENGTH BOUNDS CHECK
+        # Replaces hardcoded 224 limits so your quiz scales automatically if rows change!
+        if punc_counter >= len(punc):
             punc_counter = 0
-        self.ids.punc1.text = str (punc[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc2.text = str (punc1[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc3.text = str (punc2[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc4.text = str (punc3[punc_counter]).strip("()").strip(",").strip("''")
+            
+        # UI Updates and Global Assignments
+        self.ids.punc1.text = str(punc[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc2.text = str(punc1[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc3.text = str(punc2[punc_counter]).strip("()").strip(",").strip("''")
+        self.ids.punc4.text = str(punc3[punc_counter]).strip("()").strip(",").strip("''")
+        
         the_punctuation = str(punc4[punc_counter]).strip("()").strip(",").strip("''")
         the_punctuation_id = str(punc_id[punc_counter]).strip("()").strip(",").strip("''")
-        the_righanswer= str(r[punc_counter]).strip("()").strip(",").strip("''")
+        
+        # FIX 3: Corrected the 'the_righanswer' spelling mistake to match your global declaration
+        the_rightanswer = str(r[punc_counter]).strip("()").strip(",").strip("''")
     def writepunc(self):
         
         f = open("punctuation.txt","w")
@@ -26353,21 +26407,32 @@ class Punctuation2(Screen):
      
     
     def on_pre_enter(self, *args):
-        global ppunc,ppunc1,ppunc2,ppunc3,ppunc4,punc_idl,pr
-        global punc_counter
-        global the_punctuation
-        global the_punctuation_id
-        global the_rightanswer
-        punc_counter = punc_counter + 1
-        if punc_counter == 224:
-            punc_counter = 0
-        self.ids.punc1.text = str (ppunc[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc2.text = str (ppunc1[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc3.text = str (ppunc2[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc4.text = str (ppunc3[punc_counter]).strip("()").strip(",").strip("''")
-        the_punctuation = str(ppunc4[punc_counter]).strip("()").strip(",").strip("''")
-        the_punctuation_id = str(punc_idl[punc_counter]).strip("()").strip(",").strip("''")
-        the_rightanswer = str(pr[punc_counter]).strip("()").strip(",").strip("''")
+        global ppunc, ppunc1, ppunc2, ppunc3, ppunc4, punc_idl, pr
+        global punc_counter2, the_punctuation, the_punctuation_id, the_rightanswer  # FIX 1: Using punc_counter2
+        
+        # FIX 2: DELAYED RETRY SAFEGUARD
+        # If the background database pre-load thread is still loading rows into memory, 
+        # pause for 0.2 seconds and retry cleanly. Bypasses all index crashes on Android!
+        if not ppunc or len(ppunc) == 0:
+            Clock.schedule_once(lambda dt: self.on_pre_enter(), 0.2)
+            return
+
+        punc_counter2 = punc_counter2 + 1
+        
+        # FIX 3: DYNAMIC DATABASE LENGTH BOUNDS CHECK
+        # Replaces hardcoded 224 limits so your quiz scales automatically if rows change!
+        if punc_counter2 >= len(ppunc):
+            punc_counter2 = 0
+            
+        # UI Updates and Global Assignments from your pre-loaded lists
+        self.ids.punc1.text = str(ppunc[punc_counter2]).strip("()").strip(",").strip("''")
+        self.ids.punc2.text = str(ppunc1[punc_counter2]).strip("()").strip(",").strip("''")
+        self.ids.punc3.text = str(ppunc2[punc_counter2]).strip("()").strip(",").strip("''")
+        self.ids.punc4.text = str(ppunc3[punc_counter2]).strip("()").strip(",").strip("''")
+        
+        the_punctuation = str(ppunc4[punc_counter2]).strip("()").strip(",").strip("''")
+        the_punctuation_id = str(punc_idl[punc_counter2]).strip("()").strip(",").strip("''")
+        the_rightanswer = str(pr[punc_counter2]).strip("()").strip(",").strip("''")
      
     def writepunc(self):
         
@@ -26447,21 +26512,33 @@ class Punctuation3(Screen):
      
     
     def on_pre_enter(self, *args):
-        global pc,pc1,pc2,pc3,pc4,pc_id,pcr
-        global punc_counter
-        global the_punctuation
-        global the_punctuation_id
-        global the_rightanswer
-        punc_counter = punc_counter + 1
+        global pc, pc1, pc2, pc3, pc4, pc_id, pcr
+        global punc_counter3, the_punctuation, the_punctuation_id, the_rightanswer  # FIX 1: Using punc_counter3
         
-        if punc_counter == 224:
-            punc_counter = 0
-        self.ids.punc1.text = str (pc[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc2.text = str (pc1[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc3.text = str (pc2[punc_counter]).strip("()").strip(",").strip("''")
-        self.ids.punc4.text = str (pc3[punc_counter]).strip("()").strip(",").strip("''")
-        the_punctuation = str(pc4[punc_counter]).strip("()").strip(",").strip("''")
-        the_rightanswer = str(pcr[punc_counter]).strip("()").strip(",").strip("''")
+        # FIX 2: DELAYED RETRY SAFEGUARD
+        # If the background database pre-load thread is still loading rows into memory, 
+        # pause for 0.2 seconds and retry cleanly. Bypasses all index crashes on Android!
+        if not pc or len(pc) == 0:
+            Clock.schedule_once(lambda dt: self.on_pre_enter(), 0.2)
+            return
+
+        punc_counter3 = punc_counter3 + 1
+        
+        # FIX 3: DYNAMIC DATABASE LENGTH BOUNDS CHECK
+        # Replaces hardcoded 224 limits so your quiz scales automatically if rows change!
+        if punc_counter3 >= len(pc):
+            punc_counter3 = 0
+            
+        # UI Updates and Global Assignments from your pre-loaded lists
+        self.ids.punc1.text = str(pc[punc_counter3]).strip("()").strip(",").strip("''")
+        self.ids.punc2.text = str(pc1[punc_counter3]).strip("()").strip(",").strip("''")
+        self.ids.punc3.text = str(pc2[punc_counter3]).strip("()").strip(",").strip("''")
+        self.ids.punc4.text = str(pc3[punc_counter3]).strip("()").strip(",").strip("''")
+        
+        the_punctuation = str(pc4[punc_counter3]).strip("()").strip(",").strip("''")
+        # FIX 4: Added the missing punctuation ID assignment line
+        the_punctuation_id = str(pc_id[punc_counter3]).strip("()").strip(",").strip("''")
+        the_rightanswer = str(pcr[punc_counter3]).strip("()").strip(",").strip("''")
     def writepunc(self):
         
         f = open("punctuation.txt","w")
@@ -27754,9 +27831,9 @@ class SplashScreen(Screen):
         global vo, vo1, vo2, vo3, vo4, vo_id  # Added vocabulary globals
         global vvo,vvo1,vvo2,vvo3,vvo4,vvo_id
         global o,o1,o2,o3,o4,o_id
-        global results,result1,result2,result3,result4,result5
+        global result,result1,result2,result3,result4,result5
         global s,s1,s2,s3,s4,s5
-        global p,p1,p2,p3,p4,id
+        global p,p1,p2,p3,p4,ph_id_list
         global pp,pp1,pp2,pp3,pp4,pid
         global ph,ph1,ph2,ph3,ph4,phid
         global punc,punc1,punc2,punc3,punc4,punc_id,r
@@ -27766,11 +27843,9 @@ class SplashScreen(Screen):
         
         db_name = "book.db"
         try:
-            if platform == 'android':
-                from android.storage import app_storage_path # type: ignore
-                db_path = os.path.join(app_storage_path(), db_name)
-            else:
-                db_path = db_name
+            db_path = os.path.join(App.get_running_app().internal_sandbox_dir, db_name)
+
+            
 
             thread_conn = sqlite3.connect(db_path)
             
@@ -27789,8 +27864,8 @@ class SplashScreen(Screen):
             result2 = thread_conn.execute("select wronganswer2 from advanced").fetchall()
             result3 = thread_conn.execute("select rightanswer from advanced").fetchall()
             result4 = thread_conn.execute("select option from advanced").fetchall()
-            result5 = thread_conn.execute("select num from advancede").fetchall()
-            thread_conn.close()
+            result5 = thread_conn.execute("select num from advanced").fetchall()
+            
             print("All database tables pre-loaded successfully in background thread!")
             
             # load beginner table
@@ -27807,7 +27882,7 @@ class SplashScreen(Screen):
             p2 = thread_conn.execute("select wronganswer1 from phrasalverbs").fetchall()
             p3 = thread_conn.execute("select rightanswer from phrasalverbs").fetchall()
             p4 = thread_conn.execute("select option from phrasalverbs").fetchall()
-            id = thread_conn.execute("select num from phrasalverbs").fetchall()
+            ph_id_list = thread_conn.execute("select num from phrasalverbs").fetchall()
             
             #load phrasalverbs table
             pp = thread_conn.execute("select questions from phrasalverbs").fetchall()
@@ -27853,32 +27928,32 @@ class SplashScreen(Screen):
             
             
             #load punctuation table
-            punc= thread_conn.execute("select one from punctuation")
-            punc1= thread_conn.execute("select two from punctuation")
-            punc2= thread_conn.execute("select three from punctuation")
-            punc3= thread_conn.execute("select four from punctuation")
-            punc4= thread_conn.execute("select option from punctuation")
-            punc_id= thread_conn.execute("select num from punctuation")
-            r= thread_conn.execute("select rightanswer from punctuation")
+            punc= thread_conn.execute("select one from punctuation").fetchall()
+            punc1= thread_conn.execute("select two from punctuation").fetchall()
+            punc2= thread_conn.execute("select three from punctuation").fetchall()
+            punc3= thread_conn.execute("select four from punctuation").fetchall()
+            punc4= thread_conn.execute("select option from punctuation").fetchall()
+            punc_id= thread_conn.execute("select num from punctuation").fetchall()
+            r= thread_conn.execute("select rightanswer from punctuation").fetchall()
             
             #load punctuation table
-            ppunc= thread_conn.execute("select one from punctuation")
-            ppunc1= thread_conn.execute("select two from punctuation")
-            ppunc2= thread_conn.execute("select three from punctuation")
-            ppunc3= thread_conn.execute("select four from punctuation")
-            ppunc4= thread_conn.execute("select option from punctuation")
-            punc_idl= thread_conn.execute("select num from punctuation")
-            pr= thread_conn.execute("select rightanswer from punctuation")
+            ppunc= thread_conn.execute("select one from punctuation").fetchall()
+            ppunc1= thread_conn.execute("select two from punctuation").fetchall()
+            ppunc2= thread_conn.execute("select three from punctuation").fetchall()
+            ppunc3= thread_conn.execute("select four from punctuation").fetchall()
+            ppunc4= thread_conn.execute("select option from punctuation").fetchall()
+            punc_idl= thread_conn.execute("select num from punctuation").fetchall()
+            pr= thread_conn.execute("select rightanswer from punctuation").fetchall()
             
             #load punctuation table
-            pc= thread_conn.execute("select one from punctuation")
-            pc1= thread_conn.execute("select two from punctuation")
-            pc2= thread_conn.execute("select three from punctuation")
-            pc3= thread_conn.execute("select four from punctuation")
-            p4= thread_conn.execute("select option from punctuation")
-            pc_id= thread_conn.execute("select num from punctuation")
-            pcr= thread_conn.execute("select rightanswer from punctuation")
-            
+            pc= thread_conn.execute("select one from punctuation").fetchall()
+            pc1= thread_conn.execute("select two from punctuation").fetchall()
+            pc2= thread_conn.execute("select three from punctuation").fetchall()
+            pc3= thread_conn.execute("select four from punctuation").fetchall()
+            pc4= thread_conn.execute("select option from punctuation").fetchall()
+            pc_id= thread_conn.execute("select num from punctuation").fetchall()
+            pcr= thread_conn.execute("select rightanswer from punctuation").fetchall()
+            thread_conn.close()
         except Exception as e:
             print(f"Database thread load exception error: {e}")
 
@@ -28107,12 +28182,12 @@ class CrashCourseApp(App):
     cursor = None
 
     def on_start(self):
+            
         """ App-level initialization database check routine block """
         db_name = "book.db"
         
         # Resolve the restriction-free, private internal storage sandbox path
         if platform == 'android':
-            
             base_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
         else:
             base_dir = self.user_data_dir
@@ -28123,16 +28198,21 @@ class CrashCourseApp(App):
         writable_db_path = os.path.join(base_dir, db_name)
         bundled_db_path = os.path.join(os.getcwd(), db_name)
         
+        # FIX: Added a check for empty/0-byte files to prevent corrupt database lockups
+        database_needs_copy = not os.path.exists(writable_db_path) or (os.path.exists(writable_db_path) and os.path.getsize(writable_db_path) == 0)
+        
         # Copy the pre-populated database safely into internal storage
-        if not os.path.exists(writable_db_path) and os.path.exists(bundled_db_path):
+        if database_needs_copy and os.path.exists(bundled_db_path):
             try:
                 shutil.copy(bundled_db_path, writable_db_path)
+                print("Database cleanly copied into secure internal storage.")
             except Exception as e:
                 print(f"Failed to copy bundled database asset: {e}")
                 
         # Main thread database connection
         self.conn = sqlite3.connect(writable_db_path)
         self.cursor = self.conn.cursor()
+
     def build(self):
         # 1. Open the database ONCE right here on startup
         self.conn = get_android_safe_connection()
