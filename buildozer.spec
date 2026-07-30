@@ -20,7 +20,7 @@ source.dir = .
 source.include_exts = png,jpg,kv,atlas,txt,py,mp3,mp4,ttf,icon,db
 
 # (list) List of inclusions using pattern matching
-source.include_patterns = answers/*, data/*
+source.include_patterns = assets/*, my_audio_album/*, phrasal verbs/* answers/*, data/*, punctuation/*, arabic/*
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
