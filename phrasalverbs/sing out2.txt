@@ -1,0 +1,8 @@
+Sign out
+Meaning: Close a computer program that requires a name and password
+المعني: اغلق يرنامج كمبيوتر الذي يتطلب اسم وكلمة مرور
+Example: I SIGNED OUT and then shut the computer down.
+مثال: سجلت خروجي ثم أغلقت الحاسب
+Notes:
+Intransitive فعل غير متعدي(لا يأخذ مفعول به مباشر)
+International English

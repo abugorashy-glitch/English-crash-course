@@ -1,0 +1,8 @@
+Sign into
+Meaning: Open a particular computer program that requires a name and password
+المعني: افتح برنامج كمبيوتر محدد الذي يتطلب اسم وكلمة مرور
+Example: I SIGN INTO MSN Messenger automatically when I boot up.
+مثال: أنا أسجل دخولي الي ام اس مسنجر تلقائيا عندما أشغل الحاسب
+Notes:
+Inseparable لا يفصل(المفعول به يوضع بعد حرف الجر)
+International English

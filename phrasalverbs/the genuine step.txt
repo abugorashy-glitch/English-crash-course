@@ -1,0 +1,104 @@
+name: Build Android APK
+
+on: [push, pull_request] # Triggers the workflow on push or pull request events
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+        steps:
+
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.9' # Or your desired Python version
+        - name: Install Cython
+          run: pip install cython
+        - name: Install dependencies
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y libtinfo6
+            sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
+    
+
+
+
+
+
+
+        - name: Install Android SDK Command-line Tools
+          run: |
+           sdk_root="/usr/local/lib/android/sdk" # Or your desired SDK path
+           mkdir -p "$sdk_root"
+           curl -o cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-8591278_latest.zip
+           unzip cmdline-tools.zip -d "$sdk_root/cmdline-tools"
+           mv "$sdk_root/cmdline-tools/cmdline-tools" "$sdk_root/cmdline-tools/latest"
+           echo "ANDROID_HOME=$sdk_root" >> $GITHUB_ENV
+           echo "$sdk_root/cmdline-tools/latest/bin" >> $GITHUB_PATH 
+        - name: Install AIDL dependencies
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y build-essential libstdc++6 aidl
+            # below command is related to the above command
+        - name: Install specific Android SDK build-tools (if needed)
+          run: sdkmanager "build-tools;34.0.0" # Replace with your required version
+
+          #below command is related to the above command
+        - name: Set JAVA_HOME
+          run: export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64 # Adjust path as needed
+
+          #below cmmand is related to above command
+        - name: Install libstdc++6
+          run: |
+           sudo apt-get update
+           sudo apt-get install -y libstdc++6
+         
+
+        - name: Install Buildozer and dependencies
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libssl-dev build-essential patch libffi-dev python3-dev python3-pip
+                            pip install buildozer
+        - name: Create build-tools directory
+          run: mkdir -p /home/runner/android-sdk/build-tools
+        - name: Install Android Build Tools
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y wget unzip
+            wget https://dl.google.com/android/repository/build-tools_r33.0.2-linux.zip
+            unzip build-tools_r33.0.2-linux.zip -d $HOME/android-sdk/build-tools
+            export PATH=$HOME/android-sdk/build-tools/33.0.0:$PATH
+
+        - name: Set up working directory
+          run: cd ${{ github.workspace }}
+
+
+
+
+        
+
+
+        
+
+
+
+
+
+
+        - name: Generate buildozer.spec if missing
+          run: |
+           if [ ! -f buildozer.spec ]; then
+           buildozer init
+           fi
+          
+          
+        - name: Build with Buildozer
+          run: buildozer android debug
+         
+          
+
+        - name: Upload APK artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: my-app-apk
+            path: app/build/outputs/apk/debug/app-debug.apk

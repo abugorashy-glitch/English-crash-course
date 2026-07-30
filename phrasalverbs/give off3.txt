@@ -1,0 +1,8 @@
+Give off
+Meaning: Follow or take one of 2 or more branches (instructions, in machine code) in writing a computer program (using system software for a programming language)
+المعني: تابع أو خذ واحد من اثنين أو فروع أكثر( تعليمات‘ في رمز الة) في كتابة برنامج كمبيوتر( مستخدما برنامج نظام للغة برمجة)
+Example: A particular application of a processing code can be GIVEN OFF.
+مثال: برنامج خاص لمعالجة الشفرة يمكن أن يتابع
+Notes:
+Intransitive فعل غير متعدي(لا يأخذ مفعول به مباشر)
+American English

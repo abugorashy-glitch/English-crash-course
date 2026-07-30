@@ -1,0 +1,8 @@
+Clock on
+Meaning: Record the time of arriving at work on a machine
+المعني: سجل وفت الوصول الي العمل في الة
+Example: We have to CLOCK ON when we arrive.
+مثال: يجب أن نسجل وصولنا عندما نصل
+Notes:
+Intransitiveفعل غير متعدي(لا يأخذ مفعول به مباشر)
+British English

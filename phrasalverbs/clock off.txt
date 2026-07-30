@@ -1,0 +1,8 @@
+Clock off
+Meaning: Record the time you leave work
+المعني: سجل الوقت الذي تغادر فيه العمل
+Example: WE CLOCKED OFF at five o'clock and went for a drink.
+مثال: سجلنا خروجنا عند الخامسة تماما وذهبنا لتناول مشروب
+Notes:
+Intransitiveفعل غير متعدي(لا يأخذ مفعول به مباشر)
+British English

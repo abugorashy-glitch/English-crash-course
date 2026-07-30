@@ -1,0 +1,9 @@
+Round up
+Meaning: Increase a number to the nearest whole number or number ending in zero
+المعني: زيد عدد الي عدد كامل قريب أو عدد ينتهي بصفر
+Example: It was $129.95, so I ROUNDED it UP to $130.
+مثال: كان 129.95 جنيه لذا زدته الي 130 جنيه
+Notes:
+Separable [optional] قابل للفصل(اختياري)(المفعول به يوضع بين الفعل وحرف الجر)
+
+International English

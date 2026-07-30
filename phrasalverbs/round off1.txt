@@ -1,0 +1,9 @@
+Round off
+Meaning: Change a number, up or down, to the nearest whole number or number ending in zero
+المعني: غير عدد‘ أعلي أو اسفل‘ الي عدد كلي أقرب أو عدد ينتهي بصفر
+Example: It came to £131, but they ROUNDED it OFF to £130.
+مثال: وصل الي 131 جنيه لكن خفضوه الي 130 جنيه
+Notes:
+Separable [optional] قابل للفصل(اختياري)(المفعول به يوضع بين الفعل وحرف الجر)
+
+International English

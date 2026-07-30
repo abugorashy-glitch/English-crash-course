@@ -1,0 +1,9 @@
+Count up
+Meaning: Add
+المعني: اضف
+Example: COUNT UP the number of tickets sold, please.
+مثال: من فضلك اضف عدد التذاكر التي بيعت
+Notes:
+Separable [optional]قابل للفصل(اختياري)(المفعول به يوضع بين الفعل وحرف الجر)
+
+International English

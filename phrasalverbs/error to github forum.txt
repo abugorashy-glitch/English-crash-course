@@ -1,0 +1,2 @@
+# sdkmanager path "/home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager" does not exist, sdkmanager is notinstalled
+Error: Process completed with exit code 1.
