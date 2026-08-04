@@ -1,0 +1,7 @@
+Correct Answer: B       Bill and Al had a boat. I was there when Bill and Al’s boat sank.
+Explanation: if two people possess the same item, put the ’s after the second name only.
+
+
+الإجابة الصحيحة:B Bill and Al had a boat. I was there when Bill and Al’s boat sank.
+الشرح: إذا كان شخصان يمتلكان نفس الشيء، ضع
+ بعد الاسم الثاني فقط S

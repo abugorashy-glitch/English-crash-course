@@ -1,0 +1,7 @@
+Correct Answer: C       On our last trip we stayed in Nashville, Tennessee; Atlanta, Georgia; and Orlando, Florida.
+Explanation: use semicolons to separate units of a series when one or more of the units contain commas.
+
+
+الإجابة الصحيحة:C On our last trip we stayed in Nashville, Tennessee; Atlanta, Georgia; and Orlando, Florida.
+الشرح: استخدم الفواصل المنقوطة للفصل بين وحدات السلسلة
+ عندما تحتوي وحدة أو أكثر من الوحدات على فواصل.

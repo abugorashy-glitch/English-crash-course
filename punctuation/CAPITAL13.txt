@@ -1,0 +1,7 @@
+Correct Answer: C       Don’t you love looking at the sky when Venus appears next to the moon?
+Explanation: capitalize other planets, but do not capitalize “the moon.”
+
+
+الإجابة الصحيحة:C Don’t you love looking at the sky when Venus appears next to the moon?
+الشرح: اكتب الكواكب الأخرى بأحرف كبيرة
+، ولكن لا تكتب ”القمر“ بأحرف كبيرة.

@@ -1,0 +1,7 @@
+Correct Answer: D       Adriana is dreading the spring quarter because she has to take an organic chemistry course and Physics 105.
+Explanation: Do not capitalize the four seasons. Capitalize the names of specific course titles (“Physics 105”), but not general academic subjects (“organic chemistry”).
+
+
+الإجابة الصحيحة:D Adriana is dreading the spring quarter because she has to take an organic chemistry course and Physics 105.
+الشرح: لا تكتب الفصول الأربعة بأحرف كبيرة. استخدم الأحرف
+ physics 105 الكبيرة في أسماء عناوين المقررات الدراسية المحددة 

@@ -1,0 +1,5 @@
+Correct Answer: A       We found twenty-five spelling mistakes.
+Explanation: hyphenate all compound numbers from twenty-one through ninety-nine.
+الإجابة الصحيحة: We found twenty-five spelling mistakes.
+الشرح ضع علامة:
+  الوصل بين جميع الأعداد المركبة من واحد وعشرين إلى تسعة وتسعين

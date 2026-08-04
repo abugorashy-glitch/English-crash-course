@@ -1,0 +1,5 @@
+During vs while
+The main difference between during and while is that we use while + clause (subject + verb), and we use during + noun. Compare:
+
+I fell asleep during the film.
+I fell asleep while I was watching the film.

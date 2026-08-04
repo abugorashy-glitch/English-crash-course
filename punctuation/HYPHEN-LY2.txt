@@ -1,0 +1,6 @@
+Correct Answer: A       Girardo is a highly recommended candidate for the position.
+Explanation: do not hyphenate an ly adverb and an adjective.
+
+
+الإجابة الصحيحة: Girardo is a highly recommended candidate for the position.
+الشرح: لا تصل بين الظرف والصفة.

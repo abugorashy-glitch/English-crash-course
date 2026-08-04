@@ -1,0 +1,6 @@
+Correct Answer: B       Did you say, “Wanda won first prize in the contest”?
+Explanation: put the question mark outside quotation marks when the quotation is a statement within a question.
+
+الإجابة الصحيحة:B Did you say, “Wanda won first prize in the contest”?
+ الشرح: ضع علامة
+  الاستفهام خارج علامات التنصيص عندما يكون الاقتباس عبارة داخل سؤال

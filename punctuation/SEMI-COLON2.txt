@@ -1,0 +1,6 @@
+Correct Answer: C       We ask, therefore, that you keep this matter confidential.
+Explanation: do not use semicolons where commas can do the job.
+
+
+الإجابة الصحيحة:C We ask, therefore, that you keep this matter confidential.
+الشرح: لا تستخدم الفواصل المنقوطة حيث يمكن للفواصل أن تقوم بالمهمة.

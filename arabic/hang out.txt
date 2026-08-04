@@ -1,0 +1,79 @@
+A: "Hi. My name is Robert."
+    مرحبا.اسمي روبرت
+------------------------------------------------------
+B: "I'm John. It's nice to meet you."
+    أنا جون.من اللطيف مقابلتك
+------------------------------------------------------
+A: "Do you know what this professor is like?"
+    هل تعرف كيف هذا الاستاذ؟
+------------------------------------------------------
+B: "I have no idea. This is my first year."
+    ليس لدي فكرة.هذه سنتي الاولى
+------------------------------------------------------
+A: "You a freshman? Me too. Where are you from?"
+    أنت طالب جديد؟أنا أيضا.من أين أنت؟
+------------------------------------------------------
+B: "I'm from San Francisco."
+    أنا من سان فرانسيسكو
+------------------------------------------------------
+A: "I've been there a few times. It's a great city."
+    لقد ذهبت الي هناك عدة مرات.انها مدينة رائعة
+------------------------------------------------------
+B: "Where are you from?"
+    من أين أنت؟
+------------------------------------------------------
+A: "I grew up in this area all my life."
+    لقد ترعرعت في هذه المنطقة كل حياتي
+------------------------------------------------------
+B: "So you know where all the fun places to hang out right?"
+    اذن أنت تعرف أين كل الاماكن الممتعة لتتسكع مباشرة؟
+------------------------------------------------------
+A: "Yeah. The best place is over by the water. They have a lot of clubs and bars."
+    نعم.أفضل مكان هو هناك بجانب الماء.عندهم الكثير من النادي والحانات
+------------------------------------------------------
+B: "I drove by that area before. I didn't know it was a college hang-out."
+    لقد مررت بالسيارة علي تلك المنطقة قبل ذلك.لم أعرف أنها منطقة كلية للتسكع
+------------------------------------------------------
+A: "It gets pretty wild over there sometimes. You should go."
+    هي تصبح عنيفة جدا هناك بعض الاحيان.يجب أن تذهب
+------------------------------------------------------
+B: "Sounds like a good idea. Do you know what you are majoring in yet?"
+    يبدو أنها قكرة جيدة.هل تعرف ما تتخصص فيه بعد
+------------------------------------------------------
+A: "Not yet. I'm leaning towards business, but that's only if I can't get into computer science. How about you?"
+    ليس بعد.أنا أميل نحو التجارة‘لكن ذلك فقط لو أستطيع أن أدخل الي علوم الكمبيوتر.ماذا عنك؟
+------------------------------------------------------
+B: "I want to go to med school, so I'll probably end up majoring in biology."
+    أنا أريد أن أذهب الي كلية الطب‘لذا من المحتمل أن أنتهي في التخصص في علم الاحياء
+------------------------------------------------------
+A: "That's cool."
+    هذا ممتاز
+------------------------------------------------------
+B: "Is the weather this bad all the time in the fall?"
+    هل الطقس ذلك السيء كل الوقت في الخريف؟
+------------------------------------------------------
+A: "Yap. This is a typical autumn. It gets worse though. At least it's not raining that much."
+    نعم.هذا خريف مثالي.أنه يصبح أسوأ مع ذلك.علي الاقل هي لا تمطر كثيرا
+------------------------------------------------------   
+B: "That sucks."
+   هذا مؤسف
+------------------------------------------------------
+A: "You'll get used to it. In the meantime, you'll have to watch a lot of movies. Seems like the only thing to do with the bad weather."
+    أنت سوف تتعود عليه.في هذه الاثناء‘أنت يجب أن تشاهد الكثير من الافلام
+-----------------------------------------------------
+B: "Too expensive. Can you believe how much movies cost these days?"
+    مكلف جدا.هل يمكن أن تصدق كم الافلام تكلف هذه الايام
+------------------------------------------------------
+A: "Yeah. It's crazy. It's like 9 bucks a movie. I remember when it was half that."
+    نعم.هذا جنون.انه مثل 9 دولارات للفيلم.أنا أتذكر عندما كان نصف ذلك
+B: "Unless it's a date, I'm not going to pay that much to watch a movie."
+    اذا لم يكن موعد‘سوف لن أدفع ذلك الكثير لأشاهد فيلم
+------------------------------------------------------
+A: "That makes sense."
+    هذا مفهوم
+------------------------------------------------------
+B: "Oh. The professor is coming. I'll talk to you later."
+    أوه.المدرس قادم.سوف أتكلم معك لاحقا
+------------------------------------------------------
+A: "Aright."
+    تمام

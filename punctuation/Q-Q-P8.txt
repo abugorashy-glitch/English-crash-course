@@ -1,0 +1,8 @@
+Correct Answer: B       We didn’t want to go (because of the weather).
+Explanation: if material in parentheses is not a complete sentence, 
+it should be part of the previous sentence.
+
+
+الإجابة الصحيحة:B We didn’t want to go (because of the weather).
+الشرح: إذا كانت المادة الموجودة بين قوسين
+ ليست جملة كاملة، فيجب أن تكون جزءًا من الجملة السابقة

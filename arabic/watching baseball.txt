@@ -1,0 +1,41 @@
+A: "What sport do you like the most?"
+    أي رياضة تحبها الاكثر؟
+------------------------------------------------------
+B: "I like baseball the best."
+    أحب البيسبول أفضل شيء
+------------------------------------------------------
+A: "Me too. Did you play when you were a kid?"
+    أنا أيضا.هل لعبت عندما كنت طفل؟
+------------------------------------------------------
+B: "Yeah. I played until I graduated from high school."
+    نعم.لعبت حتي تخرجت من المدرسة الثانوية
+------------------------------------------------------
+A: "What position did you play?"
+    ما المركز الذي لعبته؟
+------------------------------------------------------
+B: "I think I tried every position, but the last few years, I played third."
+    أعتقد أني جربت كل مركز‘لكن السنوات القليلة الاخيرة لعبت الثالث
+------------------------------------------------------
+A: "I hate third base. It's scary when the ball is coming at you so fast."
+    أنا أكره المركز الثالث.انه مخيف عندما تأتي اليك الكرة بسرعة جدا
+------------------------------------------------------
+B: "It was scary at first, but after awhile, I got used to it. If you have fast reflexes, then it's not really a problem. What position did you play?"
+    لقد كانت مخيفة في البداية‘ولكن بعد فترة أنا تعودت عليها.اذا عندك ردود فعل سريعة‘اذن هي ليست مشكلة حقا.ما المركز الذي لعبته؟
+------------------------------------------------------
+A: "I played outfield. I hated the infield because I never figured out all the bounces."
+    أنا لعبت في منطقة الدفاع.أنا كرهت منطقة الوسط لأني لم أفهم أبدا المرتدات
+------------------------------------------------------
+B: "I wish I could play again, but there isn't much opportunities around here."
+    أتمني لو يمكنني أن ألعب مرة أخري‘لكن ليست هناك فرص كثيرة بالقرب من هنا
+------------------------------------------------------
+A: "I'm on a softball league. It's not fast pitch, but it's still fun. You wanna join our group?"
+    أنا في اتحاد السوفتبول.انه ليس ملعب سريع‘لكنه مازال ممتع.أنت تريد أن تنضم الي مجموعتنا
+------------------------------------------------------
+B: "When do you guys play?"
+    متي تلعبوا ياشباب؟
+------------------------------------------------------
+A: "We play either Tuesdays or Thursdays."
+    نحن نلعب اما يوم الثلاثاء أو يوم الخميس
+------------------------------------------------------
+B: "Sounds pretty fun. I'll come out and join you next time."
+    يبدو ممتع جدا.سوف أتي وأنضم اليكم المرة القادمة

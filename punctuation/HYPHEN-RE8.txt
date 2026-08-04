@@ -1,0 +1,11 @@
+Correct Answer: B       Please re-sign the documents you signed yesterday.
+Explanation: use a hyphen with the prefix re when re means
+ “again,” and omitting the hyphen would cause confusion with a
+ similar word that has a different meaning.
+
+
+الإجابة الصحيحة:B Please re-sign the documents you signed yesterday.
+  RE الشرح: استخدم همزة الوصل مع البادئة 
+  بمعني مرة اخري ’RE‘ عندما تكون
+  وحذف علامة الوصل قد يسبب التباساً مع كلمة.
+  مشابهة لها معنى مختلف

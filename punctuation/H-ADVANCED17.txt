@@ -1,0 +1,6 @@
+Correct Answer: C       The trousers are three-fourths of an inch too long.
+Explanation: hyphenate all spelled-out fractions.
+
+
+الإجابة الصحيحة:C The trousers are three-fourths of an inch too long.
+الشرح: قم بوصل جميع الكسور المنطوقة.

@@ -1,0 +1,6 @@
+Correct Answer: A       The orchestra, excluding the violin section, was not up to par.
+Explanation: do not use semicolons where commas can do the job.
+
+
+الإجابة الصحيحة:A The orchestra, excluding the violin section, was not up to par.
+الشرح: لا تستخدم الفواصل المنقوطة حيث يمكن للفواصل أن تؤدي المهمة.

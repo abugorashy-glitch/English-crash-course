@@ -1,0 +1,7 @@
+Correct Answer: B       He said, “Can you sing the national anthem?”
+Explanation: use a question mark inside quotation marks when the quotation is a question.
+
+
+لإجابة الصحيحة:B He said, “Can you sing the national anthem?”
+الشرح:
+ استخدم علامة استفهام داخل علامات التنصيص عندما يكون الاقتباس سؤالاً

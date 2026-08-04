@@ -1,0 +1,6 @@
+Correct Answer: A       Next week’s lottery jackpot is expected to reach between $4 million and $5 million. OR Next week’s lottery jackpot is expected to reach between 4 million dollars and 5 million dollars.
+Explanation: do not use a dollar sign and dollars together; make it one or the other.
+
+
+الإجابة الصحيحة:A Next week’s lottery jackpot is expected to reach between $4 million and $5 million. OR Next week’s lottery jackpot is expected to reach between 4 million dollars and 5 million dollars.
+الشرح: لا تستخدم علامة الدولار والدولار معاً؛ اجعلها واحدة أو الأخرى.

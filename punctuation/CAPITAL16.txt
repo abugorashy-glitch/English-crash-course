@@ -1,0 +1,7 @@
+Correct Answer: D       I will be excited to listen to our chief executive officer, Nancy Williamson, speak today in the auditorium.
+Explanation: capitalize titles when used directly before names unless the title is followed by a comma.
+
+
+الإجابة الصحيحة:D I will be excited to listen to our chief executive officer, Nancy Williamson, speak today in the auditorium.
+الشرح: تكتب العناوين بأحرف كبيرة عند استخدامها
+ مباشرة قبل الأسماء ما لم يكن العنوان متبوعاً بفاصلة.

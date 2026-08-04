@@ -1,0 +1,7 @@
+Correct Answer: C       Butchie asked, “Will you take me to the mall?”
+Explanation: use a question mark inside quotation marks when the quotation is a question.
+
+
+الإجابة الصحيحة:C Butchie asked, “Will you take me to the mall?”
+الشرح:
+ استخدم علامة استفهام داخل علامات التنصيص عندما يكون الاقتباس سؤالاً.

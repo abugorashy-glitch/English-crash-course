@@ -1,0 +1,7 @@
+Correct Answer: B       The class is studying the ’40s and ’50s.
+Explanation: use apostrophes to abbreviate decades (’40s and ’50s), not single quotation marks.
+
+
+الإجابة الصحيحة:B The class is studying the ’40s and ’50s.
+الشرح: استخدم الفواصل
+ العليا لاختصار العقود (الأربعينيات والخمسينيات)، وليس علامات اقتباس مفردة.

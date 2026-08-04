@@ -1,0 +1,5 @@
+Correct Answer: B       My grandfather was born in the nineteen twenties.
+Explanation: Do not capitalize written-out years or decades. No hyphens are necessary here.
+
+الإجابة الصحيحة:   My grandfather was born B in the nineteen twenties.
+الشرح: لا تكتب السنوات أو العقود المكتوبة بأحرف كبيرة. لا داعي للوصل هنا.

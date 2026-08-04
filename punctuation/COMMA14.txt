@@ -1,0 +1,6 @@
+Correct Answer: D       Patrick’s name was on the guest list, wasn’t it?
+Explanation: use a comma to separate a statement from a question.
+
+
+الإجابة الصحيحة:D Patrick’s name was on the guest list, wasn’t it?
+الشرح: استخدم فاصلة لفصل العبارة عن السؤال.

@@ -1,0 +1,7 @@
+Correct Answer: D       I have been to San Francisco, California; Reno, Nevada; and Seattle, Washington.
+Explanation: use the semicolon to separate units of a series when one or more of the units contain commas.
+
+
+الإجابة الصحيحة:D I have been to San Francisco, California; Reno, Nevada; and Seattle, Washington.
+الشرح: استخدم الفاصلة المنقوطة للفصل بين وحدات السلسلة
+ عندما تحتوي وحدة أو أكثر من الوحدات على فواصل.

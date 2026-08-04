@@ -1,0 +1,9 @@
+Correct Answer: A       Ella decided to reconsider the unusual offer.
+Explanation: do not use a hyphen with the prefix re- unless omitting the
+ hyphen would cause confusion with another word.
+
+
+الإجابة الصحيحة: Ella decided to reconsider the unusual offer.
+ reالشرح: لا تستخدم علامة الوصل مع البادئة
+  إلا إذا كان حذف علامة الوصل سيتسبب في حدوث 
+  التباس مع كلمة أخري.

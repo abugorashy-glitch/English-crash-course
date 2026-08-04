@@ -1,0 +1,5 @@
+Correct Answer: B       What is your teacher’s name?
+Explanation: with a direct question, a question mark replaces a period at the end of a sentence.
+
+الإجابة الصحيحة:B What is your teacher’s name?
+الشرح: مع السؤال المباشر، تحل علامة الاستفهام محل النقطة في نهاية الجملة.

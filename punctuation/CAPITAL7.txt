@@ -1,0 +1,7 @@
+Correct Answer: A       Have you read All the King's Men?
+Explanation: with composition titles, do not capitalize a, an, or the unless it is first or last in the title.
+
+
+الإجابة الصحيحة:A Have you read All the King's Men?
+ a-an-the الشرح: في العناوين التركيبية لا تكتب
+ مالم تكون اولي أو اخر في العنوان

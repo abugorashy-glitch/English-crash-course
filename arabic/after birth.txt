@@ -1,0 +1,35 @@
+A: "Did your wife give birth yet?"
+    هل وضعت زوجتك بعد؟
+------------------------------------------------------
+B: "Yeah. She's a healthy beautiful girl."
+    نعم.هي لديها بنت جميلة صحيحة
+------------------------------------------------------
+A: "Congratulations. How is your wife doing?"
+    مبروك.كيف حال زوجتك؟
+------------------------------------------------------
+B: "She is tired, but getting a lot of rest now."
+    هي متعبة‘لكن هي تحصل علي الكثير من الراحة الان
+------------------------------------------------------
+A: "That's good to hear."
+    جيد أن أسمع هذا
+------------------------------------------------------
+B: "I'm just glad there were no complications."
+    أنا فقط سعيد أنه لم تكن هناك تعقيدات
+------------------------------------------------------
+A: "If your wife and baby are both happy, what more can you ask for?"
+    اذا زوجتك وطفلتك الاثنين سعدا‘مالذي يمكن أن تطلبه أكثر من ذلك؟
+------------------------------------------------------
+B: "It's been a week, and I haven't slept that well."
+    أنه كان اسبوع‘وانا لم أنم بذلك الشكل الجيد
+------------------------------------------------------
+A: "That's normal for anyone with a newborn."
+    هذا طبيعي لأي شخص مع قدوم طفل جديد
+------------------------------------------------------
+B: "Yeah, but it's so hard. I have to work, and then go home and take care of my wife and the baby. I'm going to get sick at this rate."
+    نعم.لكنه صعب جدا.يجب أن أعمل‘ثم أذهب للمنزل وأعتني بزوجتي وطفلتي.أنا سوف أمرض بهذا المعدل
+------------------------------------------------------
+A: "You'll get used to it. After everything stabilizes, you can regain your health."
+    أنت سوف تعود عليه.بعد أن يستقر كل شيء‘يمكنك أن تستعيد صحتك
+------------------------------------------------------
+B: "That's true. I should make sure my wife and baby stay healthy during this time."
+    هذا صحيح.يجب أن أتأكد أن زوجتي وطفلتي يبقوا بصحة خلال هذا الوقت

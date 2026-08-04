@@ -1,0 +1,7 @@
+Correct Answer: A       Mikey is already three years old.
+Explanation: do not use hyphens when the period of time (years, months, weeks, days) is written plural.
+
+
+الإجابة الصحيحة:A Mikey is already three years old.
+ الشرح: لا تستخدم الواصلات عند كتابة الفترة الزمنية بصيغ الجمع
+  (سنوات، شهور، أسابيع، أيام) .

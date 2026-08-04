@@ -1,0 +1,59 @@
+A: "Hey John, did you register for classes yet?"
+    مرحبا جون‘هل سجلت للدروس لحد بعد؟
+------------------------------------------------------
+B: "I register this Friday."
+    أنا أسجل هذه الجمعة
+------------------------------------------------------
+A: "What classes do you plan on taking?"
+    ماهي الدروس التي تخطط أن تأخذها؟
+------------------------------------------------------
+B: "I really want to take the communication class, but I don't know if it will be available."
+    أنا حقا أريد أن أخذ درس اتصالات‘لكن لا أعرف هل سيكون متوفر
+------------------------------------------------------
+A: "Is that class really that popular?"
+    هل ذلك الدرس ذلك المشهور؟
+------------------------------------------------------
+B: "Yeah. I tried to get in last semester, but it was full by the time I registered."
+    نعم.حاولت دخول الفصل الدراسي الاخير
+------------------------------------------------------
+A: "What other classes are you going to take?"
+    ماهي الدروس الاخرى التي ستأخذها؟
+-----------------------------------------------------
+B: "I still need to take English 201, but I really don't like writing."
+    لازلت أحتاج أن أخذ لغة انجليزية 201‘لكني حقا لا أحب الكتابة
+------------------------------------------------------
+A: "I took that class already. There is a lot of writing, but it's not that bad."
+    أنا أخذت ذلك الدرس بالفعل.يوجد الكثير من الكتابة‘لكنه ليس بذلك السيء
+------------------------------------------------------
+B: "Oh really? Who was the instructor? There are like 4 different instructors to choose from."
+    أوه حقا؟من كان المعلم؟هناك مثل 4 معلمين لتختار منهم
+------------------------------------------------------
+A: "I had Professor Mahoney."
+    أنا اخترت الاستاذ ماهوني
+------------------------------------------------------
+B: "Is he an easy grader?"
+     هل هو مبوب سهل؟
+-----------------------------------------------------
+A: "I'm not sure if he is or not, but I thought he was definitely fair."
+    أنا غير متأكد اذا كان هو كذلك أم لا‘ لكني اعتقد أنه كان بالتأكيد مناسب
+------------------------------------------------------
+B: "Do you mind if I ask you what you got?"
+    هل تمانع لو أسألك ماذا أحرزت؟
+------------------------------------------------------
+A: "Not at all. I got a 3.8."
+    لا علي الاطلاق.أحرزت 3.8
+------------------------------------------------------
+B: "Well, what did you get in English 101 last year?"
+    حسنا‘ماذا أحرزت في اللغة الانجليزية 101 السنة الماضية؟
+------------------------------------------------------
+A: "I got a 4.0 in that class."
+    حصلت علي 4.0 في ذلك الدرس
+------------------------------------------------------
+B: "Well, I can't compare to you. I got a 3.1 in English 101. That means if you got a lower grade in English 201, it must be harder."
+    حسنا‘لا أستطيع أن أقارن فسي معك.أنا خصلت علي 3.1 في اللغة الانجليزية 101.هذا يعني اذا أحرزت درجة أقل في اللغة الانجليزية 201‘ لابد أنه أصعب
+-----------------------------------------------------
+A: "It's not what it appears. I actually tried harder in the 101 class. If I put as much effort into the 201 class, I would have received the same grade."
+    هذا ليس مايبدو.أنا في الحقيقة حاولت بقوة في الدرس 101.اذا أنا وضعت نفس قدر الجهد‘لكنت حظيت بنفس الدرجة
+------------------------------------------------------
+B: "Oh. That helps. Thanks." 
+أوه.هذا يساعد؟شكرا

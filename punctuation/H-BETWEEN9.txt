@@ -1,0 +1,8 @@
+Correct Answer: A       Delino will be twenty years old on Tuesday.
+Explanation: do not use hyphens when the period of time (years, months, weeks, days, etc.) is written plural.
+
+
+الإجابة الصحيحة:A Delino will be twenty years old on Tuesday.
+
+الشرح: لا تستخدم الواصلات عندما تُكتب الفترة الزمنية
+ (سنوات، شهور، أسابيع، أيام، إلخ) بصيغة الجمع.

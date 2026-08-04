@@ -1,0 +1,5 @@
+where to find the youtube stream link?
+PYTHON KIVY HOW TO USE KIVY-WEBVIEW IN KV FILE
+self.manager.current='second screen'
+
+PYTHON KIVY HOW TO ADD THE VALUE OF TEXT FILE TO LIST

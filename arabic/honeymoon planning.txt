@@ -1,0 +1,53 @@
+A: "Hey honey, where do you think we should go for our honeymoon?"
+    ياعسل‘أين تعتقدي يجب أن نذهب لشهر عسلنا
+------------------------------------------------------
+B: "I always wanted to go to Mexico. Cancun is supposed to be a great place."
+    أنا دائما أردت أن أذهب الي مكسيكو.كانكن يفترض أن تكون مكان رائع
+------------------------------------------------------
+A: "That sounds pretty good. But how about the Caribbean?"
+    هذا يبدو جيد جدا.لكن ماذا عن منطقة البحر الكاريبي؟
+------------------------------------------------------
+B: "That doesn't sound too bad either. Do you know how much it would cost for airfare and hotel?"
+   هذا لا يبدو سيء جدا أيضا.هل تعرف كم ستكلف لأجرة الطائرة والفندق؟
+------------------------------------------------------
+A: "If we go for 5 nights, then the total for airfare and hotel would be about one thousand seven hundred dollars. How much would it be to go to Cancun?"
+    لو نذهب لخمس ليالي‘اذن الاجمالي لأجرة الطائرة والفندق سيكون حوالي الف وسبعمائة دولار.كم ستكلف لو نذهب الي كانكن
+------------------------------------------------------
+B: "I found a deal for only twelve hundred dollars."
+    وجدت صفقة لي الف ومائتين دولار فقط
+------------------------------------------------------
+A: "That's a lot cheaper. Let's go to Cancun then."
+    هذا رخيص كثير.دعنا نذهب الي كانكن اذن
+------------------------------------------------------
+B: "Really? That sounds great. I picked up a lot of brochures. Let's take a look at all the things we can do."
+    حقا؟هذا يبدو رائع.لقد أخذت الكثير من الكتيبات.دعنا نلقي نظرة علي كل الاشياء التي نستطيع أن نعملها
+------------------------------------------------------
+A: "That reminds me. I better make sure my passport is not expired."
+    هذا يذكرني.من الافضل أن أتأكد أن جواز سفري غير منتهي الصلاحية
+------------------------------------------------------
+B: "You better make sure. If it's expired, you have to hurry and renew it."
+    من الافضل أن تتأكد.اذا هو منتهي الصلاحية‘يجب أن تسرع وتجدده
+------------------------------------------------------
+A: "We still have a couple of months. No rush."
+    لا زال لدينا بضعة شهور.لا داعي للعجلة
+------------------------------------------------------
+B: "What do you want to do in Cancun?"
+    ماذا تريدي أن تعملي في كانكن؟
+------------------------------------------------------
+A: "I want to golf at least one day. And I also want to try surfing. Do they have instructors on the beach?"
+    أريد أن ألعب الغولف يوم واحد علي الاقل.وأنا أيضا أريد أن أجرب ركوب الموج.هل عندهم مدربيين في الشاطيء؟
+-----------------------------------------------------
+B: "Yeah. This brochure shows lesson and equipment rentals and everything. That shouldn't be a problem. I want to try snorkeling."
+    نعم.هذا الكتيب يظهر أجور الاجهزة والدرس وكل شيء.هذا ينبغي أن لا يكون مشكلة.أريد أن أجرب الغوص
+------------------------------------------------------
+A: "Do we need to buy snorkeling gear?"
+    هل نحتاج أن نشتري عدة غوص؟
+------------------------------------------------------
+B: "No. We can just rent it there."
+    لا.نستطيع فقط أن نستأجرها هناك
+------------------------------------------------------
+A: "Sounds like we're going to have fun."
+    يبدو أننا سوف نستمتع
+------------------------------------------------------
+B: "I know. I can't wait. It's going to be so fun."
+    أعرف.لا أستطيع أن أنتظر.سوف يكون ممتع جدا

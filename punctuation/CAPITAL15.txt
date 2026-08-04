@@ -1,0 +1,7 @@
+Correct Answer: D       My grandmother lives on Fillmore Street.
+Explanation: do not capitalize relatives’ family names with possessive nouns or pronouns (“My”).
+
+
+الإجابة الصحيحة:D My grandmother lives on Fillmore Street.
+الشرح: لا تكتب أسماء عائلة الأقارب بأحرف كبيرة مع
+ أسماء الملكية أو الضمائر (”My“).

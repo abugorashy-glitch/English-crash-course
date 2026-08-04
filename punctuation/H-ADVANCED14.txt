@@ -1,0 +1,6 @@
+Correct Answer: C       The sculpture is one hundred three inches high and forty-six inches long.
+Explanation: the numbers twenty-one through ninety-nine are hyphenated.
+
+
+الإجابة الصحيحة:C The sculpture is one hundred three inches high and forty-six inches long.
+الشرح: قم بوصل الأعداد من واحد وعشرين إلى تسعة وتسعين .

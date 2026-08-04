@@ -1,0 +1,7 @@
+Correct Answer: A       The summer camp was designed for gymnasts sixteen years old to eighteen years old.
+Explanation: avoid hyphens if the period of time is written plural (“years old”).
+
+
+الإجابة الصحيحة:A The summer camp was designed for gymnasts sixteen years old to eighteen years old.
+الشرح: تجنّب الواصلات إذا كانت الفترة
+ الزمنية مكتوبة بصيغة الجمع (”سنوات“).

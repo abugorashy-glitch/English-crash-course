@@ -1,0 +1,6 @@
+Correct Answer: A       Mikey is a happy three-year-old boy.
+Explanation: if the age comes before a noun and modifies that noun, use hyphens.
+
+
+الإجابة الصحيحة:A Mikey is a happy three-year-old boy.
+الشرح: إذا كان العمر يأتي قبل الاسم ويعدل هذا الاسم، استخدم الوصل.

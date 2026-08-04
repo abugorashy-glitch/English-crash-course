@@ -1,0 +1,6 @@
+Correct Answer: A       She left Albany, New York, on January 18 of that year.
+Explanation: use a comma to separate the city from the state and another after the state
+
+
+الإجابة الصحيحة:A She left Albany, New York, on January 18 of that year.
+الشرح: استخدم فاصلة لفصل المدينة عن الولاية وأخرى بعد الولاية

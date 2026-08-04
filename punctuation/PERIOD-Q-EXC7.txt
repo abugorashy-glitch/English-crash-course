@@ -1,0 +1,7 @@
+Correct Answer: A       I wonder what your favorite color is.
+Explanation: avoid the common trap of using question marks with indirect questions, which are statements that contain questions.
+
+
+الإجابة الصحيحة:A I wonder what your favorite color is.
+الشرح: تجنب الفخ الشائع في استخدام علامات
+الاستفهام مع الأسئلة غير المباشرة، وهي العبارات التي تحتوي على أسئلة

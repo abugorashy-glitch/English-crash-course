@@ -1,0 +1,47 @@
+A: "Sarah. You look terrible. What's wrong?"
+    تبدين متضايقة. ما الامر ياسارة؟
+------------------------------------------------------
+B: "My grandmother just passed away."
+    جدتي ماتت من قبل فترة قصيرة
+------------------------------------------------------
+A: "I'm so sorry to hear that. When did this happen?"
+    أنا أسفة جدا أن أسمع ذلك.متي حدث هذا؟
+------------------------------------------------------
+B: "A couple of days ago. I just go back from the funeral."
+    بضعة أيام مضت.أنا رجعت للتو من الجنازة
+------------------------------------------------------
+A: "Is there anything I can do?"
+    هل هناك أي شيء يمكن أن أفعله؟
+------------------------------------------------------
+B: "No... not really. The sad thing is that I wasn't there when she died. I really wanted to be there one last time."
+    لا...لايوجد شيء حقا.الشيء المحزن هو أني لم أكن هناك عندما ماتت.أنا حقا أردت أن أكون هناك للمرة الاخيرة
+------------------------------------------------------
+A: "I'm sure she knew you loved her. Did she pass away in the hospital?"
+    أنا متأكدة أنها عرفت أنك تحبيها.هل هي رحلت في المستشفى؟
+------------------------------------------------------
+B: "Yeah. She died in her sleep."
+    نعم.لقد ماتت في نومها
+------------------------------------------------------
+A: "I'm sorry she's gone."
+    أنا أسفة أنها رحلت
+------------------------------------------------------
+B: "At least she didn't suffer."
+    علي الاقل أنها لم تعاني
+------------------------------------------------------
+A: "I think your grandmother would want you to think of all the good times you spent together."
+    أعتقد أن جدتك تريدك أن تفكري في كل الاوقات الجيدة التي قضيتموها مع بعض
+------------------------------------------------------
+B: "I know. But I miss her."
+    أعرف.لكني أفتقدها
+------------------------------------------------------
+A: "When my grandmother passed away, I frequently visited her in the cemetery. I always talked to her. Even though she wasn't there, I somehow knew she heard what I said."
+    عندما رحلت جدتي‘أنا كثيرا زرتها في المقبرة.أنا دائما تحدثت اليها.رغم أنها لم تكن هناك‘أنا بطريقة ما عرفت أنها سمعت ما قلت
+------------------------------------------------------
+B: "Yeah? That's what I was thinking too. Thanks."
+    نعم؟هذا الذي كنت أعتقده أيضا.شكرا
+------------------------------------------------------
+A: "It looks like you haven't eaten anything all day. We should get you something to eat."
+    يبدو أنك لم تأكلي أي شيء طوال اليوم
+------------------------------------------------------
+B: "You're right... I should eat something. Let's go."
+    أنتي محقة...يجب أن أكل شيء.دعنا نذهب

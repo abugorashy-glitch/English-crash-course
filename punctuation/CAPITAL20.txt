@@ -1,0 +1,7 @@
+Correct Answer: B       I told Uncle Walter to turn north when he reached Broadway, but he got lost because he’s not from Madison County.
+Explanation: Do not capitalize points of the compass. Capitalize manmade territories (“Madison County”).
+
+
+الإجابة الصحيحة:B I told Uncle Walter to turn north when he reached Broadway, but he got lost because he’s not from Madison County.
+الشرح: لا تكتب نقاط البوصلة بأحرف كبيرة
+. اكتب بأحرف كبيرة المناطق التي من صنع الإنسان (”Madison County“).

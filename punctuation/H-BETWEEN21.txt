@@ -1,0 +1,7 @@
+Correct Answer: B       If we split the bill evenly, we each owe thirty-four dollars.
+Explanation: hyphenate all two-word numbers from twenty-one to ninety-nine.
+
+
+الإجابة الصحيحة:B If we split the bill evenly, we each owe thirty-four dollars.
+الشرح: قم بوصل جميع الأعداد المكونة
+ من كلمتين من واحد وعشرين إلى تسعة وتسعين.

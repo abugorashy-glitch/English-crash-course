@@ -1,0 +1,6 @@
+Correct Answer: B       The summer camp was designed for gymnasts 16-18 years old.
+Explanation: hyphenate spans of time when using numbers.
+
+
+الإجابة الصحيحة:B The summer camp was designed for gymnasts 16-18 years old.
+الشرح: قم بوصل الفترات الزمنية عند استخدام الأرقام.

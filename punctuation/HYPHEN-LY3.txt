@@ -1,0 +1,7 @@
+Correct Answer: A       The nurse spent most of her time attending to the gravely ill patients in the intensive care unit.
+Explanation: do not hyphenate an ly adverb and an adjective.
+
+
+الإجابة الصحيحة:A The nurse spent most of her time attending to 
+the gravely ill patients in the intensive care unit.
+الشرح: لا تصل بين الظرف والصفة.

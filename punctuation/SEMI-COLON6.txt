@@ -1,0 +1,6 @@
+Correct Answer: C       She has three dogs: two poodles and a beagle.
+Explanation: use a colon after a complete sentence to introduce any list.
+
+
+الإجابة الصحيحة:C She has three dogs: two poodles and a beagle.
+الشرح: استخدم النقطتين بعد جملة كاملة لتقديم أي قائمة.

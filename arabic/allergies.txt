@@ -1,0 +1,41 @@
+A: "Ahhchooo!"
+    اتشوو
+------------------------------------------------------
+B: "You've been sneezing a lot lately. Are you sick or something?"
+    أنت تعطس كثير مؤخرا.هل أنت مريض أو ماشابه ذلك؟
+------------------------------------------------------
+A: "No. Every spring time around April, I'm stricken with allergies."
+    لا.كل موسم ربيع قرابة أبريل‘أنا أصاب بحساسية
+------------------------------------------------------
+B: "I never have seasonal allergies."
+    أنا أبدا ماعندي حساسية موسمية
+------------------------------------------------------
+A: "Consider yourself lucky."
+   اعتبر نفسك محظوظ
+------------------------------------------------------
+B: "What are all the symptoms?"
+    ماهي كل الاعراض؟
+------------------------------------------------------
+A: "Well, as you just saw, I sneeze a lot. Also, my nose becomes very runny, my throat sometimes itches, and my eyes start to water."
+    خسنا‘كما رأيت منذ قليل‘أنا أعطس كثيرا‘أنفي تصبح سائلة جدا‘حلقي بعض الاحيان يحكني‘وعيني تدمعان
+------------------------------------------------------
+B: "That doesn't sound good."
+    هذا لا يبدو جيدا
+------------------------------------------------------
+A: "No it's not. So you don't have any type of allergies?"
+    هذا ليس كذلك.لذا أنت ليس عندك أي نوع من الحساسية؟
+------------------------------------------------------
+B: "Well, I have a severe allergic reaction to alcohol. It runs in the family."
+    حسنا‘أنا عندي حساسية مفرطة حادة للمشروبات الكحولية.انه وراثي
+------------------------------------------------------
+A: "Everyone to some extent is allergic to alcohol."
+    أي واحد عنده حساسية ضد الكحول لحد ما
+------------------------------------------------------
+B: "I get it pretty bad. My whole face turns red, including my ears. My eyes become bloodshot, and I start to itch all over my body."
+    أنا أحصل عليها بصورة سيئة جدا.وجهي كله يصبح أحمر‘بالاضافة الي أذنيي.عيناي تصبحان ملطخة بالدماء وأبدأ بالحك في كل أنحاء جسدي
+------------------------------------------------------
+A: "That's pretty bad."
+    هذا سيء جدا
+------------------------------------------------------
+B: "But that doesn't stop me from drinking. Hahaha."
+    لكن هذا لايوقفني عن الشرب.ههاهاها

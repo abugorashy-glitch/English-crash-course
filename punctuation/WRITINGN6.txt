@@ -1,0 +1,5 @@
+Correct Answer: A       The shirt costs $50.
+Explanation: do not add the word dollars to figures preceded by a dollar sign.
+
+الإجابة الصحيحة:A The shirt costs $50.  
+الشرح: لا تضيف كلمة دولار إلى الأرقام المسبوقة بعلامة الدولار.

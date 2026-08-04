@@ -1,0 +1,46 @@
+A: "Do you drink much?"
+    هل تشرب كثيرا؟
+B: "Depending on what you consider a lot."
+    اعتمادا علي ماتعتبره كثير
+------------------------------------------------------
+A: "How frequently do you drink?"
+    كم مرة تشرب؟
+------------------------------------------------------
+B: "Couple times a week. How about you?"
+    عدة مرات في الاسبوع.ماذا عنك؟
+------------------------------------------------------
+A: "Only when I go out. I'm not a big drinker."
+    فقط عندما أخرج.أنا لست شارب كبير
+------------------------------------------------------
+B: "How much can you drink?"
+    كم يمكنك أن تشرب
+------------------------------------------------------
+A: "I usually only have 2 beers."
+    أنا عادة أتناول 2 من البيرة فقط
+------------------------------------------------------
+B: "You're a light weight."
+    أنت ذا وزن خفيف
+------------------------------------------------------
+A: "How much can you drink?"
+    كم يمكنك أن تشرب؟
+-----------------------------------------------------
+B: "I'm usually drinking all night long. At least 10 drinks."
+    أنا عادة أشرب طول الليل.مالايقل عن 10 مشروبات
+------------------------------------------------------
+A: "Don't you spend a lot of money then?"
+    ألست أنت تنفق الكثير من المال اذن؟
+------------------------------------------------------
+B: "No. We usually go to places that have specials. Dante's over on the Ave has $5.00 pitchers on Mondays. So for ten, fifteen bucks, I can get a lot of drinks."
+    لا.نحن عادة نذهب الي أماكن التي عندها عروض خاصة.دانتي علي طول  في ال اي في يي لديها خمسة دولارات للزجاجة في أيام الاثنين.حتي الان عشرة‘خمسة عشر قرشا.يمكن أن أحصل علي الكثير من المشروبات
+------------------------------------------------------
+A: "That's true."
+     هذا صحيح
+------------------------------------------------------
+B: "If you don't like beer, have you tried mixed drinks? Some of them are pretty good."
+     اذا لا تحب البيرة‘هل جربت المشروبات المختلطة.معظمهم جيدون
+------------------------------------------------------
+A: "I like beer, it's just that I get a headache when I drink more than 3."
+B: "You just have to build up a tolerance. I used to be like that. But your body gets used to it."
+A: "It'll take awhile, but I'm working on it."
+B: "Hey let's go out tomorrow night. The Ram Bar and Grill is having a special on pitchers."
+A: "Aright."

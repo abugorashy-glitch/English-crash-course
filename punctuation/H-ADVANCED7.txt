@@ -1,0 +1,6 @@
+Correct Answer: B       There are more than thirty-five stamps in my collection.
+Explanation: hyphenate the numbers twenty-one to ninety-nine.
+
+
+الإجابة الصحيحة:B There are more than thirty-five stamps in my collection.
+الشرح: قم بوصل الأعداد من واحد وعشرين إلى تسعة وتسعين.

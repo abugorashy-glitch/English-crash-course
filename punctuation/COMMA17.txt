@@ -1,0 +1,7 @@
+Correct Answer: C       Jackson’s white cat was born on June 28, 2013, at his farm.
+Explanation: use a comma to separate the day of the month from the year, and remember to put one after the year, also.
+
+
+الإجابة الصحيحة:C Jackson’s white cat was born on June 28, 2013, at his farm.
+الشرح: استخدم فاصلة لفصل يوم الشهر عن السنة
+ وتذكر أن تضع فاصلة بعد السنة أيضاً.

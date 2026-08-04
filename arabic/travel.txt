@@ -1,0 +1,59 @@
+How many places have you traveled to?
+كم عدد الاماكن التي سافرت اليها؟
+------------------------------------------------------
+I’ve visited all the provinces throughout my country.
+لقد زرت كل المقاطعات في كل أنحاء بلدي
+------------------------------------------------------
+Who do you usually go with?
+مع من تذهب عادة؟
+------------------------------------------------------
+I often go with my family, sometimes with my best friends.
+أنا أذهب عادة مع عائلتي‘بعض الاحيان مع أفضل أصدقائي
+------------------------------------------------------
+What’s your favorite tourist attraction?
+ماهي منطقة الجذب السياحي المفضلة بالنسبة لك؟
+------------------------------------------------------
+That would be Venice city in Italy. I love riding the gondola along the canals while watching Italian people live their daily lives.
+تلك ستكون مدينة فينس‘ايطاليا.أحب ركوب زورق فينيسيا بمحاذاة القناة أثناء مشاهدة الشعب الايطالي يعيش حياتهم اليومية
+------------------------------------------------------
+Have you ever been abroad?
+هل سبق وأن ذهبت للخارج؟
+------------------------------------------------------
+Yes, I have. I came to Italy last year for a business trip.
+نعم سبق وأن ذهبت.أتيت الي ايطاليا السنة الماضية في رحلة عمل
+------------------------------------------------------
+What language do you use when traveling?
+ماهي اللغة التي تستخدمها عندما تسافر؟
+------------------------------------------------------
+English, but sometimes I have to use body language since not all people are good at English.
+اللغة الانجليزية‘لكن بعض الاحيان يجب علي أن أستخدم لغة الجسد لأن ليس كل الناس جيدين في اللغة الانجليزية
+------------------------------------------------------
+What do you usually do during your trip?
+ماذا تفعل عادة أثناء رحلتك؟
+------------------------------------------------------
+I often go sightseeing, take pictures, mingle with the local people and sample the local cuisine.
+أنا في الغالب أذهب لمشاهدة معالم المدينة وأخذ الصور وأختلط مع الناس المحليين وأتذوق الطعام المحلي
+------------------------------------------------------
+What do you do to prepare for your trip?
+ماذا تفعل لتجهز لرحلتك؟
+------------------------------------------------------
+Before the trip, I search for information about the location, weather, famous tourist attractions, transportation, local cuisine and prices on the internet.
+قبل الرحلة‘أبحث عن معلومات حول الموقع والطقس ومناطق الجذب المشهورة ووسائل المواصلات والطعام المحلي والاسعار علي الانترنت
+------------------------------------------------------
+What do you usually bring when you travel?
+ماذا تحضر عادة عندما تسافر؟
+------------------------------------------------------
+I usually pack my suitcase with some necessary items such as clothes, medicine, food, a map, and a camera.
+أنا عادة أحزم حقيبتي بالاشياء الضرورية مثل الملابس والدواء والطعام والخريطة والكاميرا
+------------------------------------------------------
+Do you prefer traveling by car, train or plane?
+هل تفضل السفر بالسيارة أم بالقطار أم بالطائرة؟
+------------------------------------------------------
+I prefer planes although it can be a little expensive. Planes are much faster than any other mode of transport.
+أنا أفضل الطائرات رغم أنها يمكن أن تكون مكلفة بعض الشيء.الطائرات أكثر سرعة بكثير من أي نوع أخر من وسائل المواصلات
+------------------------------------------------------
+Do you prefer traveling alone or joining a guided tour?
+هل تفضل السفر لوحدك أم الانضمام الي جولة بواسطة الموجه؟
+------------------------------------------------------
+I love backpacking with my friends who share the same interests as me.
+أنا أحب التجول مع أصدقائي اللذين يشاركوني نفس الاهتمام

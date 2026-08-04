@@ -1,0 +1,32 @@
+A: "Did you already take the history exam?"
+    هل أنت بالفعل امتحنت امتحان التاريخ؟
+------------------------------------------------------
+B: "Yeah. It was hard. When do you take it?"
+    نعم.لقد كان صعب.متى تمتحنه أنت؟
+------------------------------------------------------
+A: "I take it tomorrow morning. There is so much material, that I don't know what to emphasize on. What types of questions did you get?"
+   أنا أمتحنه غدا الصباح.هناك الكثير من المواد التي لا أعرف ما  الذي أركز عليه.ماهو نوع السؤال الذي تحصل عليه؟
+------------------------------------------------------
+B: "Mostly on the civil war. You should also study the impact Martin Luther King Jr. had on American society."
+    في الغالب حول الحرب المدنية.أنت يجب أن تدرس الاثر الذي أحدثه مارتن لوثر كينغ علي المجتمع الامريكي
+------------------------------------------------------
+A: "How about Abraham Lincoln? Did you get any questions about him?"
+    ماذا عن ابراهام لينكون؟ هل حصلت علي أي أسئلة حوله؟
+------------------------------------------------------
+B: "I only had 1 question about him. But you might get more. I don't know if he will have the same exam or not."
+    لقد لقيت سؤال واحد حوله.لكن ربما تحصل علي المزيد.لا أعرف ما اذا كان سأحصل علي نفس الامتحان أو لا
+------------------------------------------------------
+A: "Hopefully he will use the same exam, cause I'm going to spend most of my time studying the civil war. It is a huge section and that is what he lectured the most on in class."
+    هلي أمل أنه سيستخدم نفس الامتحان‘السبب أني سوف أقضي معظم وقتي أدرس الحرب المدنية.انه قسم ضخم وهذا الذي هو حاضر عنه كثيرا في الفصل
+------------------------------------------------------
+B: "If you can't study everything, then that is probably the best way to go."
+    اذا لا تستطيع أن تدرس كل شيء‘اذن هذا من المحتمل أفضل طريقة لتمر بها
+------------------------------------------------------
+A: "Aright. Thanks for the info. I gotta go to the library now."
+    تمام.شكرا علي المعلومات.أنا يجب أن أذهب الي المكتبة الان
+------------------------------------------------------
+B: "Good luck."
+    حظا طيبا
+------------------------------------------------------
+A: "Thanks. See ya."
+    شكرا.أراك ياشاب  

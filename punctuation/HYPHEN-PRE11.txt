@@ -1,0 +1,6 @@
+Correct Answer: B       mid-January
+Explanation: hyphenate prefixes when they come before proper nouns.
+
+
+الإجابة الصحيحة:B mid-January
+الشرح: صل البادئة بعلامة الوصل عندما تأتي قبل أسماء الأعلام.

@@ -1,0 +1,7 @@
+Correct Answer: C       He asked if I could sing “The Star-Spangled Banner.”
+Explanation: avoid the common trap of using question marks with indirect questions, which are statements that contain questions.
+
+
+الإجابة الصحيحة: C He asked if I could sing “The Star-Spangled Banner.”
+الشرح: تجنب الفخ الشائع في استخدام علامات
+ الاستفهام مع الأسئلة غير المباشرة، وهي العبارات التي تحتوي على أسئلة

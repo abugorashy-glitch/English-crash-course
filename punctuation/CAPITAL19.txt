@@ -1,0 +1,6 @@
+Correct Answer: A       Have you ever visited New England in the fall?
+Explanation: do not capitalize the four seasons.
+
+
+الإجابة الصحيحة:A Have you ever visited New England in the fall?
+الشرح: لا تكتب الفصول الأربعة بأحرف كبيرة.

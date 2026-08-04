@@ -1,0 +1,73 @@
+A: "Hi. My name is Mark."
+    مرحبا.اسمي مارك
+------------------------------------------------------
+B: "Mark? I'm Bill. Glad to meet you."
+    مارك؟أنا بيل.مسرور لمقابلتك
+-----------------------------------------------------
+A: "Yeah. So where are you from?"
+    نعم.اذن من أين أنت؟
+------------------------------------------------------
+B: "I'm from Houston Texas."
+    أنا من هوستون تكساس
+------------------------------------------------------
+A: "Oh... I'm from Southern California."
+    اوه ...أنا من جنوب كاليفورنيا
+------------------------------------------------------
+B: "There must be a lot of cute girls over there huh?"
+    لابد أن هناك الكثير من الفتيات الجذابات هناك هاه؟
+------------------------------------------------------
+A: "Hell yeah. But most of them are hoochies."
+    نعم
+------------------------------------------------------
+B: "That sucks. So, what year are you?"
+    هذا
+------------------------------------------------------
+A: "I'm a freshman."
+    أنا طالب جديد
+------------------------------------------------------
+B: "This is my first year too."
+    هذه أول سنة لي أيضا
+A: "So what made you decide to come to California for school? I hear Austin is a good school."
+    اذن ماذا جعلك تقرر أن تأتي الي كالقورنيا من أجل المدرسة؟أنا أسمع أن أوستين مدرسة جيدة
+------------------------------------------------------
+B: "It's aright, but I think Berkeley is better."
+    انه صحيح‘لكن أعتقد أن باركيلي أفضل
+------------------------------------------------------
+A: "So is this where you wanted to come?"
+    اذن هل هذه حيث أردت أن تأتي؟
+------------------------------------------------------
+B: "To tell you the truth, I wanted to go to Stanford. I made it on the waiting list, but ninety nine percent of the people accepted to Stanford go there. Like, who wouldn't right?"
+    لأقول لك الحقيقة‘أردت أن أذهب الي ستانفورد.لقد جعلتها في لائحة الانتظار.لكن تسعة وتسعين في المئة من الناس قبلوا الي ستانفورد يذهبوا الي هناك
+------------------------------------------------------
+A: "Very true. But this is still a good school."
+    صحيح جدا.لكن هذه مازالت مدرسة جيدة
+------------------------------------------------------
+B: "I'm not complaining. I just know that I wanted to come to California. Texas is cool and all, but I wanted to experience different things."
+    أنا لا أشتكي.أنا فقط أعرف بأني أردت أن اتي الي كاليفورنيا.تكساس
+------------------------------------------------------
+A: "That's good. Do you know what you plan on majoring in?"
+    هذا جيد.هل تعرف مالذي تخطط في التخصص فيه؟
+------------------------------------------------------
+B: "I was thinking about political science, but now I'm leaning towards English literature. How about you?"
+    كنت أفكر بشأن العلوم السياسية‘لكن الان أميل تجاه الادب الانجليزي.ماذا عنك؟
+------------------------------------------------------
+A: "I plan on majoring in double E."
+    أنا أخطط في التخصص في
+------------------------------------------------------
+B: "Do you know where the Smith building is? I have to pick up the syllabus for my psychology class. I missed the first day."
+   هل تعرف أين يقع مبني سميث؟يجب أن أخذ المنهج الدراسي لدرس علم النفس
+-----------------------------------------------------
+A: "That's a great start. It's over there by the library."
+    هذه بداية جيدة.انه هناك بجوار المكتبة
+------------------------------------------------------
+B: "It was nice meeting you."
+    لقد كان اجتماع لطيف معك
+------------------------------------------------------
+A: "Yeah. We should hang out later."
+    نعم.يجب أن نتسكع لاحقا
+------------------------------------------------------
+B: "Cool. I'll see you tomorrow in class then."
+    ممتاز.ساراك غدا في الفصل في حينها
+------------------------------------------------------
+A: "Aright. Later." 
+    تمام.لاحقا

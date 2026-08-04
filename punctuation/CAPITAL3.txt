@@ -1,0 +1,6 @@
+Correct Answer: A       Mark Paxton, the vice president of the company, embezzled over one million dollars.
+Explanation: do not capitalize when the title is acting as a description following the name.
+
+
+الإجابة الصحيحة:A Mark Paxton, the vice president of the company, embezzled over one million dollars.
+الشرح: لا تكتب بأحرف كبيرة عندما يكون العنوان بمثابة وصف يلي الاسم.

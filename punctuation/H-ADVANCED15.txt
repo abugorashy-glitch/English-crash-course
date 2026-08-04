@@ -1,0 +1,9 @@
+Correct Answer: A       Ahmad is a two-games-a-day chess fanatic.
+Explanation: Hyphenate two or more words when they come before a noun they modify and act as a single idea. The noun in this case is “fanatic”; “chess” is an adjective but is not part of “two-games-a-day,” the compound adjective.
+
+
+الإجابة الصحيحة:A Ahmad is a two-games-a-day chess fanatic.
+الشرح: تُوصل الكلمتان أو أكثر عندما تأتيان قبل اسم تعدلانه وتتصرفان كفكرة واحدة
+هو صفة ولكن ليس جزأ من chess , fanatic الاسم في هذه الحالة هو
+الصفة المكبة  two-games-a-day
+  

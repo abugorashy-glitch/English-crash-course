@@ -1,0 +1,44 @@
+A: "Hi Mark."
+    مرحبا مارك
+------------------------------------------------------
+B: "Oh, hi Stacy."
+    أوه‘مرحبا ستاسي
+------------------------------------------------------
+A: "How was your summer vacation?"
+    كيف كانت عطلتك الصيفية؟
+------------------------------------------------------
+B: "I worked over the summer at a restaurant. Have to make tuition money right? What did you do?"
+    عملت خلال الصيف في مطعم.يجب أن تجمعي الرسوم الدراسية صحيح؟ماذا فعلتي؟
+------------------------------------------------------
+A: "I took summer school. I withdrew from two of my classes last year so I wanted to make them up."
+    لقد بدأت مدرسة صيفية.انسحبت من اثنين من دروسي السنة الماضية لذا أردت تعويضهم
+------------------------------------------------------
+B: "So are you officially a junior now?"
+    اذن هل أنت الان رسميا طالب في الصف قبل الاخير
+----------------------------------------------------- 
+A: "Yeah. And I have 5 credits to spare. I only needed to take 10 credits over the summer, but I took 15 because the price was the same."
+   نعم.وعندي 5 نقاط لأوفرها.أنا فقط احتجت لعشرة نقاط خلال الصيف‘لكني أخذت 15 لأن السعر كان نفس الشيء
+------------------------------------------------------ 
+B: "That makes sense. So where is Nicole?"
+    هذا منطقي.اذن أين نيكول؟
+------------------------------------------------------
+A: "She dropped out of school completely."
+    لقد دركت المدرسة بالكامل
+------------------------------------------------------
+B: "Really? Why?"
+    حقا؟لماذا؟
+------------------------------------------------------
+A: "She worked at a startup company as an intern and since the business did well, they asked her if she wanted to work full time."
+    لقد عملت في شركة جديدة كمتدرب ولأن العمل استمر بشكل جيد‘هم سألوها اذا أرادت أن تعمل دوام كامل
+------------------------------------------------------
+B: "Wow. She's so lucky. She doesn't have a degree and she already has a job."
+    رائع.هي محظوظة جدا.هي ليس عندها شهادة وهي بالفعل تملك عمل
+-----------------------------------------------------
+A: "It sounds good now, but I'm traditional. I want the degree, so I wouldn't have accepted the offer."
+    يبدو جيدا الان‘لمني تقليدي.أنا أحتاج الشهادة‘لذا ماكنت لأقبل العرض
+------------------------------------------------------
+B: "Do you know how much they are paying her?"
+    هل تعرف كم يدفعوا لها؟
+------------------------------------------------------
+A: "I don't know. But I bet it must have been a good offer, or she wouldn't have accepted it."
+    لا أعرف.لكن أراهن لابد أنه كان عرض جيد أو ماكانت ستقبله

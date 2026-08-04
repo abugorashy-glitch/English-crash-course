@@ -1,0 +1,7 @@
+Correct Answer: A       Would you reconsider your opinion?
+Explanation: do not use a hyphen with the prefix re except in special cases
+
+
+الإجابة الصحيحة:A Would you reconsider your opinion?
+ REالشرح: لا تستخدم همزة الوصل مع البادئة  
+ إلا في حالات خاصة

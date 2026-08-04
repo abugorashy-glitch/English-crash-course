@@ -1,0 +1,42 @@
+A: "Hey Mike. I forgot about registration. I'm a day late, so all the classes are mostly full. What do you think I should do?"
+    يا مايك.أنا نسيت التسجيل.أنا متأخر بيوم‘لذا كل الفصول في الغالب مليئة.ماذا تعتقد يجب علي أن أفعل؟
+------------------------------------------------------
+B: "You're screwed. You can't do anything about that. You have to hope that you get some classes that will be useful."
+    أنت أبله.لا يمكن أن تفعل أي شيء بشأن ذلك
+------------------------------------------------------
+A: "Do you think going to the registration building will help at all."
+    هل تعتقد أن الذهاب الي مبنى التسجيل سيساعد تقريبا
+------------------------------------------------------
+B: "No. They will tell you the same thing in a worse way."
+    لا.سيخبرونك نفس الشيء بطريقة أسوأ
+------------------------------------------------------
+A: "Did you register yet?"
+    هل أنت سجلت بعد؟
+------------------------------------------------------
+B: "Of course. Registering for classes is not something you want to miss."
+     بالطبع.التسجل للدرس ليس شيئا تريد أن تخطأه
+------------------------------------------------------
+A: "What classes do you think are still open?"
+    ماهي الفصول أنت تعتقد مازالت مفتوحة
+------------------------------------------------------
+B: "Well, I know psychology 101 is a big class, so there will always be seats in that class. You can also get into Sociology."
+    حسنا‘أنا أعرف أن علم النفس 101 هو أكبر فصل‘لذا سيكون هناك دائما مقاعد في ذلك الفصل.يمكن أيضا أن تدخل الي علم الاجتماع
+------------------------------------------------------
+A: "That's helpful. Thanks. But what do you think about philosophy. I wanted to take that class this semester."
+   هذا مفيد.شكرا.لكن مارأيك بعلم الفلسفة.أنا أردت أن أدخل ذلك الفصل هذا الفصل الدراسي 
+------------------------------------------------------
+B: "I took that class last year. The professor is really cool, so if you go to his office, you can have him sign a card that will let you in even if the class is full."
+    دخلت ذلك الفصل العام الماضي.الاستاذ ممتاز حقا‘لذا لو تذهب لمكتبه‘يمكنك أن تجعله يوقع بطاقة التي ستجعلك تدخل حتي لو كان الفصل مليء
+------------------------------------------------------
+A: "He does that?"
+    هل يفعل ذلك؟
+------------------------------------------------------
+B: "I guess that's because so many people drop out of that class."
+    أعتقد ذلك لأن ذلك بسبب أن العديد من الناس يتركون ذلك الفصل
+------------------------------------------------------
+A: "That makes sense. I think I'll do that. Thanks for all the help."
+    هذا منطقي.أعتقد أني سأفعل ذلك.شكرا للمساعدة
+------------------------------------------------------
+B: "No problem man."
+لا مشكلة يارجل
+------------------------------------------------------

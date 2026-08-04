@@ -1,0 +1,6 @@
+Correct Answer: A       Last summer they traveled 11,875 miles.
+Explanation: use commas every three numbers, counting from right to left, with whole numbers of more than four digits.
+
+الإجابة الصحيحة:A Last summer they traveled 11,875 miles.
+الشرح: استخدم الفواصل كل ثلاثة أرقام، مع العد من اليمين إلى اليسار،
+ مع الأعداد الصحيحة التي تتكون من أكثر من أربعة أرقام.

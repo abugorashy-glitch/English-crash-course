@@ -1,0 +1,6 @@
+Correct Answer: C       It’s a two-hour meeting, 2:30-4:30 p.m.
+Explanation: avoid spaces around hyphens.
+
+
+الإجابة الصحيحة:C It’s a two-hour meeting, 2:30-4:30 p.m.
+الشرح: تجنب المسافات حول الواصلات.

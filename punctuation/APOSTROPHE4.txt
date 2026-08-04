@@ -1,0 +1,7 @@
+Correct Answer: B       What are your children’s names?
+Explanation: add ’s to plural nouns that do not end in s.
+
+
+الإجابة الصحيحة: What are your children’s names?
+مع الاسماء الجمع S اضف 
+ S التي لا تنتهي ب

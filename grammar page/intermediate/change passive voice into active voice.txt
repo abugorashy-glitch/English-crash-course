@@ -1,0 +1,7 @@
+Changing passive voice to active voice
+To change passive voice to active voice, make the agent of the sentence into the subject, and turn the old subject into the object.
+For example, this is a passive sentence: “The article is being read by most of my class.” The agent is most of my class, and the subject is the article.
+Written in the active voice, this sentence would be “Most of my class is reading the article.” Here, the new subject is most of my class and the object is the article.
+Advantages of passive and active voice
+Active voice tends to sound more direct in tone because the subject leads the sentence. Asking “Why didn’t you answer your phone?” sounds more direct and authoritative than “Why wasn’t your phone answered by you?” It also makes the sentence sound much more clear.
+Passive voice works well in instances when the agent is unclear, or when you want to de-emphasize the agent. It’s frequently used in scientific writing to neutralize perspective. This is particularly helpful when describing a specific process, as in “The flask was filled with a transparent solution.”

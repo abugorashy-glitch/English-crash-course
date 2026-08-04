@@ -1,0 +1,6 @@
+Correct Answer: A       The president of the United States wields much power.
+Explanation: do not capitalize a civil title if it is used instead of a name.
+
+
+الإجابة الصحيحة:A The president of the United States wields much power.
+الشرح: لا تكتب اللقب المدني بأحرف كبيرة إذا تم استخدامه بدلاً من الاسم.

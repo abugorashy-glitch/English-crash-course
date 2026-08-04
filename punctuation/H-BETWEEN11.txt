@@ -1,0 +1,9 @@
+Correct Answer: C       This is seventh-grade reading material.
+Explanation: Unlike Question 10, “grade” is half of a compound 
+adjective in this sentence. hyphenate two or more words when they
+come before a noun and act as a single idea.
+
+
+الإجابة الصحيحة:C This is seventh-grade reading material.
+الشرح: على عكس السؤال 10، كلمة ”الصف“ هي نصف صفة مركبة في هذه الجملة
+ فوصل كلمتين أو أكثر عندما تأتي قبل اسم وتكون بمثابة فكرة واحدة.

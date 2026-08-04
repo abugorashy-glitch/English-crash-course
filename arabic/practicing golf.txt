@@ -1,0 +1,65 @@
+A: "Hey Jason. What are you doing this Friday?"
+    يا جاسون.ماذا ستفعل هذه الجمعة؟
+------------------------------------------------------
+B: "I'm going to go to the driving range cause I'm playing golf on Saturday."
+    أنا سوف أذهب الي نطاق القيادة لاني سوف ألعب الغولف يوم السبت
+------------------------------------------------------
+A: "You're golfing without me? What's up with that?"
+    أنت سوف تلعب الغولف بدوني؟ ماذا تفعل مع ذلك؟
+------------------------------------------------------
+B: "Sorry man, but we already have a foursome. I'm going with a couple of guys from work."
+    اسف يارجل‘لكن نحن بالفعل عندنا لعبة رباعية.أنا ذاهب مع بضعة أشخاص من العمل
+------------------------------------------------------
+A: "Where are you playing?"
+    أين سوف تلعبوا؟
+------------------------------------------------------
+B: "Washington National. Have you been there yet?"
+    واشينتون ناشونال.هل ذهبت الي هناك بعد؟
+------------------------------------------------------
+A: "I've been there a couple of times. It's a great course. You know the Huskies play there right?"
+    لقد ذهبت الي هناك مرتان.انه شوط رائع.أنت تعرف لعبة كلاب الاسكيمو هناك حقا
+------------------------------------------------------
+B: "I didn't know that. Is it a hard course?"
+    لم أعرف ذلك.هل هو شوط صعب؟
+------------------------------------------------------
+A: "It's pretty challenging. But it all depends on which tee you play from."
+    انه صعب جدا.لكن كله يعتمد على أي نقطة انطلاق تلعب منها
+------------------------------------------------------
+B: "What are you shooting these days?"
+    ماذا تنفذ هذه الايام؟
+------------------------------------------------------
+A: "I'm still hovering around a bogey game."
+    مازلت أحوم حول لعبة العربة
+------------------------------------------------------
+B: "Still better than me. I'm still trying to hit a bogey game. Do you want to hit the driving range with me?"
+    مازلت أفضل مني.أنا مازلت أحاول أن أضرب لعبة العربة.هل تريد أن تضرب نطاق القيادة معي؟
+------------------------------------------------------
+A: "I can't this Friday. I'm playing basketball with the guys that night."
+    لا أستطيع هذه الجمعة.أنا سوف ألعب باسكيت بول مع الشباب تلك الليلة
+------------------------------------------------------
+B: "At night?"
+    في الليل؟
+------------------------------------------------------
+A: "Yeah. We're playing indoors at a school gymnasium."
+    نعم.سوف نلعب في الداخل في ساحة الجمباز التابعة للمدرسة
+------------------------------------------------------
+B: "What's the occasion?"
+    ماهي المناسبة؟
+------------------------------------------------------
+A: "Just a small league I play on. Nothing special."
+    فقط اتحاد صغير يلعب.لا شيء خاص
+------------------------------------------------------
+B: "I'm too short to play basketball."
+    أنا قصير جدا لكي ألعب كرة السلة
+------------------------------------------------------
+A: "You're not that short. Plus, we have a couple of guys who are the same height as you. They're awesome players."
+    أنت ليس بذلك القصير.زائدا‘لدينا عدة أشخاص اللذين هم نفس الارتفاع مثلك.هم لاعبون رهيبون
+------------------------------------------------------
+B: "I never got into basketball. It's fun and all, but maybe I'm just not good at it."
+    لم أدخل في لعبة كرة السلة أبدا.انه ممتع وكل شيء‘لكن ربما أني ليس جيد فيها فقط
+------------------------------------------------------
+A: "It's still great exercise. I get a better workout from basketball than I do from the treadmill."
+    هي مازالت تدريب رائع.أنا أحصل علي تمرين أفضل من كرة السلة مما أحصل من جهاز المشي
+------------------------------------------------------
+B: "That's true."
+    هذا صحيح

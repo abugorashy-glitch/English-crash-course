@@ -1,0 +1,6 @@
+Correct Answer: C       The next meeting of the holiday party planning committee will be held on the 31st of October at noon.
+Explanation: noon is not capitalized; “12 noon” is redundant.
+
+
+الإجابة الصحيحة:C The next meeting of the holiday party planning committee will be held on the 31st of October at noon.
+الشرح: الظهيرة غير مكتوبة بأحرف كبيرة؛ ”12 ظهراً“ زائدة عن الحاجة.

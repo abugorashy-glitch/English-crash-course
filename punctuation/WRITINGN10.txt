@@ -1,0 +1,5 @@
+Correct Answer: A       Forty-seven people were hired last month.
+Explanation: spell out numbers when they begin sentences.
+
+الإجابة الصحيحة: A Forty-seven people were hired last month.
+الشرح: اكتب الأعداد بالحروف عند بداية الجمل.

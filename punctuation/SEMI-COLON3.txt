@@ -1,0 +1,8 @@
+Correct Answer: A       The order was requested six weeks ago; therefore, I expected the shipment to arrive by now.
+Explanation: it is preferable to use a semicolon before, and a comma after, introductory words such as however, 
+therefore, for example when they introduce a complete sentence.
+
+
+الإجابة الصحيحة:A The order was requested six weeks ago; therefore, I expected the shipment to arrive by now.
+الشرح: يُفضَّل استخدام فاصلة منقوطة قبل الكلمات الاستهلالية
+ مثل لكن، ولذلك، على سبيل المثال، عندما تُقدِّم جملة كاملة.

@@ -1,0 +1,42 @@
+<Firstwindow>:
+     
+     canvas:
+          Rectangle:
+               source:"down.jpg"
+               size: self.size
+     name: "home_screen"
+     id: home_screen
+     Button:
+          id: b1
+          text: 'Beginner'
+          color:"purple"
+          pos:130,300
+          size_hint:(0.5,0.1)
+          border:20,20,20,20
+          on_release:
+               app.root.transition.direction = 'right'
+               root.func_one
+               app.root.current="w_screen"
+               
+          
+     Button:
+          id: b2
+          text:" Inermediate"
+          color:"purple"
+          pos:130,230
+          size_hint:(0.5,0.1)
+          on_release:
+               app.root.transition.direction = 'right'
+               
+               app.root.current="menu_screen"
+               
+     Button:
+          id: b3
+          text:"Advanced"
+          color:"purple"
+          pos:130,160
+          size_hint:(0.5,0.1)
+          on_release:
+               app.root.transition.direction = 'right'
+               app.root.current="game_screen"
+               root.func_three()

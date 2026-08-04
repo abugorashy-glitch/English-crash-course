@@ -1,0 +1,7 @@
+Correct Answer: C       The kids were all five-year-olds except for Jamie, who is four years old.
+Explanation: use hyphens unless the period of time (years, months, weeks, days) is written plural.
+
+
+الإجابة الصحيحة:C The kids were all five-year-olds except for Jamie, who is four years old.
+الشرح: استخدم الواصلات ما لم تُكتب الفترة الزمنية بصيغ الجمع
+ (سنوات، شهور، أسابيع، أيام).

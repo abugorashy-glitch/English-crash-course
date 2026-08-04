@@ -1,0 +1,9 @@
+Correct Answer: B       I live in the northeastern part of the state, where the climate is colder.
+Explanation: Capitalize points of the compass only when they refer to specific geographical regions.
+ In this sentence, “northeastern” is an adjective describing “part,” not a region.
+
+
+الإجابة الصحيحة:B I live in the northeastern part of the state, where the climate is colder.
+الشرح: لا تكتب نقاط البوصلة بأحرف كبيرة إلا
+ عندما تشير إلى مناطق جغرافية محددة
+ هي صفة تصف جزء ليس منطقة northeasternفي هذه الجملة

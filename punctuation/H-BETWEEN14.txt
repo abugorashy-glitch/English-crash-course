@@ -1,0 +1,8 @@
+Correct Answer: A       The tree that blew down last night was seventy feet tall.
+Explanation: when a compound adjective (“seventy feet tall”) follows a noun, one or 
+more hyphens are usually not necessary.
+
+
+الإجابة الصحيحة:The tree that blew down last night was seventy feet tall.
+(seventy feet tall) الشرح: عندما تتبع الصفة المركبة
+ اسمًا، لا يكون من الضروري عادةً وجود واصلة أو أكثر.

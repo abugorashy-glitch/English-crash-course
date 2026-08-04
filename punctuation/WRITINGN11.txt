@@ -1,0 +1,6 @@
+Correct Answer: B       During the first hours after the plane crash, authorities reported thirty-six people missing.
+Explanation: hyphenate all two-word numbers from twenty-one to ninety-nine.
+
+الإجابة الصحيحة:B During the first hours after the plane crash, authorities reported thirty-six people missing.
+الشرح:
+ قم بوصل جميع الأعداد المكونة من كلمتين من واحد وعشرين إلى تسعة وتسعين.

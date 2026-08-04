@@ -1,0 +1,8 @@
+Correct Answer: A       Bobby grew 0.67 inches in three months.
+Explanation: with decimals, avoid confusion by putting a zero 
+in front of the decimal point. (.67 is less clear.)
+
+
+الإجابة الصحيحة:A Bobby grew 0.67 inches in three months.
+الشرح: مع الأعداد 
+ العشرية، تجنب الالتباس بوضع صفر أمام العلامة العشرية. (.67 أقل وضوحاً).

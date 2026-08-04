@@ -1,0 +1,54 @@
+A: "What are you afraid of?"
+    مالذي تخشاه؟
+------------------------------------------------------
+B: "I'm not sure. I used to be scared of a lot of things when I was young, but not anymore."
+     أنا غير متأد.كنت خائف من الكثير من الاشياء عندما كنت صغير‘ولكن ليس بعد الان
+------------------------------------------------------
+A: "Are you afraid of death?"
+    هل أنت خائف من الموت؟
+------------------------------------------------------
+B: "Only if I think about it so much. But death is inevitable, so there is no use thinking about it."
+    فقط اذا فكرت حوله كثيرا.لكن الموت لا مفر منه.لذا لا فائدة من التفكير حوله
+------------------------------------------------------
+A: "How about horror movies?"
+    ماذا عن أفلام الرعب؟
+------------------------------------------------------
+B: "No. I know they're all fake so there is nothing to be afraid of. How about you?"
+    لا.أعرف أنهم كلهم مزيفون لذا لا يوجد شيء للخوف منه.ماذا عنك؟
+------------------------------------------------------
+A: "I get scared pretty easily. I'm actually frightened of bee's."
+    أنا أشعر بالخوف بسهولة جدا.أنا في الحقيقة خائف من لدغات النحلة
+------------------------------------------------------
+B: "Really? Why?"
+    حقا؟لماذا؟
+------------------------------------------------------
+A: "I don't know. I got stung when I was young and ever since, I've always been afraid of them."
+    لا أعرف.لسعت عندما كنت صغير ومنذ ذلك الحين‘أنا كنت خائف منهم
+------------------------------------------------------
+B: "What other things are you afraid of?"
+    ماهي الاشياء الاخري أنت خائف منها؟
+------------------------------------------------------
+A: "Sitting by the camp fire and telling horror stories is very scary."
+    الجلوس بجانب نار المخيم وسرد قصص الرعب مخيف جدا
+------------------------------------------------------
+B: "Wow. You're afraid of many things huh?"
+    ياه.أنت خائف من العديد من الاشياء هه؟
+------------------------------------------------------
+A: "I guess so. Aren't you afraid of something coming out of the bushes?"
+    أعتقد ذلك.اليس أنت خائف من شيء أتي من الشجيرات
+------------------------------------------------------
+B: "It's not going to happen. We probably went camping dozens of times and nothing ever came out of the bushes. What makes you think something will?"
+    انه لن يحدث.نحن من المحتمل خيمنا العديد من المرات ولاشيء أبدا أتى من الشجيرات.مالذي يجعلك تفكر أن شيء سوف يأتي
+------------------------------------------------------
+A: "I don't know. I guess I'm terrified at the possibility."
+    لا أعرف.أعتقد أني خائف من الامكانية
+------------------------------------------------------
+B: "If you were realistic, you probably wouldn't be scared of everything. Maybe you have too much imagination."
+    لو كنت واقعي‘انك من المحتمل لن تكون خائف من أي شيء.ربما لديك خيالات كثيرة جدا
+------------------------------------------------------
+A: "I should try to think more realistically. I'll do that."
+    يجب أن أحاول أن أفكر بواقعية أكثر.سوف أفعل ذلك
+------------------------------------------------------
+B: "Good. After awhile, you won't be afraid of so many things."
+    جيد.بعد فترة‘لن تكون خائف من العديد من الاشياء
+ 

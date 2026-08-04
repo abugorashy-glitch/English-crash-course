@@ -1,0 +1,6 @@
+Correct Answer: B       The senator’s health is a closely guarded secret.
+Explanation: do not hyphenate an ly adverb and an adjective.
+
+
+الإجابة الصحيحة: The senator’s health is a closely guarded secret.
+الشرح: لا تصل بين الظرف والصفة.

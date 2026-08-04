@@ -1,0 +1,74 @@
+A: "I can't believe it took you so long to ask me out on a date."
+     لا أصدق أن تأخذ كل هذا الوقت لتأخني لموعد
+B: "I always thought you liked Mark, so I didn't think I had a chance."
+    دائما فكرت أنك أحببتي مارك‘ لذا لم أعتقد أنه كان لدي فرصة
+A: "I had this thing about him, but it's over. So, what do you like to do on your free time?"
+    كان لدي هذا الشيء تجاهه‘ لكنه انتهى.لذا‘ ماذا تحب أن تفعل في وقت فراغك؟
+B: "I like sports, watching movies, reading books. Things like that."
+    أحب الرياضة‘مشاهدة الافلام وقراءة الكتب. أشياء مثل هذه
+A: "What type of movies do you like?"
+   مانوع الافلام التي تحبها؟
+B: "I like drama and comedy."
+    أحب الدراما والكوميديا
+A: "Me too. Mostly drama though. Have you seen Pay it forward?"
+أنا أيضا.في الغالب الدراما رغم ذلك ‘هل شاهدت فيلم ادفعه الي الامام؟
+B: "Yeah. I loved that movie."
+    نعم.أحببت ذلك الفيلم
+A: "It's one of my favorites. I cried so much at the end."
+هو واحد من أشيائي المفضلة. بكيت كثيرا في النهاية
+B: "I thought the idea of paying it forward was awesome."
+    أعتقد أن فكرت فيلم ادفعه الي الامام كانت رهيبة
+A: "What was your favorite comedy?"
+   ماهو فيلمك الكوميدي المفضل؟
+B: "Do you remember the Three Amigos?"
+    هل تتذكر الاصدقاء الثلاثة؟
+A: "Vaguely. I was pretty little when that came out."
+    بغموض.كنت صغيرا جدا عندما أنتج ذلك الفيلم
+B: "I don't remember it much back then, but I saw it again the other day and it cracked me up."
+    لا أتذكره في ذلك الوقت.لكني شاهدته مرة أخري قبل أيام وأثر في
+A: "Maybe I need to see that movie again."
+ ربما أني أحتاج أن أشاهد ذلك الفيلم مرة أخرى
+B: "I think it is a classic. So many funny scenes."
+    أعتقد أنه كلاسيكي.مشاهد مضحكة كثيرة
+A: "I really liked the Mask with Jim Carrey."
+    أنا حقا أحببت القناع مع جيم جيري
+B: "He is hilarious. I love that guy."
+    انه مضحك. أحببت ذلك الشخص
+A: "I like most of his movies. He is such a character."
+    أحب معظم أفلامه.انه فعلا شخصية مميزة
+B: "What else do you like to do?"
+    ما هو الشيء الاخر الذي تحب أن تفعله؟
+A: "Well, I like to exercise."
+أحب أن أتمرن 
+B: "Where do you exercise?"
+    أين تتدرب؟
+A: "I go to a health club by my house. But on a nice day, I like to jog around the lake."
+    أذهب للنادي الصحي بقرب منزلي.لكن عندما يكون اليوم جميل‘أحب أن اهرول حول البحيرة
+B: "That's good. I like to stay in shape too. But I do that by playing a lot of sports. Do you play any sports?"
+    هذا جيد.أحب أن تكون لياقتي جيدة.لكن أفعل ذلك بلعب الكثير من الرياضة. هل تلعبين اي رياضة؟
+A: "I played a little bit in high school, but nothing really these days."
+    لعبت قليلا في المرحلة الثانوية.لكن لا شيء حقا في هذه الايام
+B: "Have you tried golf?"
+    هل جربت لعب الغولف؟
+A: "Don't start with that. My dad always nagged at me to play, but I never got into it."
+    لا تبدأي بذلك.أبي دائما تذمر بسبب أني العب‘لكني لم أتعود عليه
+B: "What do you usually do with your friends?"
+    ماذا تفعل عادة مع أصدقائك؟
+A: "We go out shopping a lot."
+    نحن نذهب للتسوق كثيرا
+B: "Where do you usually go?"
+    أين تذهب عادة؟
+A: "Usually downtown. It's more fun in the city than in the mall. Plus, there are too many high school students at the mall."
+    عادة في مركز المدينة.هو أكثر مرحا في المدينة من المركز.اضافة الي انه يوجد يوجد العديد من طلاب الثانوية في المركز التجاري
+B: "I know some girls like bags, and some like shoes, what do you like to shop for the most?"
+    أعرف أن بعض الفتيات يحببن الحقائب وبععضهن يحببن الاحذية‘ماذا تحب أن تشتري في الغالب؟
+A: "I can never have too many pairs of shoes. I have like 30 pairs already, but I am always shopping for more."
+    لا أحب أبدا أن أقتني العديد من الاحذية.عندي بالفعل 30 حذاء‘لكن أنا أتسوق لاكثر
+B: "Oh. The foods here."
+الطعام جاهز
+A: "Great. I'm so hungry."
+   جيد. أنا جائع جدا
+B: "After dinner, do you want to catch a movie?"
+   هل تحب أن تشاهد فيلم بعد العشاء؟
+A: "Sure. I'm always up for a good movie."
+   أنا دائما أحب الافلام الجيدة

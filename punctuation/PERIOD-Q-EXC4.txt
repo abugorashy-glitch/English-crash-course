@@ -1,0 +1,6 @@
+Correct Answer: A       She asked if our parakeet is named Polly.
+Explanation: avoid the common trap of using question marks with indirect questions, which are statements that contain questions.
+
+الإجابة الصحيحة:A She asked if our parakeet is named Polly.
+الشرح: تجنب الفخ الشائع في استخدام علامات
+ الاستفهام مع الأسئلة غير المباشرة، وهي العبارات التي تحتوي على أسئلة.

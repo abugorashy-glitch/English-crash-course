@@ -1,0 +1,7 @@
+Correct Answer: A       I hope you are feeling better. (I am sick today.)
+Explanation: this example has two complete sentences, so a period is needed after each of them.
+
+
+الإجابة الصحيحة: A I hope you are feeling better. (I am sick today.)
+الشرح: يحتوي هذا المثال على
+ جملتين كاملتين، لذا يلزم وضع نقطة بعد كل منهما.

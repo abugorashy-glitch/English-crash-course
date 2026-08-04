@@ -1,0 +1,7 @@
+Correct Answer: C       I answered the phone, but no one seemed to be on the other end of the line.
+Explanation: use a comma to separate two sentences joined by coordinating conjunctions such as and, but, or, so, for, nor.
+
+
+الإجابة الصحيحة:C I answered the phone, but no one seemed to be on the other end of the line
+الشرح: استخدم فاصلة للفصل بين جملتين تربطهما حروف
+ العطف التنسيقية مثل و، لكن، لكن، أو، لذا، من أجل، ولا.

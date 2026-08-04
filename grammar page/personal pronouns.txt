@@ -1,0 +1,41 @@
+First-, second-, and third-person pronouns
+A personal pronoun can be in one of three “persons.” A first-person pronoun refers to the speaker, a second-person pronoun refers to the person being spoken to, and a third-person pronoun refers to the person being spoken of. For each of these three grammatical persons, there is a plural as well.
+
+Subject and object pronouns
+Personal pronouns can be either subjects or objects in a sentence. Subject pronouns are said to be in the nominative case, whereas object pronouns are said to be in the objective case.
+
+Person Nominative Objective 
+First singular I me 
+Second singular you you 
+Third singular he, she, they, it him, her, them, it 
+First plural we us 
+Second plural you you 
+Third plural they them 
+
+The interrogative pronouns for all three persons are the same: who (nominative) and whom (objective). Many people get confused about when to use the interrogative objective pronoun whom, but it is quite easy to learn.
+
+
+Mrs. Khan asked that the package be delivered to her at the office. (her = third person singular objective)
+
+To whom should I address my letter? (whom = interrogative objective; I = first person singular nominative)
+
+We would like to invite Stacy to join us for dinner. (we = first person plural nominative; us = first person plural objective)
+
+
+Second person singular vs. plural
+One pitfall of English is that it uses the same word, you, for both the second person singular and plural. Many other languages do not have this problem, because they use distinct words for each. But in English, we need a context to determine whether you is singular or plural.
+
+
+Would you like to come over for dinner?
+
+From this sentence alone, we can’t determine whether one person, or two, or five hundred people are being invited to share a meal. This is why in some parts of the world, we hear additions to you when a plural is indicated, like you lot in the UK or you all (or y’all) in America. It probably goes without saying that you should keep this out of your formal writing.
+
+The singular they
+While the second person has a number issue, the third person has a gender solution for cases when the gender of the third-person singular pronoun is indeterminate or neutral.
+
+Using he or she and him or her is preferred by most style guides, but informally, a singular they is often used.
+
+
+If a customer wants to speak to a manager, they can phone after 10 o’clock.
+
+The singular they is deemed acceptable usage by the Associated Press, Merriam-Webster, and several other language guides.

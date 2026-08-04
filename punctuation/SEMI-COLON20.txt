@@ -1,0 +1,6 @@
+Correct Answer: A       Roberto can’t decide among three careers: dentist, veterinarian, or physical therapist.
+Explanation: use a colon to introduce a series of items.
+
+
+الإجابة الصحيحة:A Roberto can’t decide among three careers: dentist, veterinarian, or physical therapist.
+الشرح: استخدم النقطتين لتقديم سلسلة من العناصر.

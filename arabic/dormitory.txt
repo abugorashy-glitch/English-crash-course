@@ -1,0 +1,50 @@
+A: "Hi. I'm Sara."
+    مرحبا.أنا ساره
+------------------------------------------------------
+B: "My name is Jessica. It's nice to meet you."
+    اسمي جيسيكا.من اللطيف مقابلتك
+------------------------------------------------------
+A: "Yes. It's nice to meet you as well."
+    نعم.من اللطيف مقابلتك أيضا
+------------------------------------------------------
+B: "Have you been here long?"
+    هل سبق وأن كنت هنا لمدة طويلة؟
+-----------------------------------------------------  
+A: "I got here about an hour ago. Do you want me to show you around?"
+    وصلت هنا قبل ساعة مضت.هل تريديني أن أريك المكان؟
+------------------------------------------------------
+B: "Yeah. That would be great. The most important is the bathroom right?"
+    نعم.هذا سيكون رائع.الاكثر أهمية هو الحمام علي اليمين
+------------------------------------------------------
+A: "Definitely. But we have to share the bathroom with the whole floor. The break room is over there. The bathroom is right across from the break room, and finally, the RA (resident advisor) is in room 315."
+    بالتأكيد.لكن يجب علينا أن نتشارك الحمام مع الطابق كله.غرفة الاستراحة هناك.الحمام مقابل غرفة الاستراحة مباشرة.وأخيرا مستشار السكن في الغرفة رقم 315
+------------------------------------------------------
+B: "I'm glad there is a TV in the break room. I like to watch TV."
+    أنا مسرور أن هناك تلفاز في غرفة الاستراحة.أحب أن أشاهد التلفاز
+------------------------------------------------------
+A: "Me too. So I brought one. I haven't unpacked it yet, but it's a little TV that works."
+    أنا أيضا.لذا لقد أحضرت واحد.لم أفك حزمه بعد‘لكنه تلفاز صغير يعمل
+------------------------------------------------------
+B: "Cool. I brought a refrigerator. I like to store some snacks in there. Feel free to use it."
+    ممتاز.أنا أحضرت ثلاجة.أحب أن أحتفظ ببعض الوجبات الخفيفة هناك.خذ راحتك لتستخدمها
+------------------------------------------------------
+A: "That would be perfect. I think we're going to have a great time."
+    هذا سيكون مثالي.أعتقد أننا سنقضي وقتا رائعا
+------------------------------------------------------
+B: "Do you sleep pretty late, or are you a morning person."
+    هل تنام متاخرا جدا‘أو أنت شخص صباحي
+------------------------------------------------------
+A: "I have never been either. I'm very flexible with sleeping times. Anyways, I'm a deep sleeper so a little noise never bothers me."
+    لم أكن كذلك من قبل.أنا مرن جدا مع أوقات النوم.علي أية حال‘أنا عميق النوم لذا ضجيج قليل لا يزعجني أبدا
+-----------------------------------------------------
+B: "That's good to know. I'm usually a night person, but I'm very quiet if my roommate is sleeping."
+    هذا شيء جيد أن أعرف.انا عادة شخص مسائي‘لكني هادي جدا اذا شريك غرفتي ينام
+------------------------------------------------------
+A: "As long as you don't blast the music while I'm sleeping, I should be fine. Did you eat lunch yet?"
+    طلما أنك لا تفتح الموسيقي أثناء ما أن أنام‘أنا سأكون بخير.هل تناولت الغدا بعد
+------------------------------------------------------   
+B: "No. Is there a cafeteria in the building?"
+    لا.هل هناك كفتيريا في المبنى
+------------------------------------------------------
+A: "Yeah. I'll show you."
+    نعم.سوف أقودك

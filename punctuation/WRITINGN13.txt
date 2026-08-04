@@ -1,0 +1,6 @@
+Correct Answer: D       The new stadium will hold 43,520 fans.
+Explanation: With figures of four or more digits, use commas: count three spaces to the left to place the first comma.
+
+الإجابة الصحيحة:D The new stadium will hold 43,520 fans.
+       الشرح : مع الأرقام المكوّنة من أربعة ارقام
+  أو أكثر، استخدم الفواصل: عد ثلاث مسافات إلى اليسار لوضع الفاصلة الأولى.

@@ -1,0 +1,7 @@
+Correct Answer: B       Carmen said, “I think ‘Ring the Alarm’ is a great song.”
+Explanation: this sentence has a title within a quotation, so single quotation marks are needed.
+
+
+الإجابة الصحيحة:B Carmen said, “I think ‘Ring the Alarm’ is a great song.”
+لشرح: تحتوي هذه الجملة على عنوان
+ داخل اقتباس، لذا يلزم وضع علامات تنصيص مفردة

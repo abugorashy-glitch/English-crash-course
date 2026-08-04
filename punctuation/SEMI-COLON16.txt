@@ -1,0 +1,7 @@
+Correct Answer: C       I would like to leave early in the morning; therefore, I am going to bed soon.
+Explanation: use a semicolon before certain introductory words (“therefore”) that precede a complete sentence.
+
+
+الإجابة الصحيحة:C I would like to leave early in the morning; therefore, I am going to bed soon.
+الشرح: استخدم فاصلة منقوطة قبل بعض الكلمات الاستهلالية
+ التي تسبق جملة therefore

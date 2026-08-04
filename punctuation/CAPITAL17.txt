@@ -1,0 +1,8 @@
+Correct Answer: A       The new immigration bill has the support of most of our state’s 
+congressional delegation, including Senator Mayhew.
+Explanation: capitalize titles (“Senator”) when used directly before names.
+
+
+الإجابة الصحيحة:A The new immigration bill has the support of most of our state’s congressional delegation, including Senator Mayhew.
+ senator أكتب بأحرف كبيرة الالقاب
+ عند استخدامها مباشرة قبل الأسماء.

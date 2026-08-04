@@ -1,0 +1,8 @@
+Correct Answer: B       I can have lunch with you tomorrow (Friday).
+Explanation: if the wording inside the parentheses is not a complete sentence, 
+the period is placed outside the parentheses.
+
+
+الإجابة الصحيحة:B I can have lunch with you tomorrow (Friday).
+الشرح: إذا
+ كانت الصياغة داخل القوسين ليست جملة كاملة، توضع النقطة خارج القوسين.

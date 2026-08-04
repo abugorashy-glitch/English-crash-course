@@ -1,0 +1,8 @@
+Correct Answer: C       A blimp is lighter than air.
+Explanation: when a compound adjective (“lighter than air”) 
+follows a noun, a hyphen is not usually necessary.
+
+
+الإجابة الصحيحة:A A blimp is lighter than air.
+ اسما lighter than air الشرح: عندما تتبع الصفة المركبة 
+  لا تكون الوصلة ضرورية عادةً.

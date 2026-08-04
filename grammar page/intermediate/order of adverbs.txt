@@ -1,0 +1,80 @@
+Order of Adverbs  
+What is the order of adverbs?
+Because adverbs are used to modify verbs, adjectives, other adverbs, phrases, clauses, or even entire sentences, they are able to function nearly anywhere in the sentence, depending on their type and what it is they are modifying.
+If we use more than one adverb to describe a verb, though, there is a general order in which the different categories of adverbs should appear—this is known as the order of adverbs (sometimes called the royal order of adverbs):
+1. Manner
+2. Place
+3. Frequency
+4. Time
+5. Purpose
+Of course, it is uncommon to use five adverbs in a row to modify the same word, but if a sentence uses two or three, then it is best to follow this order to avoid sounding unnatural.
+First, let’s briefly summarize the different categories of adverbs, and then we’ll look at how we can use them together in sentences.
+(*Note: For the sake of conciseness, both single-word adverbs and adverbial phrases will be referred to together as “adverbs” throughout this section.)
+Categories of Adverbs
+Adverbs of Manner
+Adverbs of manner tell us how something happens, how someone does something, or give character to a description. They are usually formed by adding “-ly” to an adjective, as in:
+“She sings beautifully.”
+“He walks slowly.”
+“The children are playing happily.”
+If an adjective already ends in “-ly,” we can give it an adverbial function by simply using it in the prepositional phrase “in a ______ manner”:
+“They played in a lively manner.”
+“Please arrive in a timely manner.”
+Adverbs of Place
+Adverbs of place tell us about an aspect of location associated with the action of a verb, specifying the direction, distance, movement, or position involved in the action.
+For example:
+“He kicked the ball into the field.”
+“Let’s drive down a bit farther.”
+“Everyone gazed upwards at the meteor shower.”
+“I’ve looked everywhere for my book.”
+Adverbs of Frequency
+Adverbs of frequency (sometimes called frequency adverbs) tell us how often something happens or is the case. They are sometimes used to describe definite frequency, as in:
+“I run eight miles daily.”
+“Every year, our office holds a big raffle for charity.”
+More often, though, these adverbs are used to describe indefinite frequency. For example:
+“We usually go to the movies on Sundays.”
+“Bethany always runs late for work in the morning.”
+Adverbs of Time
+Adverbs of time tell us when or for how long something happens or is the case. They are similar to but distinct from adverbs of frequency.
+For example:
+“I’m going to the movies tomorrow.”
+“Next year, I’m going to run for president.”
+“We’ve been dating for 10 years, and not once has he proposed!”
+“Are you still working on that project?”
+Adverbs of Purpose
+Adverbs of purpose (sometimes called adverbs of reason) tell us why something happens or is the case. They are generally made up of conjunctive adverbs, prepositional or infinitive phrases, or adverbial clauses. For example:
+“Jen hadn’t enjoyed the play; as a result, she didn’t recommend it.”
+“The clothing is handcrafted and hence expensive.”
+“Given the huge amount of public interest, they are extending the program for another three months.”
+“I went to the store to buy some milk.”
+“I am exhausted because I was working all night.”
+Using multiple adverbs
+Remember, the order of adverbs is manner, place, frequency, time, and purpose.
+As we already noted, it is unusual to find several adverbs consecutively modifying the same word. However, if we were to make a sentence with all five categories of adverbs together, it might look like this:
+“I have to run quickly (manner) down the street (place) each morning (frequency) after breakfast (time) in order to catch my bus to school (purpose).”
+Even though the string of adverbs is unusually long, the sentence still sounds smooth and logical because the order is correct. Now let’s try rearranging the order of the adverbs:
+“I have to run each morning (frequency) quickly(manner) after breakfast (time) in order to catch my bus to school (purpose) down the street (place).”
+By changing the order of the adverbs, we’ve actually changed the meaning of the sentence, or at least made the original meaning nearly incomprehensible. This is especially apparent with the adverbial phrase of purpose in order to catch my bus to school—by placing it before the adverb of place, it now sounds as though it’s the school that’s down the street. There is not such a drastic shift in meaning for the adverbs of frequency, manner, and time, but they still sound awkward and unnatural in the new order.
+When we can change the order
+There is a great deal of flexibility regarding where in a sentence an adverb can appear, regardless of its content and the rules of order that we looked at above. While the order of adverbs is useful to keep in mind, it is a guide, rather than a law.
+Introductory adverbs
+As you may have noticed when we looked at the different categories of adverbs, adverbs can appear in different places in a sentence. When an adverb is used at the beginning a sentence, it results in a great deal of emphasis. Depending on the sentence, we can do this with nearly any category of adverb regardless of the order of adverbs—although we must always be careful that doing so does not make the sentence awkward or alter its meaning.
+For example, let’s look at the example sentence again, this time slightly shifting where in the sentence the adverbs appear:
+“In order to catch my bus to school (purpose), I have to run quickly (manner) down the street (place) each morning (frequency) after breakfast (time).”
+Placing the adverb of purpose at the beginning of the sentence doesn’t alter the meaning in any way—instead, it gives the adverb extra emphasis and highlights the purpose of the entire sentence.
+In this particular sentence, we can move the adverb of frequency to the beginning of the sentence as well:
+“Each morning (frequency), I have to run quickly(manner) down the street (place) after breakfast (time) in order to catch my bus to school (purpose).”
+We can also do this with the adverb of time, but in this instance it has to be moved with the adverb of frequency; otherwise, the sentence sounds awkward. For example, compare these two sentence constructions:
+ “Each morning (frequency) after breakfast (time), I have to run quickly (manner) down the street (place) in order to catch my bus to school (purpose).” (correct)
+ “After breakfast (time), I have to run quickly (manner) down the street (place) each morning (frequency) in order to catch my bus to school (purpose).” (incorrect)
+We can see that the adverb of time sounds awkward when it is placed by itself at the beginning of this particular sentence.
+Adverbs of manner and place can also sometimes go at the beginning of the sentence, but we have to be careful with how the sentence sounds as a whole. For example, neither would work well at the beginning of the example above because the emphasis placed on them would sound unnatural as a result. However, in a different sentence, this emphasis might be suitable. For instance:
+“On my father’s ranch (place), I often (frequency) helped gather the animals at the end of the day (time).”
+“Impatiently (manner), I waited by the bank (place) for my father to arrive (purpose).”
+Short vs. long adverbs
+Generally speaking, we also tend to put adverbs that are shorter and more concise before those that are longer, regardless of which category they belong to (though we must make sure that the information’s meaning doesn’t change as a result). For example:
+“I lived with my parents (place) to save money (purpose) while I was working on my doctorate (time).”
+“He dances every night (frequency) in the most extraordinary way (manner).”
+Multiple adverbs of the same category
+When we use multiple adverbs of the same category to modify the same verb, we order them based on how specific the information is that they provide. For example:
+“On my father’s ranch (place), I often (frequency) helped gather the animals at the end of the day (specific time) when I was younger (non-specific time).”
+“I lived at home (more specific place) with my parents(less specific place) to save money (purpose) while I was working on my doctorate (time).”

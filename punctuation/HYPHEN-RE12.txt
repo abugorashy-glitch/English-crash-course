@@ -1,0 +1,7 @@
+Correct Answer: C       Martin Luther began the Reformation.
+Explanation: do not use a hyphen with the prefix re except in special cases
+
+
+الإجابة الصحيحة:C Martin Luther began the Reformation.
+ REلشرح: لا تستخدم علامة الوصل مع البادئة 
+  إلا في حالات خاصة

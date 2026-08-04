@@ -1,0 +1,6 @@
+Correct Answer: C       Uncle Walter said, “Please use left or right, not north, south, east, or west.”
+Explanation: do not capitalize points of the compass.
+
+
+الإجابة الصحيحة:C Uncle Walter said, “Please use left or right, not north, south, east, or west.”
+الشرح: لا تكتب نقاط البوصلة بأحرف كبيرة.

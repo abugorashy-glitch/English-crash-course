@@ -1,0 +1,71 @@
+A: "So Mark. What is your favorite hobby?"
+    اذن يا مارك.ماهي هوايتك المفضلة؟
+------------------------------------------------------
+B: "Probably sports."
+    من المحتمل الالعاب الرياضية
+------------------------------------------------------
+A: "Anything specific? Or just sports in general."
+    أي شيء محدد؟أو فقط الالعاب الرياضية بشكل عام
+------------------------------------------------------
+B: "Most sports. I like basketball, football, baseball, golf, tennis, so I guess most sports."
+    معظم الالعاب الرياضية.أنا أحب كرة السلة‘كرة القدم‘البيسبول‘الغولف‘التنس‘اذن أعتقد معظم الالعاب الرياضية
+------------------------------------------------------
+A: "I like tennis. Did you play for your high school team?"
+    أنا أحب التنس.هل لعبت لفريق مدرستك الثانوية؟
+------------------------------------------------------
+B: "Yeah. I played on the varsity team starting from my sophomore year. How about you?"
+    نعم.أنا لعبت في فريق لجامعة بدأ من سنتي الثانية.ماذا عنك؟
+------------------------------------------------------
+A: "I played my junior and senior year."
+    لعبت في سنتي الصغرى والكبرى
+------------------------------------------------------
+B: "What other sports did you play?"
+    ماهي الرياضات الاخرى التي لعتبتها؟
+------------------------------------------------------
+A: "I played volleyball. I would have to say volleyball is my favorite."
+    لعبت كرة الطائرة.أود أن أقول أن كرة الطائرة مفضلتي
+------------------------------------------------------
+B: "What position did you play?"
+    ما المركز لذي لعبته؟
+------------------------------------------------------
+A: "I was the outside hitter."
+    أنا كنت ضارب لكرة الخارجي
+------------------------------------------------------   
+B: "That's so cool. I didn't know you were athletic."
+    هذا مثير جدا.لم أعرف أنك كنت رياضي
+------------------------------------------------------
+A: "I don't know if I would consider myself athletic, but I have fun playing."
+    لا أعرف اذا كنت سأعتبر نفسي رياضي‘لكن أستمتع باللعب
+------------------------------------------------------
+B: "I play on a co-ed volleyball team every Tuesdays. We're always looking for more girls to play on our team. Would you be interested?"
+    أنا ألعب في فريق كرة الطائرة المشارك كل ثلاثاء.نحن دائما نبحث عن فتيات أخر ليلعبن في فريقنا.هل ستكوني مهتمة؟
+------------------------------------------------------
+A: "Yeah. It sounds fun. Just call me anytime you need a player."
+    نعم.يبدو ممتع.فقط اتصل بي أي وقت تحتاج لاعب
+------------------------------------------------------
+B: "That's great. Since we are on the topic of sports, what sport do you like to watch on television?"
+    هذا عظيم.كوننا في موضوع الالعاب الرياضية‘ماهي الرياضة التي تحبي أن تشاهديها في التلفاز؟
+------------------------------------------------------
+A: "I never got into watching sports on TV. So I really don't know."
+    لم أدخل في مشاهدة الالعاب الرياضية في التلفاز أبدا.لذا أنا حقا لا أعرف
+------------------------------------------------------
+B: "Not even the Super bowl?"
+    ليس حتي لعبة السوبر بول؟
+------------------------------------------------------
+A: "Only when the group of people I'm with is watching it. I just never had interest in TV that much."
+    فقط عندما مجموعة من الناس اللذين أنا معهم يشاهدوها.أنا فقط ماكنت مهتم في التلفاز كثيرا
+------------------------------------------------------
+B: "Well, I like following the Mariners. They're pretty good."
+    حسنا‘أنا أحب متابعة الملاحين.هم جيدون جدا
+------------------------------------------------------
+A: "I like to go watch them play. It's fun when you are actually there."
+    أحب مشاهدتهم وهم يلعبوا.انه ممتع عندما تكون بالفعل هناك
+------------------------------------------------------
+B: "A bunch of us are going to watch them play this June. Do you want to join us?"
+    مجموعة مننا سوف يشاهدوهم وهم يالعبوا في يونيو هذا.هل تريد أن تنضم الينا؟
+------------------------------------------------------
+A: "Yeah. I'll go. I like the new stadium. It's pretty cool."
+    نعم.سوف أذهب.أحب الاستاد الرياضي الجديد.انه ممتاز جدا
+------------------------------------------------------
+B: "Ok. I'll make sure to get you a ticket as well."
+    حسنا.سوف أتأكد أن أحصل لك علي تذكرة أيضا

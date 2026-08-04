@@ -1,0 +1,7 @@
+Correct Answer: C       Thirty-six people were reported missing during the first hours after the plane crash.
+Explanation: Numbers introducing sentences are written out. Hyphenate all two-word numbers from twenty-one to ninety-nine.
+
+الإجابة الصحيحة:C Thirty-six people were reported missing during the first hours after the plane crash
+الشرح: تُكتب الأعداد بالكامل التي تسبق الجمل
+ أكتب قم بوصل 
+  الأعداد المكونة من كلمتين بالواصلة من واحد وعشرين إلى تسعة وتسعين.

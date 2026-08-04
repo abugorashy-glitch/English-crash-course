@@ -1,0 +1,6 @@
+Correct Answer: A       Tanya nursed the sickly-looking cat back to health.
+Explanation: hyphenate an ly adjective and another adjective when they come before a noun and act as a single idea.
+
+الإجابة الصحيحة:A Tanya nursed the sickly-looking cat back to health
+ والصفة الاخري LY الشرح: صل صفة
+    عندما تأتي قبل اسم وتكون بمثابة فكرة واحدة.

@@ -1,0 +1,6 @@
+Correct Answer: A       The plane won’t arrive until noon.
+Explanation: noon is not capitalized; “12 noon” is redundant.
+
+
+الإجابة الصحيحة:A The plane won’t arrive until noon.
+الشرح: الظهيرة لا تكنب بالأحرف الكبيرة؛ ”12 ظهراً“ زائدة عن الحاجة.

@@ -1,0 +1,48 @@
+A: "What sports do you like to play?"
+    أي ألعاب رياضية تحب أن تلعب؟
+------------------------------------------------------
+B: "I like baseball and basketball."
+    أنا أحب كرة السلة والبيسبول
+------------------------------------------------------
+A: "How about football?"
+    ماذا عن كرة القدم؟
+------------------------------------------------------
+B: "In my country football is brand new, so I never learned the game when I was younger."
+   في بلدي كرة القدم جديدة‘لذا أنا أبدا لم أتعلم اللعبة عندما كنت صغير
+------------------------------------------------------
+A: "It's a very popular game in America."
+    هي لعبة شعبية جدا في أمريكا
+------------------------------------------------------
+B: "Yeah. I heard a lot about it. Is it really that fun?"
+    نعم.لقد سمعت الكثير حولها.هل هي حقا ممتعة؟
+------------------------------------------------------
+A: "For me, it's one of those games that are fun to both watch and play."
+    بالنسبة لي‘هي واحدة من أولئك الالعاب الذين هم ممتعون في المشاهدة واللعب
+------------------------------------------------------
+B: "Are you a football player?"
+    هل أنت لاعب كرة قدم؟
+------------------------------------------------------
+A: "No, just for fun with my friends. We play two hand touch or flag football. We're too old to play tackle football."
+    لا‘فقط للتسلية مع أصدقائي.نحن نلعب لمس يدوي
+------------------------------------------------------
+B: "What is two hand touch and flag football?"
+     ماهي لمس يدين وكرة قدم العلم؟
+------------------------------------------------------
+A: "Instead of tackling somebody, you just have to touch them with two hands, or if it is flag football, grab the flag that the ball carrier is wearing."
+     بدلا من عرقلة شخص ما‘أنت فقط يجب أن تلمسهم بيدين‘أو اذا كانت كرة قدم العلم‘امسك العلم الذي حامل الكرة يلبسه
+------------------------------------------------------
+B: "I see. It's safer then right?"
+    فهمت.انه أامن اذن صحيح
+-----------------------------------------------------
+------------------------------------------------------
+A: "Exactly. We play every Saturdays on the field by the tennis courts. If you want to learn and play a little, you're welcome to join us."
+    بالضبط.نحن نلعب كل يوم سبت في الملعب بالقرب من ساحة التينس.اذا تريد أن تتعلم وتلعب قليلا‘مرحبا بك لتنضم الينا
+------------------------------------------------------
+B: "I'll give it a try. Give me a call and let's go down together."
+    أنا سوف أجربها.اتصل بي.دعنا نذهب سويا
+------------------------------------------------------
+A: "Ok. I'll call you Saturday morning."
+    حسنا.سوف أتصل بك صباح السبت
+------------------------------------------------------
+B: "Great."
+    عظيم
