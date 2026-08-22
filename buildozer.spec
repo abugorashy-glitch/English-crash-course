@@ -20,7 +20,7 @@ source.dir = .
 source.include_exts = png,jpg,kv,atlas,txt,py,mp3,mp4,ttf,icon,db
 
 # (list) List of inclusions using pattern matching
-source.include_patterns = assets/*, my_audio_album/*, phrasal verbs/* answers/*, data/*, punctuation/*, arabic/*
+source.include_patterns = assets/*, my_audio_album/*, "phrasal verbs/*", answers/*, data/*, punctuation/*, arabic/*, "grammar page/*", "vocabulary tests/*"
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -41,7 +41,8 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy,arabic_reshaper,python-bidi==0.4.2,future,sqlite3,android,openssl
+requirements = python3, kivy, arabic_reshaper, python-bidi==0.4.2, future, sqlite3, android, openssl, yt_dlp, certifi, urllib3
+
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -98,8 +99,8 @@ fullscreen = 0
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-# (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-#android.permissions =  android.permission.INTERNET, android.permission.ACCESS_NETWORK_STATE
+android.permissions = INTERNET, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE
+
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
