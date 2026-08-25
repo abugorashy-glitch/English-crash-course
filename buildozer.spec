@@ -267,7 +267,7 @@ android.enable_androidx = 1
 
 # (list) Android application meta-data to set (key=value format)
 #android.meta_data =
-android.extra_manifest_application_arguments = android:usesCleartextTraffic="true"
+#android.extra_manifest_application_arguments = android:usesCleartextTraffic="true"
 
 
 # (list) Android library project to add (will be added in the
