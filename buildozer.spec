@@ -33,7 +33,7 @@ source.include_patterns = assets/*, my_audio_album/*, "phrasal verbs/*", answers
 #source.exclude_patterns = answers/*, data/*
 
 # (str) Application versioning (method 1)
-version = 0.1
+app.version = 1.1
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -41,7 +41,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy, arabic_reshaper, python-bidi==0.4.2, future, sqlite3, android, openssl, yt_dlp, certifi, urllib3
+requirements = python3,kivy,arabic_reshaper,python-bidi==0.4.2,future,sqlite3,android,openssl, yt_dlp,certifi,urllib3,requests
 
 
 # (str) Custom source folders for requirements
@@ -99,8 +99,9 @@ fullscreen = 0
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-android.permissions = INTERNET, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, READ_MEDIA_AUDIO, READ_MEDIA_VIDEO
-android.manifest.application = android:usesCleartextTraffic="true"
+android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,READ_MEDIA_AUDIO,READ_MEDIA_VIDEO,WAKE_LOCK
+
+
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
@@ -266,6 +267,8 @@ android.enable_androidx = 1
 
 # (list) Android application meta-data to set (key=value format)
 #android.meta_data =
+android.extra_manifest_application_arguments = android:usesCleartextTraffic="true"
+
 
 # (list) Android library project to add (will be added in the
 # project.properties automatically.)
