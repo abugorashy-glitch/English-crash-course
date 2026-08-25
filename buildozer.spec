@@ -33,11 +33,11 @@ source.include_patterns = assets/*, my_audio_album/*, "phrasal verbs/*", answers
 #source.exclude_patterns = answers/*, data/*
 
 # (str) Application versioning (method 1)
-app.version = 1.1
+version = 1.1
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
-#version.filename = %(source.dir)s/main.py
+version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
