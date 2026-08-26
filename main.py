@@ -1,5 +1,5 @@
 import sys
-# Bypasses low-level architecture conflict inside python-bidi binary hooks on Android
+# Bypasses low-level architecture conflicts inside python-bidi binary hooks on Android
 #sys.modules['bidi._bidi'] = None
 
 import kivy
@@ -6722,89 +6722,55 @@ class SplashScreen(Screen):
 
     def is_connected(self):
         """
-        NATIVE ANDROID ROUTING CHECKER:
-        Bypasses Python's broken SSL/DNS wrappers entirely. Uses a native system 
-        ping targeting Google's universal Anycast DNS server (8.8.8.8). 
-        Works 100% of the time on both Windows and real Android Wi-Fi/Mobile Data!
+        1. LIGHTWEIGHT UNIVERSAL ROUTE VERIFICATION
+        Bypasses strict platform wrappers by checking a standard low-level socket.
         """
-        import subprocess
-        from kivy.utils import platform
-
-        # 📱 1. ANDROID HIGH-SPEED ROUTE VERIFICATION
-        if platform == 'android':
-            try:
-                # Runs a native Linux kernel ping command directly through the Android OS shell.
-                # '-c 1' sends exactly 1 packet, '-W 2' sets a strict 2-second timeout window.
-                # Target '8.8.8.8' is Google's core DNS, which requires zero web domain parsing.
-                response = subprocess.call(['ping', '-c', '1', '-W', '2', '8.8.8.8'], 
-                                           stdout=subprocess.DEVNULL, 
-                                           stderr=subprocess.DEVNULL)
-                if response == 0:
-                    print("🌐 [NETWORK Native OS] Android Route Verified: ONLINE")
-                    return True
-            except Exception as e:
-                print(f"🌐 [NETWORK Native OS] Shell error: {e}")
-
-        # 💻 2. WINDOWS DESKTOP FALLBACK BACKUP
-        else:
-            try:
-                import socket
-                # Fast desktop hostname resolution targeting a completely stable web server port
-                socket.setdefaulttimeout(3)
-                socket.getaddrinfo("://google.com", 80, socket.AF_UNSPEC)
-                print("🌐 [NETWORK Desktop] Windows Route Verified: ONLINE")
-                return True
-            except:
-                pass
-
-        # 🔐 3. ULTIMATE REINFORCED WEB BACKUP (If shell commands are restricted by vendor)
+        import socket
         try:
-            import urllib.request
-            import ssl
-            
-            # Create a fully unverified, open SSL container to force Android to stop dropping the link
-            ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_NONE
-            
-            req = urllib.request.Request("https://://google.com", headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=3, context=ctx) as response:
-                if response.status == 200:
-                    print("🌐 [NETWORK Web Backup] Secure Bypass Verified: ONLINE")
-                    return True
+            # Universal fallback lookups handling both IPv4 and IPv6 dual-stack streams
+            socket.setdefaulttimeout(3.0)
+            socket.getaddrinfo("://google.com", 443, socket.AF_UNSPEC)
+            return True
         except:
-            pass
-
-        print("🌐 [NETWORK SYSTEM] Device is verified as completely: OFFLINE")
-        return False
-
-
-
+            return False
 
     def download_folder_worker(self):
-        # 1. Reset and turn off the Retry UI layouts the split second a new download cycle fires
+        """
+        2. PRODUCTION-GRADE STREAMING RECOVERY ENGINE
+        Skips volatile pre-check barriers and immediately initiates chunk-streaming.
+        Handles network drops dynamically to ensure cross-platform consistency.
+        """
+        import os
+        import sys
+        import time
+        import socket
+        from kivy.clock import Clock
+        from kivy.utils import platform
+
+        # Reset and turn off the Retry UI layouts the split second a new download cycle fires
         def reset_ui_for_download(dt):
-            if 'progress_layout' in self.ids and 'retry_layout' in self.ids and 'status_label' in self.ids:
+            if self.ids and 'progress_layout' in self.ids and 'retry_layout' in self.ids and 'status_label' in self.ids:
                 self.ids.progress_layout.opacity = 1
                 self.ids.retry_layout.opacity = 0
                 self.ids.retry_layout.disabled = True  
                 self.ids.status_label.text = "Re-verifying storage assets..."
         Clock.schedule_once(reset_ui_for_download, 0)
 
-        # 2. Runs storage validation strictly on Android.
+        # Runs storage validation strictly on Android
         if platform == 'android':
             storage_passed, storage_error_msg = self.has_enough_storage()
             if not storage_passed:
                 Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", storage_error_msg), 0)
                 return
 
-        # 3. RUN CONNECTIVITY NETWORK VERIFICATION LAYER
-        if not self.is_connected():
-            Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", "No Internet Connection!\nPlease connect to Wi-Fi or Mobile Data and retry."), 0)
-            return
+        # 🚫 CRUCIAL CHANGE: The separate "if not self.is_connected():" pre-check gateway 
+        # has been completely removed to stop false offline triggers on Windows 10 and Android!
 
         self.current_file_index = 0
         socket.setdefaulttimeout(45)
+        
+        # Track the last exception message to display the correct text to the user if everything fails
+        last_error_message = "Unknown network error."
 
         for file_name, file_data in self.download_queue.items():
             self.current_file_index += 1
@@ -6819,43 +6785,57 @@ class SplashScreen(Screen):
 
             while retry_count < max_retries and not download_success:
                 try:
-                    # =========================================================================
-                    # FIX: EXTENSION-AWARE CORRUPTION CLEANER
-                    # =========================================================================
+                    # Clear corrupted partial files from disk cache
                     if os.path.exists(local_file_path):
                         file_size = os.path.getsize(local_file_path)
-                        
-                        # Only delete .mp3 files if they are broken/incomplete (under 5KB)
                         if file_name.endswith('.mp3') and file_size < 5000:
                             print(f"🗑️ Removing corrupted partial audio: {file_name}")
                             os.remove(local_file_path)
-                        
-                        # Only delete .txt files if they are completely empty (0 bytes)
                         elif file_name.endswith('.txt') and file_size == 0:
                             print(f"🗑️ Removing empty text asset: {file_name}")
                             os.remove(local_file_path)
 
-                    # The Cached Skip Valve
+                    # Initialize fresh file download chunk stream
                     if not os.path.exists(local_file_path):
                         if retry_count > 0:
                             print(f"🔄 Retrying download for {file_name} (Attempt {retry_count + 1}/{max_retries})...")
-                            import time
                             time.sleep(2)
 
-                        urllib.request.urlretrieve(remote_url, local_file_path, reporthook=self.progress_hook)
-                        
-                        # Anti-virus firewall loop validation
+                        import ssl
+                        import urllib.request
+
+                        ctx = ssl.create_default_context()
+                        ctx.check_hostname = False
+                        ctx.verify_mode = ssl.CERT_NONE
+
+                        req = urllib.request.Request(remote_url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Android; Mobile)'})
+
+                        with urllib.request.urlopen(req, timeout=25.0, context=ctx) as response:
+                            total_size = int(response.info().get('Content-Length', -1))
+                            chunk_size = 16384  # 16KB optimal streaming chunks
+
+                            with open(local_file_path, 'wb') as local_file:
+                                while True:
+                                    chunk = response.read(chunk_size)
+                                    if not chunk:
+                                        break
+                                    local_file.write(chunk)
+                                    
+                                    if total_size > 0:
+                                        self.progress_hook(1, chunk_size, total_size)
+
+                        # Validate that Google Drive didn't drop us into an antivirus block html page
                         with open(local_file_path, 'rb') as f:
                             if b"<!DOCTYPE html>" in f.read(100):
                                 raise ValueError("Google Drive antivirus block warning page generated.")
                     else:
                         print(f"✅ Cached asset verified on disk (Skipping Download): {file_name}")
                     
-                    # File exists or downloaded cleanly
                     download_success = True
                     
                 except Exception as download_error:
                     retry_count += 1
+                    last_error_message = str(download_error)
                     print(f"🚨 Attempt {retry_count} failed for {file_name}: {download_error}")
                     
                     if os.path.exists(local_file_path):
@@ -6863,15 +6843,17 @@ class SplashScreen(Screen):
                         except: pass
 
             # =========================================================================
-            # STALEMATE HARD LOCKDOWN GATEWAY 
+            # STALEMATE HARD LOCKDOWN GATEWAY (Unified Interface Exception Handler)
             # =========================================================================
             if not download_success:
                 print(f"❌ FATAL BLOCKADE: Failed to download mandatory asset: {file_name}")
                 
-                if not self.is_connected():
-                    error_msg = "No Internet Connection!\nPlease connect to Wi-Fi or Mobile Data and retry."
+                # Check the exact text error signature to report the correct state to the user
+                err_lower = last_error_message.lower()
+                if "getaddrinfo" in err_lower or "timeout" in err_lower or "timed out" in err_lower or "unreachable" in err_lower:
+                    error_msg = f"Network Timeout!\nFailed to fetch: {file_name}\nPlease check your Wi-Fi signal and retry."
                 else:
-                    error_msg = f"Network Timeout!\nFailed to fetch: {file_name}\nPlease check your signal and retry."
+                    error_msg = "No Internet Connection!\nPlease connect to Wi-Fi or Mobile Data and retry."
                 
                 Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", error_msg), 0)
                 return 
@@ -6880,6 +6862,15 @@ class SplashScreen(Screen):
 
         print("🎉 SUCCESS: Every single audio and text lesson asset verified on storage disk!")
         Clock.schedule_once(lambda dt: self.finish_process(), 0)
+
+
+
+
+
+
+
+    
+
 
 
 
