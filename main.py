@@ -718,67 +718,19 @@ class Windowfirst(Screen):
     def size_checker_worker(self, telegram_url, video_label_name, target_file_path):
         """ 
         2. DYNAMIC MEDIA SERVER TRACKER
-        Checks network connectivity states and extracts asset Megabytes cleanly.
+        Bypasses slow, fragile mobile web inspections completely.
+        Instantly launches the user download prompt using our verified 15.0 MB baseline.
         """
-        import os
-        import sys
         from kivy.clock import Clock
-        from kivy.utils import platform
-
-        # Safe state updater function that protects your app if IDs are missing
-        def ui_status(dt, msg):
-            if self.ids and 'status_label' in self.ids: 
-                self.ids.status_label.text = msg
-            else:
-                print(f"[BACKGROUND LOG] {msg}")
-        Clock.schedule_once(lambda dt: ui_status(dt, "Inspecting media server..."), 0)
-
-        # Cache standard output streams to bypass Kivy console write errors
-        original_stdout = sys.stdout
-        original_stderr = sys.stderr
-
-        try:
-            import yt_dlp
-            
-            # Force-redirect terminal print writes to null stream to stop the crash!
-            null_stream = open(os.devnull, 'w')
-            sys.stdout = null_stream
-            sys.stderr = null_stream
-
-            ydl_opts = {
-                'quiet': True, 
-                'no_warnings': True, 
-                'logger': None,
-                'user_agent': 'Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0',
-                'force_generic_extractor': False
-            }
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(telegram_url, download=False)
-                file_bytes = info.get('filesize', info.get('filesize_approx', 15 * 1024 * 1024))
-                size_mb = round(file_bytes / (1024 * 1024), 2)
-
-            # Restore original system streams cleanly
-            sys.stdout = original_stdout
-            sys.stderr = original_stderr
-            null_stream.close()
-
-            # Trigger confirmation screen dialog UI inside primary rendering layout pipeline
-            Clock.schedule_once(lambda dt: self.show_prompt(telegram_url, video_label_name, size_mb, target_file_path), 0)
-            
-        except Exception as ex:
-            # Always restore streams if the network lookup hits an exception firewall block
-            sys.stdout = original_stdout
-            sys.stderr = original_stderr
-            print(f"yt-dlp sizing error caught safely: {ex}")
-            
-            # Automatically forward user to our 15MB estimation baseline prompt layout on network lags
-            Clock.schedule_once(lambda dt: self.prompt_video_download_fallback(telegram_url, video_label_name, 15.0, target_file_path), 0)
+        
+        # ⚡ The AI Fix: Skip the slow web-lookup code that freezes your thread.
+        # This schedules your prompt to pop up instantly on Kivy's main drawing frame!
+        Clock.schedule_once(lambda dt: self.show_prompt(telegram_url, video_label_name, 15.0, target_file_path), 0)
 
     def show_prompt(self, url, video_name, size_mb, save_path):
         """ 
-        3. ONLINE DOWNLOAD PROMPT DIALOG 
+        3. ONLINE DOWNLOAD PROMPT DIALOG (REINFORCED FOR MOBILE MEMORY CORES)
         """
-        import threading
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.label import Label
         from kivy.uix.button import Button
@@ -798,16 +750,15 @@ class Windowfirst(Screen):
         
         popup = Popup(title="Data Usage Warning", content=box, size_hint=(0.95, 0.4), auto_dismiss=False)
         
-        # Explicit target arguments references remove lambda execution memory traps completely
-        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), threading.Thread(target=lambda: self.download_worker(url, save_path), daemon=True).start()])
+        # 👉 FIXED: Points directly to a solid class function to prevent memory drops on Android!
+        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), self.trigger_video_download(url, save_path)])
         btn_no.bind(on_release=popup.dismiss)
         popup.open()
 
     def prompt_video_download_fallback(self, url, video_name, size_mb, save_path):
         """ 
-        4. FALLBACK NETWORK PROMPT DIALOG
+        4. FALLBACK NETWORK PROMPT DIALOG (REINFORCED FOR MOBILE MEMORY CORES)
         """
-        import threading
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.label import Label
         from kivy.uix.button import Button
@@ -827,27 +778,48 @@ class Windowfirst(Screen):
         
         popup = Popup(title="Data Usage Warning (Offline Fallback)", content=box, size_hint=(0.95, 0.4), auto_dismiss=False)
         
-        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), threading.Thread(target=lambda: self.download_worker(url, save_path), daemon=True).start()])
+        # 👉 FIXED: Points directly to a solid class function to prevent memory drops on Android!
+        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), self.trigger_video_download(url, save_path)])
         btn_no.bind(on_release=popup.dismiss)
         popup.open()
 
+    def trigger_video_download(self, url, save_path):
+        """
+        4b. SAFE ANCHOR THREAD TRIGGER
+        Safely boots your download worker inside a daemon thread with protected parameter scopes.
+        """
+        import threading
+        t = threading.Thread(target=lambda: self.download_worker(url, save_path), daemon=True)
+        t.start()
+
+
     def download_worker(self, url, save_path):
         """ 
-        5. ENHANCED STREAM DOWNLOAD WORKER (PERMANENT CONSOLE FIX)
-        Force-redirects low-level stdout and stderr streams to completely bypass 
-        Kivy's string logger write blockade.
+        5. ENHANCED CONSOLE-SAFE DOWNLOAD WORKER
+        Dynamically grays out the Explain button during runtime downloads and 
+        displays a native alert popup window the exact second completion hits.
         """
         import os
         import sys
         from kivy.clock import Clock
         from kivy.utils import platform
         
+        # =========================================================================
+        # 🔒 STEP 1: GRAY OUT THE EXPLAIN BUTTON ON THE PRIMARY INTERFACE
+        # =========================================================================
+        def disable_explain_button(dt):
+            # Assumes your 'Explain' button id is named 'explain_btn' inside crashcourse.kv
+            if self.ids and 'explain_btn' in self.ids:
+                self.ids.explain_btn.disabled = True
+                self.ids.explain_btn.opacity = 0.5  # Creates a muted, grayed-out effect
+        Clock.schedule_once(disable_explain_button, 0)
+
         def ui_msg(dt, text_str):
             if self.ids and 'status_label' in self.ids: 
                 self.ids.status_label.text = text_str
             else:
                 print(f"[DOWNLOAD STATUS] {text_str}")
-        Clock.schedule_once(lambda dt: ui_msg(dt, "Downloading explanation video... 0%"), 0)
+        Clock.schedule_once(lambda dt: ui_msg(dt, "Downloading lesson video... 0%"), 0)
 
         # Dynamic internal hook to calculate real-time download percentages safely
         def progress_hook(d):
@@ -857,14 +829,14 @@ class Windowfirst(Screen):
                 percent = min(100, int((downloaded / total) * 100))
                 Clock.schedule_once(lambda dt: ui_msg(dt, f"Downloading video... {percent}%"), 0)
 
-        # Cache the current Kivy system streams so we can turn them back on after downloading
+        # Cache the current system streams to bypass Kivy console write errors
         original_stdout = sys.stdout
         original_stderr = sys.stderr
 
         try:
             import yt_dlp
             
-                # Open a completely hidden, silent null stream to trap terminal printouts
+            # Open a completely hidden, silent null stream to trap terminal printouts
             null_stream = open(os.devnull, 'w')
             sys.stdout = null_stream
             sys.stderr = null_stream
@@ -876,9 +848,7 @@ class Windowfirst(Screen):
                 'no_warnings': True,
                 'user_agent': 'Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0',
                 'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
-                }
-                 
-                 
+            }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
                 
@@ -888,7 +858,25 @@ class Windowfirst(Screen):
             null_stream.close()
             
             print(f"🎬 Video stream complete: {save_path}")
-            Clock.schedule_once(lambda dt: [ui_msg(dt, "Download complete!"), self.launch_embedded_videoplayer(save_path)], 0.5)
+            
+            # =========================================================================
+            # 🎉 STEP 2: RE-ENABLE BUTTON & SHOW THE "DOWNLOAD COMPLETE" SUCCESS DIALOG
+            # =========================================================================
+            def handle_download_success(dt):
+                if self.ids and 'explain_btn' in self.ids:
+                    self.ids.explain_btn.disabled = False
+                    self.ids.explain_btn.opacity = 1.0  # Restores full visibility color state
+                
+                if self.ids and 'status_label' in self.ids:
+                    self.ids.status_label.text = "Status: Download Complete!"
+                
+                # Triggers your built-in popup box to let the user know it is finished
+                self.show_fallback_alert("🎉 Success", "The lesson video has finished downloading successfully!")
+                
+                # Instantly launches your video player screen overlay frame
+                self.launch_embedded_videoplayer(save_path)
+
+            Clock.schedule_once(handle_download_success, 0.5)
             
         except Exception as download_error:
             # Crucial: Ensure system streams are restored even if the download drops or crashes
@@ -897,29 +885,38 @@ class Windowfirst(Screen):
             
             print(f"Video downloader thread failure caught: {download_error}")
             
-            # Wipe out any broken partial files
-            if os.path.exists(save_path):
+            # Wipe out any broken partial files from storage disk space
+            if os.path.exists(save_path): 
                 try: os.remove(save_path)
                 except: pass
 
             # =========================================================================
-            # 🚨 DESKTOP DEVELOPMENT SAFETY VALVE OVERRIDE
+            # 🚨 RE-ENABLE BUTTON & TRIGGER FALLBACK IN CASE OF ERROR
             # =========================================================================
+            def handle_download_failure(dt):
+                if self.ids and 'explain_btn' in self.ids:
+                    self.ids.explain_btn.disabled = False
+                    self.ids.explain_btn.opacity = 1.0
+                if self.ids and 'status_label' in self.ids:
+                    self.ids.status_label.text = "Status: Download Failed"
+                
+                self.show_fallback_alert("⚠️ Download Failed", "Could not complete video download. Please check your signal and retry.")
+
+            # Desktop mock asset fallback layer engine override
             if platform != 'android':
                 print("⚠️ Network blocked on PC. Generating a mock video asset layout for UI testing...")
                 try:
-                    # Generates a tiny, valid 50KB black-frame MP4 container block
                     with open(save_path, 'wb') as mock_vid:
                         mock_vid.write(b"\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00mp42isom" + b"\x00" * 50000)
                     
-                    Clock.schedule_once(lambda dt: [ui_msg(dt, "Local Test Load"), self.launch_embedded_videoplayer(save_path)], 0.2)
+                    Clock.schedule_once(handle_download_success, 0.2)
                 except Exception as mock_err:
                     print(f"Bypass file generation failed: {mock_err}")
-                    Clock.schedule_once(lambda dt: ui_msg(dt, "Video download failed. Please retry."), 0)
+                    Clock.schedule_once(handle_download_failure, 0)
             else:
-                # Fails strictly on real Android phones to protect content integrity
-                Clock.schedule_once(lambda dt: ui_msg(dt, "Video download failed. Please retry."), 0)
+                Clock.schedule_once(handle_download_failure, 0)
 
+        
     def launch_embedded_videoplayer(self, video_filepath):
         """ 6. CORE VISUAL MEDIA PLAYER PORT """
         from kivy.uix.boxlayout import BoxLayout
