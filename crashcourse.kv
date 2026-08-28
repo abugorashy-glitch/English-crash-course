@@ -449,6 +449,11 @@
 <Windowfirst>:
      name: "w_screen"
      id:w_screen1
+     BoxLayout:
+          orientation: 'vertical'
+          padding: [dp(15), dp(45), dp(15), dp(10)] # Left, Top padding buffer, Right, Bottom padding buffer
+          spacing: dp(15)
+     
      FloatLayout:
           
           ActionBar:
@@ -456,7 +461,7 @@
                ActionView:
                     use_separator:True
                     ActionPrevious:
-                         title:'   Go Back'
+                         title:'   GoBack'
                          on_press:
                               app.root.current="home_screen"
                          with_previous:False
@@ -489,6 +494,7 @@
      
      BoxLayout:
           orientation: 'vertical'
+          spacing: dp(10)
           Label:
                text:''
                id:record3
@@ -551,30 +557,66 @@
                     valign:'center'
                     text:''
                
+                  # -------------------------------------------------------------
+        # 2. MIDDLE SECTION: Your Bottom Navigation Actions Panel
+        # -------------------------------------------------------------
           BoxLayout:
-               # Button 1: Settings
+               size_hint_y: None
+               height: '65dp'
+               spacing: dp(10)
+               padding: [dp(5), 0, dp(5), 0]
+
+            # Button 1: Move Next
                RoundedButton:
                     text: "Move Next"
                     on_press: 
                          root.on_pre_enter()
-                    on_press:
                          root.remove_check()
 
-          # Button 2: Profile
+            # Button 2: Stop Here
                RoundedButton:
                     text: "STOPE HERE"
                     on_press: 
                          root.stophere()
 
-          # Button 3: Exit
+            #  Button 3: Explain
                RoundedButton:
+                    id: explain_btn
                     text: "Explain"
                     on_press:
                          root.on_explain_button_click()
-                         #app.root.current="a"
+
+        # -------------------------------------------------------------
+        # 3. ABSOLUTE BOTTOM SECTION: The Standalone Status Footer Anchor
+        # -------------------------------------------------------------
+        # Placed outside the buttons, completely safe, and locked at the baseline!
+          BoxLayout:
+               size_hint_y: None
+               height: '40dp'
+               padding: [dp(5), 0, dp(5), 0]
+            
+               canvas.before:
+                    Color:
+                         rgba: (0.15, 0.15, 0.18, 0.85) # Charcoal progress pill layout background
+                    RoundedRectangle:
+                         pos: self.pos
+                         size: self.size
+                         radius: [dp(8)]
+
+               Label:
+                    id: status_label
+                    text: "Status: Ready"
+                    font_size: '15sp'
+                    bold: True
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    color: (1, 1, 1, 1)
 
 
-# Custom Reusable Rounded Button Component
+# =========================================================================
+# Custom Reusable Rounded Button Component (Completely Clean & Standard)
+# =========================================================================
 <RoundedButton@Button>:
      background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
      background_normal: ''         # 2. Clears default button behavior tints
@@ -586,13 +628,13 @@
 
      canvas.before:
           Color:
-            # Changes color dynamically when clicked (state is 'down')
+               #Changes color dynamically when clicked (state is 'down')
                rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
           RoundedRectangle:
                pos: self.pos
                size: self.size
                radius: [20]          # The corner roundness radius in pixels
-    
+
           
                     
 <Mywidget>:

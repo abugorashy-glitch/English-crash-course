@@ -796,29 +796,48 @@ class Windowfirst(Screen):
     def download_worker(self, url, save_path):
         """ 
         5. ENHANCED CONSOLE-SAFE DOWNLOAD WORKER
-        Dynamically grays out the Explain button during runtime downloads and 
-        displays a native alert popup window the exact second completion hits.
+        Scoped cleanly to prevent UnboundLocalError crashes on network drops.
+        Dynamically handles button states and user notifications perfectly.
         """
         import os
         import sys
         from kivy.clock import Clock
         from kivy.utils import platform
-        
+
         # =========================================================================
-        # 🔒 STEP 1: GRAY OUT THE EXPLAIN BUTTON ON THE PRIMARY INTERFACE
+        # 🛡️ GLOBAL UI STATE MANAGERS (Defined at the top to prevent scope crashes!)
         # =========================================================================
         def disable_explain_button(dt):
-            # Assumes your 'Explain' button id is named 'explain_btn' inside crashcourse.kv
             if self.ids and 'explain_btn' in self.ids:
                 self.ids.explain_btn.disabled = True
-                self.ids.explain_btn.opacity = 0.5  # Creates a muted, grayed-out effect
-        Clock.schedule_once(disable_explain_button, 0)
+                self.ids.explain_btn.opacity = 0.5  # Muted, grayed-out effect
+
+        def handle_download_success(dt):
+            if self.ids and 'explain_btn' in self.ids:
+                self.ids.explain_btn.disabled = False
+                self.ids.explain_btn.opacity = 1.0  # Full color state restored
+            if self.ids and 'status_label' in self.ids:
+                self.ids.status_label.text = "Status: Download Complete!"
+            
+            # Show standard completion alert popup
+            self.show_fallback_alert("🎉 Success", "The lesson video has finished downloading successfully!")
+            self.launch_embedded_videoplayer(save_path)
+
+        def handle_download_failure(dt):
+            if self.ids and 'explain_btn' in self.ids:
+                self.ids.explain_btn.disabled = False
+                self.ids.explain_btn.opacity = 1.0
+            if self.ids and 'status_label' in self.ids:
+                self.ids.status_label.text = "Status: Download Failed"
+            
+            self.show_fallback_alert("⚠️ Download Failed", "Could not complete video download. Please check your signal and retry.")
 
         def ui_msg(dt, text_str):
             if self.ids and 'status_label' in self.ids: 
                 self.ids.status_label.text = text_str
-            else:
-                print(f"[DOWNLOAD STATUS] {text_str}")
+
+        # 🔒 Lock button immediately
+        Clock.schedule_once(disable_explain_button, 0)
         Clock.schedule_once(lambda dt: ui_msg(dt, "Downloading lesson video... 0%"), 0)
 
         # Dynamic internal hook to calculate real-time download percentages safely
@@ -846,7 +865,12 @@ class Windowfirst(Screen):
                 'progress_hooks': [progress_hook], 
                 'quiet': True, 
                 'no_warnings': True,
-                'user_agent': 'Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0',
+                'nocheckcertificate': True,
+                'extractor_args': {
+                    'youtube': {'player_client': ['android']},
+                    'generic': {'http_headers': {'User-Agent': 'TelegramAndroidBotSDK/2.0'}}
+                },
+                'user_agent': 'Mozilla/5.0 (Linux; Android 14; Mobile; rv:128.0) TelegramAndroid/10.0',
                 'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
             }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -858,24 +882,6 @@ class Windowfirst(Screen):
             null_stream.close()
             
             print(f"🎬 Video stream complete: {save_path}")
-            
-            # =========================================================================
-            # 🎉 STEP 2: RE-ENABLE BUTTON & SHOW THE "DOWNLOAD COMPLETE" SUCCESS DIALOG
-            # =========================================================================
-            def handle_download_success(dt):
-                if self.ids and 'explain_btn' in self.ids:
-                    self.ids.explain_btn.disabled = False
-                    self.ids.explain_btn.opacity = 1.0  # Restores full visibility color state
-                
-                if self.ids and 'status_label' in self.ids:
-                    self.ids.status_label.text = "Status: Download Complete!"
-                
-                # Triggers your built-in popup box to let the user know it is finished
-                self.show_fallback_alert("🎉 Success", "The lesson video has finished downloading successfully!")
-                
-                # Instantly launches your video player screen overlay frame
-                self.launch_embedded_videoplayer(save_path)
-
             Clock.schedule_once(handle_download_success, 0.5)
             
         except Exception as download_error:
@@ -891,30 +897,22 @@ class Windowfirst(Screen):
                 except: pass
 
             # =========================================================================
-            # 🚨 RE-ENABLE BUTTON & TRIGGER FALLBACK IN CASE OF ERROR
+            # 🚨 DESKTOP OVERRIDE: Safe from UnboundLocalErrors now!
             # =========================================================================
-            def handle_download_failure(dt):
-                if self.ids and 'explain_btn' in self.ids:
-                    self.ids.explain_btn.disabled = False
-                    self.ids.explain_btn.opacity = 1.0
-                if self.ids and 'status_label' in self.ids:
-                    self.ids.status_label.text = "Status: Download Failed"
-                
-                self.show_fallback_alert("⚠️ Download Failed", "Could not complete video download. Please check your signal and retry.")
-
-            # Desktop mock asset fallback layer engine override
             if platform != 'android':
                 print("⚠️ Network blocked on PC. Generating a mock video asset layout for UI testing...")
                 try:
                     with open(save_path, 'wb') as mock_vid:
                         mock_vid.write(b"\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00mp42isom" + b"\x00" * 50000)
                     
+                    # Safely schedule the success layout since it is now defined globally!
                     Clock.schedule_once(handle_download_success, 0.2)
                 except Exception as mock_err:
                     print(f"Bypass file generation failed: {mock_err}")
                     Clock.schedule_once(handle_download_failure, 0)
             else:
                 Clock.schedule_once(handle_download_failure, 0)
+
 
         
     def launch_embedded_videoplayer(self, video_filepath):
