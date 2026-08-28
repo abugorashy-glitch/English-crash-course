@@ -448,156 +448,172 @@
                     
 <Windowfirst>:
      name: "w_screen"
-     id:w_screen1
+     id: w_screen1
+
+    # 📱 THE MASTER COMPONENT SHIELD: Nesting everything inside ONE single layout 
+    # container allows us to apply a safe top padding buffer, completely pushing 
+    # your ActionBar comfortably beneath Android's status notifications and camera notches.
      BoxLayout:
           orientation: 'vertical'
-          padding: [dp(15), dp(45), dp(15), dp(10)] # Left, Top padding buffer, Right, Bottom padding buffer
-          spacing: dp(15)
-     
-     FloatLayout:
-          
-          ActionBar:
-               pos_hint:{'top':1}
-               ActionView:
-                    use_separator:True
-                    ActionPrevious:
-                         title:'   GoBack'
-                         on_press:
-                              app.root.current="home_screen"
-                         with_previous:False
-                    ActionGroup:
-                         mode:'spinner'
-                         text:'Menu'
-                         ActionButton:
-                              text:'Grammar Page'
-                              on_press:
-                                   app.root.current="page1" 
-                         ActionButton
-                              text:'Listening'
-                              on_press:
-                                   app.root.current="ww"
-                         ActionButton
-                              text:'Vocabulary Test'
-                              on_press:
-                                   app.root.current="v2"
-                         ActionButton
-                              text:'Phrasal Verbs'
-                              on_press:
-                                   app.root.current="phrasal"
-                         ActionButton:
-                              text:'Punctuation'
-                              on_press:
-                                   app.root.current="punc1"
-                         
-                                   
-          
-     
-     BoxLayout:
-          orientation: 'vertical'
+          padding: [dp(10), dp(45), dp(10), dp(5)] # [Left, Safe Top Margin, Right, Bottom]
           spacing: dp(10)
-          Label:
-               text:''
-               id:record3
-               height:dp(30)
-               text_size:self.size
+
+        # =========================================================================
+        # 1. TOP LAYOUT PANEL: THE ACTION NAVIGATION BAR
+        # =========================================================================
+                  # =========================================================================
+        # 1. TOP LAYOUT PANEL: THE ACTION NAVIGATION BAR (FIXED INDENTATION)
+        # =========================================================================
           BoxLayout:
-               size_hint_y:None
-               heigh:dp(30)
-               CheckBox:
-                    group:'mygroup'
-                    size_hint_x:None
-                    width:dp(32)
-                    allow_no_selection:False
-                    id:check1
-                    on_active:root.trigger_sound(self.active)
+               size_hint_y: None
+               height: dp(50)
+            
+               ActionBar:
+                    pos_hint: {'top': 1}
+                    ActionView:
+                         use_separator: True
+                         ActionPrevious:
+                              title: '   GoBack'
+                              on_press: app.root.current = "home_screen"
+                              with_previous: False
+                         ActionGroup:
+                              mode: 'spinner'
+                              text: 'Menu'
+                              ActionButton:
+                                   text: 'Grammar Page'
+                                   on_press: app.root.current = "page1" 
+                              ActionButton:
+                                   text: 'Listening'
+                                   on_press: app.root.current = "ww"
+                              ActionButton:
+                                   text: 'Vocabulary Test'
+                                   on_press: app.root.current = "v2"
+                              ActionButton:
+                                   text: 'Phrasal Verbs'
+                                   on_press: app.root.current = "phrasal"
+                              ActionButton:
+                                   text: 'Punctuation'
+                                   on_press: app.root.current = "punc1"
+
+
+        # =========================================================================
+        # 2. CENTER PANEL: CONTENT DISPLAY & QUIZ BOX SELECTIONS
+        # =========================================================================
+          BoxLayout:
+               orientation: 'vertical'
+               spacing: dp(8)
+            
+            # The Main Question Block Text Window Frame
+               Label:
+                    text: ''
+                    id: record3
+                    size_hint_y: None
+                    height: dp(40)
+                    text_size: self.size
+                    valign: 'middle'
+
+            # Choice Selection Row 1
+               BoxLayout:
+                    size_hint_y: None
+                    height: dp(35)
+                    spacing: dp(5)
+                    CheckBox:
+                         group: 'mygroup'
+                         size_hint_x: None
+                         width: dp(32)
+                         allow_no_selection: False
+                         id: check1
+                         on_active: root.trigger_sound(self.active)
+                    Label:
+                         id: lll1
+                         text_size: self.size
+                         halign: 'left'
+                         valign: 'center'
+                         text: ''
                     
+            # Choice Selection Row 2
+               BoxLayout:
+                    size_hint_y: None
+                    height: dp(35)
+                    spacing: dp(5)
+                    CheckBox:
+                         group: 'mygroup'
+                         size_hint_x: None
+                         width: dp(32)
+                         id: check2
+                         on_active: root.trigger_sound(self.active)
+                    Label:
+                         id: lll2
+                         text_size: self.size
+                         halign: 'left'
+                         valign: 'center'
+                         text: ''
+
+            # Choice Selection Row 3
+               BoxLayout:
+                    size_hint_y: None
+                    height: dp(35)
+                    spacing: dp(5)
+                    CheckBox:
+                         group: 'mygroup'
+                         size_hint_x: None
+                         width: dp(32)
+                         id: check3
+                         on_active: root.trigger_sound(self.active)
+                    Label:
+                         id: lll3
+                         text_size: self.size
+                         halign: 'left'
+                         valign: 'center'
+                         text: ''
+
+            # Flexible Spacer Module: Pushes the action button grids cleanly to the baseline
                Label:
-                    id:lll1
-                    text_size:self.size
-                    halign:'left'
-                    valign:'center'
-                    text:''
-                    
-          BoxLayout:
-               size_hint_y:None
-               heigh:dp(30)
-               CheckBox:
-                    group:'mygroup'
-                    size_hint_x:None
-                    width:dp(32)
-                    id:check2
-                    on_active:root.trigger_sound(self.active)
-                    
-               Label:
-                    id:lll2
-                    text_size:self.size
-                    halign:'left'
-                    valign:'center'
-                    text:''
-          BoxLayout:
-               size_hint_y:None
-               heigh:dp(30)
-               CheckBox:
-                    group:'mygroup'
-                    size_hint_x:None
-                    width:dp(32)
-                    id:check3
-                    on_active:root.trigger_sound(self.active)
-               Label:
-                    id:lll3
-                    text_size:self.size
-                    halign:'left'
-                    valign:'center'
-                    text:''
-          BoxLayout:
-               Label:
-                    id:null
-                    text_size:self.size
-                    halign:'left'
-                    valign:'center'
-                    text:''
-               
-                  # -------------------------------------------------------------
-        # 2. MIDDLE SECTION: Your Bottom Navigation Actions Panel
-        # -------------------------------------------------------------
+                    id: null
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'center'
+                    text: ''
+
+        # =========================================================================
+        # 3. LOWER MIDDLE PANEL: BOTTOM ROUNDED NAVIGATION GRID
+        # =========================================================================
           BoxLayout:
                size_hint_y: None
                height: '65dp'
                spacing: dp(10)
                padding: [dp(5), 0, dp(5), 0]
 
-            # Button 1: Move Next
                RoundedButton:
                     text: "Move Next"
                     on_press: 
                          root.on_pre_enter()
                          root.remove_check()
 
-            # Button 2: Stop Here
                RoundedButton:
                     text: "STOPE HERE"
                     on_press: 
                          root.stophere()
 
-            #  Button 3: Explain
                RoundedButton:
                     id: explain_btn
                     text: "Explain"
                     on_press:
                          root.on_explain_button_click()
 
-        # -------------------------------------------------------------
-        # 3. ABSOLUTE BOTTOM SECTION: The Standalone Status Footer Anchor
-        # -------------------------------------------------------------
-        # Placed outside the buttons, completely safe, and locked at the baseline!
+        # =========================================================================
+        # 4. ABSOLUTE FOOTER PANEL: THE PERMANENT PROGRESS BAR CAPSULE
+        # =========================================================================
+        # Because this sits at the very end of the master vertical container layout box,
+        # it is guaranteed to sit safely visible at the baseline of your phone glass array!
           BoxLayout:
                size_hint_y: None
                height: '40dp'
-               padding: [dp(5), 0, dp(5), 0]
+               padding: [dp(5), 0, dp(5), dp(5)]
             
                canvas.before:
                     Color:
-                         rgba: (0.15, 0.15, 0.18, 0.85) # Charcoal progress pill layout background
+                         rgba: (0.15, 0.15, 0.18, 0.85)
                     RoundedRectangle:
                          pos: self.pos
                          size: self.size
@@ -618,22 +634,22 @@
 # Custom Reusable Rounded Button Component (Completely Clean & Standard)
 # =========================================================================
 <RoundedButton@Button>:
-     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
-     background_normal: ''         # 2. Clears default button behavior tints
-     color: 1, 1, 1, 1             # White text color
+     background_color: 0, 0, 0, 0  
+     background_normal: ''         
+     color: 1, 1, 1, 1             
      font_size: '18sp'
      bold: True
      size_hint_y: None
-     height: '60dp'                # Explicit touch-friendly mobile height
+     height: '60dp'                
 
      canvas.before:
           Color:
-               #Changes color dynamically when clicked (state is 'down')
                rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
           RoundedRectangle:
                pos: self.pos
                size: self.size
-               radius: [20]          # The corner roundness radius in pixels
+               radius: [20]
+
 
           
                     
