@@ -448,21 +448,18 @@
                     
 <Windowfirst>:
      name: "w_screen"
-     id: w_screen1
+     id: w_screen
 
-    # 📱 THE MASTER COMPONENT SHIELD: Nesting everything inside ONE single layout 
-    # container allows us to apply a safe top padding buffer, completely pushing 
-    # your ActionBar comfortably beneath Android's status notifications and camera notches.
+    # 📱 UNIFIED PHONE INTERFACE WRAPPER
+    # Compresses all elements into a single vertical container stack with a robust top margin padding 
+    # to push your tools comfortably below camera cutouts and system notches.
      BoxLayout:
           orientation: 'vertical'
-          padding: [dp(10), dp(45), dp(10), dp(5)] # [Left, Safe Top Margin, Right, Bottom]
+          padding: [dp(12), dp(55), dp(12), dp(15)] 
           spacing: dp(10)
 
         # =========================================================================
-        # 1. TOP LAYOUT PANEL: THE ACTION NAVIGATION BAR
-        # =========================================================================
-                  # =========================================================================
-        # 1. TOP LAYOUT PANEL: THE ACTION NAVIGATION BAR (FIXED INDENTATION)
+        # 1. TOP LAYOUT PANEL: THE ACTION NAVIGATION BAR 
         # =========================================================================
           BoxLayout:
                size_hint_y: None
@@ -495,15 +492,14 @@
                                    text: 'Punctuation'
                                    on_press: app.root.current = "punc1"
 
-
         # =========================================================================
         # 2. CENTER PANEL: CONTENT DISPLAY & QUIZ BOX SELECTIONS
         # =========================================================================
           BoxLayout:
                orientation: 'vertical'
                spacing: dp(8)
+               size_hint_y: 1.0 
             
-            # The Main Question Block Text Window Frame
                Label:
                     text: ''
                     id: record3
@@ -512,7 +508,6 @@
                     text_size: self.size
                     valign: 'middle'
 
-            # Choice Selection Row 1
                BoxLayout:
                     size_hint_y: None
                     height: dp(35)
@@ -531,7 +526,6 @@
                          valign: 'center'
                          text: ''
                     
-            # Choice Selection Row 2
                BoxLayout:
                     size_hint_y: None
                     height: dp(35)
@@ -549,7 +543,6 @@
                          valign: 'center'
                          text: ''
 
-            # Choice Selection Row 3
                BoxLayout:
                     size_hint_y: None
                     height: dp(35)
@@ -567,13 +560,9 @@
                          valign: 'center'
                          text: ''
 
-            # Flexible Spacer Module: Pushes the action button grids cleanly to the baseline
-               Label:
+               Widget:
                     id: null
-                    text_size: self.size
-                    halign: 'left'
-                    valign: 'center'
-                    text: ''
+                    size_hint_y: 1.0
 
         # =========================================================================
         # 3. LOWER MIDDLE PANEL: BOTTOM ROUNDED NAVIGATION GRID
@@ -602,18 +591,16 @@
                          root.on_explain_button_click()
 
         # =========================================================================
-        # 4. ABSOLUTE FOOTER PANEL: THE PERMANENT PROGRESS BAR CAPSULE
+        # 4. ABSOLUTE FOOTER PANEL: SYSTEM PROGRESS CONTAINER
         # =========================================================================
-        # Because this sits at the very end of the master vertical container layout box,
-        # it is guaranteed to sit safely visible at the baseline of your phone glass array!
           BoxLayout:
                size_hint_y: None
-               height: '40dp'
-               padding: [dp(5), 0, dp(5), dp(5)]
+               height: dp(40) 
+               padding: [dp(5), 0, dp(5), 0]
             
                canvas.before:
                     Color:
-                         rgba: (0.15, 0.15, 0.18, 0.85)
+                         rgba: (0.15, 0.15, 0.18, 0.90) 
                     RoundedRectangle:
                          pos: self.pos
                          size: self.size
@@ -621,17 +608,17 @@
 
                Label:
                     id: status_label
-                    text: "Status: Ready"
+                    # 👉 FIXED: Hardcoded Color Code forces text visibility on mobile devices!
+                    text: "[color=#FFFFFF]Status: Ready[/color]"
+                    markup: True # <-- Enforces font code processing overrides
                     font_size: '15sp'
                     bold: True
                     halign: 'center'
                     valign: 'middle'
-                    text_size: self.size
-                    color: (1, 1, 1, 1)
-
+                    text_size: (self.width, None)
 
 # =========================================================================
-# Custom Reusable Rounded Button Component (Completely Clean & Standard)
+# Custom Reusable Rounded Button Component (Fully Responsive to Python)
 # =========================================================================
 <RoundedButton@Button>:
      background_color: 0, 0, 0, 0  
@@ -644,7 +631,11 @@
 
      canvas.before:
           Color:
-               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+            # 👉 THE PIECE THAT FIXES EVERYTHING: 
+            # The canvas color alpha parameter is now dynamically multiplied by self.opacity. 
+            # When Python drops the button opacity to 0.4, the blue background shape fades 
+            # into the background cleanly, instantly unmasking your status_label text below it!
+               rgba: (0.12, 0.43, 0.93, self.opacity) if self.state == 'normal' else (0.08, 0.33, 0.73, self.opacity)
           RoundedRectangle:
                pos: self.pos
                size: self.size

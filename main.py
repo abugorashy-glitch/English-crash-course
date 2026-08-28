@@ -860,19 +860,28 @@ class Windowfirst(Screen):
             sys.stdout = null_stream
             sys.stderr = null_stream
 
+                        # =========================================================================
+            # 🚀 THE ABSOLUTE FINAL PRODUCTION-READY YT-DLP CONFIGURATION
+            # =========================================================================
             ydl_opts = {
                 'outtmpl': save_path, 
                 'progress_hooks': [progress_hook], 
                 'quiet': True, 
                 'no_warnings': True,
                 'nocheckcertificate': True,
+                
+                # 👉 THE CRITICAL ANDROID FIX: 
+                # Forces yt-dlp to request a single, pre-merged MP4 stream.
+                # This completely cuts out the need for FFmpeg merges on mobile devices!
+                'format': 'best[ext=mp4]/mp4',
+                
                 'extractor_args': {
                     'youtube': {'player_client': ['android']},
                     'generic': {'http_headers': {'User-Agent': 'TelegramAndroidBotSDK/2.0'}}
                 },
-                'user_agent': 'Mozilla/5.0 (Linux; Android 14; Mobile; rv:128.0) TelegramAndroid/10.0',
-                'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+                'user_agent': 'Mozilla/5.0 (Linux; Android 14; Mobile) TelegramAndroid/10.0'
             }
+
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
                 
@@ -6762,7 +6771,7 @@ class SplashScreen(Screen):
         # has been completely removed to stop false offline triggers on Windows 10 and Android!
 
         self.current_file_index = 0
-        socket.setdefaulttimeout(45)
+        # socket.setdefaulttimeout(45)
         
         # Track the last exception message to display the correct text to the user if everything fails
         last_error_message = "Unknown network error."
