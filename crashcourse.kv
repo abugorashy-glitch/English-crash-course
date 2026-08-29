@@ -450,17 +450,15 @@
      name: "w_screen"
      id: w_screen
 
-    # 📱 UNIFIED PHONE INTERFACE WRAPPER
-    # Compresses all elements into a single vertical container stack with a robust top margin padding 
-    # to push your tools comfortably below camera cutouts and system notches.
+     # 📱 MASTER VERTICAL RECOVERY LAYOUT
      BoxLayout:
           orientation: 'vertical'
           padding: [dp(12), dp(55), dp(12), dp(15)] 
           spacing: dp(10)
 
-        # =========================================================================
-        # 1. TOP LAYOUT PANEL: THE ACTION NAVIGATION BAR 
-        # =========================================================================
+          # =========================================================================
+          # 1. TOP LAYOUT PANEL: THE ACTION NAVIGATION BAR 
+          # =========================================================================
           BoxLayout:
                size_hint_y: None
                height: dp(50)
@@ -492,9 +490,9 @@
                                    text: 'Punctuation'
                                    on_press: app.root.current = "punc1"
 
-        # =========================================================================
-        # 2. CENTER PANEL: CONTENT DISPLAY & QUIZ BOX SELECTIONS
-        # =========================================================================
+          # =========================================================================
+          # 2. CENTER PANEL: CONTENT DISPLAY & QUIZ BOX SELECTIONS
+          # =========================================================================
           BoxLayout:
                orientation: 'vertical'
                spacing: dp(8)
@@ -518,7 +516,8 @@
                          width: dp(32)
                          allow_no_selection: False
                          id: check1
-                         on_active: root.trigger_sound(self.active)
+                         # 👉 FIXED: Changed self.active to active to prevent Android syntax drops
+                         on_active: root.trigger_sound(active)
                     Label:
                          id: lll1
                          text_size: self.size
@@ -535,7 +534,7 @@
                          size_hint_x: None
                          width: dp(32)
                          id: check2
-                         on_active: root.trigger_sound(self.active)
+                         on_active: root.trigger_sound(active)
                     Label:
                          id: lll2
                          text_size: self.size
@@ -552,7 +551,7 @@
                          size_hint_x: None
                          width: dp(32)
                          id: check3
-                         on_active: root.trigger_sound(self.active)
+                         on_active: root.trigger_sound(active)
                     Label:
                          id: lll3
                          text_size: self.size
@@ -564,9 +563,9 @@
                     id: null
                     size_hint_y: 1.0
 
-        # =========================================================================
-        # 3. LOWER MIDDLE PANEL: BOTTOM ROUNDED NAVIGATION GRID
-        # =========================================================================
+          # =========================================================================
+          # 3. LOWER MIDDLE PANEL: BOTTOM ROUNDED NAVIGATION GRID
+          # =========================================================================
           BoxLayout:
                size_hint_y: None
                height: '65dp'
@@ -590,9 +589,9 @@
                     on_press:
                          root.on_explain_button_click()
 
-        # =========================================================================
-        # 4. ABSOLUTE FOOTER PANEL: SYSTEM PROGRESS CONTAINER
-        # =========================================================================
+          # =========================================================================
+          # 4. ABSOLUTE FOOTER PANEL: SYSTEM PROGRESS CONTAINER
+          # =========================================================================
           BoxLayout:
                size_hint_y: None
                height: dp(40) 
@@ -608,9 +607,8 @@
 
                Label:
                     id: status_label
-                    # 👉 FIXED: Hardcoded Color Code forces text visibility on mobile devices!
                     text: "[color=#FFFFFF]Status: Ready[/color]"
-                    markup: True # <-- Enforces font code processing overrides
+                    markup: True 
                     font_size: '15sp'
                     bold: True
                     halign: 'center'
@@ -631,15 +629,12 @@
 
      canvas.before:
           Color:
-            # 👉 THE PIECE THAT FIXES EVERYTHING: 
-            # The canvas color alpha parameter is now dynamically multiplied by self.opacity. 
-            # When Python drops the button opacity to 0.4, the blue background shape fades 
-            # into the background cleanly, instantly unmasking your status_label text below it!
                rgba: (0.12, 0.43, 0.93, self.opacity) if self.state == 'normal' else (0.08, 0.33, 0.73, self.opacity)
           RoundedRectangle:
                pos: self.pos
                size: self.size
                radius: [20]
+
 
 
           
