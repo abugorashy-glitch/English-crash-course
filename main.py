@@ -1,5 +1,5 @@
 import sys
-# Bypasses low-level architecture conflicts inside python-bidi binary hooks on Android
+# Bypasses low-level architecture conflicts insid python-bidi binary hooks on Android
 #sys.modules['bidi._bidi'] = None
 
 import kivy
