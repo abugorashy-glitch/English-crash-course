@@ -54,7 +54,7 @@ jobs:
 
       - name: Build Android APK
         run: | 
-           buildozer distclean
+           buildozer distclean -y
            buildozer --verbose android debug
 
       - name: Upload APK Artifact
