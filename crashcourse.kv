@@ -1,4 +1,4 @@
-#
+
 <MyScreenManager>:
      SplashScreen:
           name: 'splash'
@@ -453,7 +453,7 @@
      # 📱 MASTER VERTICAL RECOVERY LAYOUT
      BoxLayout:
           orientation: 'vertical'
-          padding: [dp(12), dp(55), dp(12), dp(15)] 
+          padding: [dp(12), dp(45), dp(12), dp(15)] 
           spacing: dp(10)
 
           # =========================================================================
@@ -491,84 +491,87 @@
                                    on_press: app.root.current = "punc1"
 
           # =========================================================================
-          # 2. CENTER PANEL: CONTENT DISPLAY & QUIZ BOX SELECTIONS
+          # 2. CENTER PANEL: SCROLLABLE CONTENT DISPLAY & QUIZ BOX SELECTIONS
           # =========================================================================
-          BoxLayout:
-               orientation: 'vertical'
-               spacing: dp(8)
-               size_hint_y: 1.0 
+          ScrollView:
+               size_hint_y: 1.0  # Takes up all adaptive remaining space safely
+               do_scroll_x: False
+               do_scroll_y: True
+               bar_width: dp(4)
+
+               GridLayout:
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height  # Grows perfectly with content
+                    spacing: dp(10)
+                    padding: [0, dp(5), 0, dp(5)]
             
-               Label:
-                    text: ''
-                    id: record3
-                    size_hint_y: None
-                    height: dp(40)
-                    text_size: self.size
-                    valign: 'middle'
-
-               BoxLayout:
-                    size_hint_y: None
-                    height: dp(35)
-                    spacing: dp(5)
-                    CheckBox:
-                         group: 'mygroup'
-                         size_hint_x: None
-                         width: dp(32)
-                         allow_no_selection: False
-                         id: check1
-                         # 👉 FIXED: Changed self.active to active to prevent Android syntax drops
-                         on_active: root.trigger_sound(active)
                     Label:
-                         id: lll1
-                         text_size: self.size
-                         halign: 'left'
-                         valign: 'center'
                          text: ''
-                    
-               BoxLayout:
-                    size_hint_y: None
-                    height: dp(35)
-                    spacing: dp(5)
-                    CheckBox:
-                         group: 'mygroup'
-                         size_hint_x: None
-                         width: dp(32)
-                         id: check2
-                         on_active: root.trigger_sound(active)
-                    Label:
-                         id: lll2
-                         text_size: self.size
-                         halign: 'left'
-                         valign: 'center'
-                         text: ''
+                         id: record3
+                         size_hint_y: None
+                         height: dp(40)
+                         text_size: (self.width, None)  # Allows multi-line text scrolling
+                         valign: 'middle'
 
-               BoxLayout:
-                    size_hint_y: None
-                    height: dp(35)
-                    spacing: dp(5)
-                    CheckBox:
-                         group: 'mygroup'
-                         size_hint_x: None
-                         width: dp(32)
-                         id: check3
-                         on_active: root.trigger_sound(active)
-                    Label:
-                         id: lll3
-                         text_size: self.size
-                         halign: 'left'
-                         valign: 'center'
-                         text: ''
+                    BoxLayout:
+                         size_hint_y: None
+                         height: dp(45)  # Slightly heightened for easier mobile finger tapping
+                         spacing: dp(5)
+                         CheckBox:
+                              group: 'mygroup'
+                              size_hint_x: None
+                              width: dp(32)
+                              allow_no_selection: False
+                              id: check1
+                              on_active: root.trigger_sound(active)
+                         Label:
+                              id: lll1
+                              text_size: self.size
+                              halign: 'left'
+                              valign: 'center'
+                              text: ''
+                        
+                    BoxLayout:
+                         size_hint_y: None
+                         height: dp(45)
+                         spacing: dp(5)
+                         CheckBox:
+                              group: 'mygroup'
+                              size_hint_x: None
+                              width: dp(32)
+                              id: check2
+                              on_active: root.trigger_sound(active)
+                         Label:
+                              id: lll2
+                              text_size: self.size
+                              halign: 'left'
+                              valign: 'center'
+                              text: ''
 
-               Widget:
-                    id: null
-                    size_hint_y: 1.0
+                    BoxLayout:
+                         size_hint_y: None
+                         height: dp(45)
+                         spacing: dp(5)
+                         CheckBox:
+                              group: 'mygroup'
+                              size_hint_x: None
+                              width: dp(32)
+                              id: check3
+                              on_active: root.trigger_sound(active)
+                         Label:
+                              id: lll3
+                              text_size: self.size
+                              halign: 'left'
+                              valign: 'center'
+                              text: ''
 
           # =========================================================================
           # 3. LOWER MIDDLE PANEL: BOTTOM ROUNDED NAVIGATION GRID
           # =========================================================================
           BoxLayout:
                size_hint_y: None
-               height: '65dp'
+               height: dp(65)
                spacing: dp(10)
                padding: [dp(5), 0, dp(5), 0]
 
@@ -613,7 +616,7 @@
                     bold: True
                     halign: 'center'
                     valign: 'middle'
-                    text_size: (self.width, None)
+                    text_size: self.size  # Locks text bounds properly inside the container
 
 # =========================================================================
 # Custom Reusable Rounded Button Component (Fully Responsive to Python)
@@ -625,7 +628,7 @@
      font_size: '18sp'
      bold: True
      size_hint_y: None
-     height: '60dp'                
+     height: dp(60)                
 
      canvas.before:
           Color:
@@ -634,6 +637,7 @@
                pos: self.pos
                size: self.size
                radius: [20]
+
 
 
 
