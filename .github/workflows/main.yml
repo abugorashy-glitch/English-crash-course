@@ -52,8 +52,15 @@ jobs:
           # Pinning buildozer to a stable 1.5.0 version handles older architectures cleanly
           pip install "buildozer==1.5.0"
 
+      - name: Clean Build Artifacts
+        run: |
+           rm -rf bin/
+           rm -rf build/
+           rm -rf .buildozer/
+
       - name: Build Android APK
-        run:  buildozer --verbose android debug
+        run:
+           buildozer --verbose android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
