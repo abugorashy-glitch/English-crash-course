@@ -1,5 +1,11 @@
+
+from kivy.config import Config
+# Forces your desktop app to open in a vertical phone resolution
+Config.set('graphics', 'width', '360')
+Config.set('graphics', 'height', '740')
+
 import sys
-# Bypasses low-level architecture conflicts insid python-bidi binary hooks on Android
+# Bypasses low-level architecture conflicts inside python-bidi binary hooks on Android
 #sys.modules['bidi._bidi'] = None
 
 import kivy
@@ -37,6 +43,9 @@ Config.set('graphics', 'width', '400')
 Config.set('graphics', 'height', '500')
 
 from kivy.app import App
+from kivy.core.window import Window
+# 👉 FORCE ANDROID TO NEVER RESIZE OR CRUSH FOOTER WIDGETS
+Window.softinput_mode = 'adjustPan'
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
