@@ -1,23 +1,37 @@
 
+# ⚙️ STEP 1: INITIALIZE WINDOW DIMENSIONS (Must be lines 1, 2 & 3!)
+# =========================================================================
+# This forces the desktop emulator to lock its proportions BEFORE any other 
+# module has the chance to spin up Kivy's core graphics engine layer.
 from kivy.config import Config
-# Forces your desktop app to open in a vertical phone resolution
-Config.set('graphics', 'width', '360')
-Config.set('graphics', 'height', '740')
+Config.set('graphics', 'width', '400')
+Config.set('graphics', 'height', '500')
 
-import sys
-# Bypasses low-level architecture conflicts inside python-bidi binary hooks on Android
-#sys.modules['bidi._bidi'] = None
-
-import kivy
-
+# =========================================================================
+# 📦 STEP 2: LOAD MAIN SYSTEM PYTHON ENVIRONMENT
+# =========================================================================
 import os
-import certifi
+import sys
+import socket
+import shutil
+import threading
+import urllib.request
+import sqlite3
+import random
+import codecs
+import io
 
-# This points your app to the correct web security certificates
-os.environ['SSL_CERT_FILE'] = certifi.where()
+# Bypasses low-level architecture conflicts inside python-bidi binary hooks on Android
+# sys.modules['bidi._bidi'] = None
+
+# =========================================================================
+# 📱 STEP 3: NATIVE SECURITY SHIELDS
+# =========================================================================
+import kivy
 from kivy.utils import platform
 
-# 🔐 FORCE PYTHON TO USE CERTIFI SECURITY ON ANDROID
+# 🔐 FORCE PYTHON TO USE TRUSTED CERTIFICATES ON ANDROID ONLY
+# This ensures certificates are mapped inside the stable mobile execution frame.
 if platform == 'android':
     try:
         import certifi
@@ -25,41 +39,39 @@ if platform == 'android':
         print("🔒 [SECURITY] Certifi context successfully loaded into environment!")
     except Exception as ssl_err:
         print(f"🔒 [SECURITY] Failed to bind certifi context: {ssl_err}")
+else:
+    # Desktop Windows fallback layer
+    try:
+        import certifi
+        os.environ['SSL_CERT_FILE'] = certifi.where()
+    except:
+        pass
 
-import socket
-import shutil
-import threading
-import urllib.request
-import sqlite3
-import random
+# =========================================================================
+# 📝 STEP 4: ARABIC LINGUISTIC SHADERS
+# =========================================================================
 import arabic_reshaper
 from bidi.algorithm import get_display
-import codecs
-import io
-import sys
 
-from kivy.config import Config
-Config.set('graphics', 'width', '400')
-Config.set('graphics', 'height', '500')
-
+# =========================================================================
+# 🎨 STEP 5: KIVY USER INTERFACE MATRIX DESIGNERS
+# =========================================================================
 from kivy.app import App
 from kivy.core.window import Window
-# 👉 FORCE ANDROID TO NEVER RESIZE OR CRUSH FOOTER WIDGETS
-Window.softinput_mode = 'adjustPan'
-from kivy.uix.label import Label
-from kivy.uix.image import Image
-from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-
+from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 from kivy.properties import ObjectProperty, ListProperty
-from kivy.uix.videoplayer import VideoPlayer
-from kivy.uix.widget import Widget
-from kivy.core.window import Window
-from kivy.uix.popup import Popup
-from kivy.clock import Clock
 from kivy.graphics import Color, RoundedRectangle
-from kivy.uix.boxlayout import BoxLayout
+
+from kivy.uix.widget import Widget
+from kivy.uix.label import Label
+from kivy.uix.image import Image
 from kivy.uix.button import Button
+from kivy.uix.popup import Popup
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.videoplayer import VideoPlayer
+from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+
 
 class_punctuation1 = "false"
 class_punctuation2 = "false"

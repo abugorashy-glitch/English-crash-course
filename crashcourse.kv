@@ -595,36 +595,32 @@
           # =========================================================================
           # 4. ABSOLUTE FOOTER PANEL: SYSTEM PROGRESS CONTAINER
           # =========================================================================
+                  # =========================================================================
+        # 4. ABSOLUTE FOOTER PANEL: SYSTEM PROGRESS CONTAINER
+        # =========================================================================
           BoxLayout:
-               id: footer_container        # 👈 ADDED ID FOR EXPLICIT BINDING
                size_hint_y: None
-               height: dp(45)              # 👈 INCREASED SLIGHTLY TO ENSURE VISIBILITY
+               height: dp(45)              
                padding: [dp(10), 0, dp(10), 0]
             
                canvas.before:
                     Color:
                          rgba: (0.15, 0.15, 0.18, 0.90) 
-                    RoundedRectangle:
-                         pos: self.pos
-                         size: self.size
-                         radius: [dp(8)]
+               RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(8)]
 
                Label:
                     id: status_label
-                    text: "Status: Ready"    # 👈 TEMPORARILY REMOVE MARKUP COLOR TAGS TO TEST
+                    text: "Status: Ready"    
                     font_size: '16sp'
                     bold: True
                     halign: 'center'
                     valign: 'middle'
-                # 👇 THE CRITICAL FIX: Forces Android to match exact bounding widths/heights
-                    text_size: (footer_container.width - dp(20), footer_container.height)
-                     # 🟥 TEMPORARY DEBUG CANVAS: Remove after testing
-                    canvas.before:
-                         Color:
-                              rgba: (1, 0, 0, 1) # Solid Red Color
-                         Rectangle:
-                              pos: self.pos
-                              size: self.size
+                # 👇 SAFE AND STABLE: Wraps text safely using the label's own internal size
+                text_size: self.size
+
                # =========================================================================
 # Custom Reusable Rounded Button Component (Fully Responsive to Python)
 # =========================================================================
