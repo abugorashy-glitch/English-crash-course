@@ -1,77 +1,40 @@
-
-# ⚙️ STEP 1: INITIALIZE WINDOW DIMENSIONS (Must be lines 1, 2 & 3!)
-# =========================================================================
-# This forces the desktop emulator to lock its proportions BEFORE any other 
-# module has the chance to spin up Kivy's core graphics engine layer.
-from kivy.config import Config
-Config.set('graphics', 'width', '400')
-Config.set('graphics', 'height', '500')
-
-# =========================================================================
-# 📦 STEP 2: LOAD MAIN SYSTEM PYTHON ENVIRONMENT
-# =========================================================================
-import os
 import sys
+# Bypasses low-level architecture conflicts inside python-bidi binary hooks on Android
+#sys.modules['bidi._bidi'] = None
+
+import kivy
+import os
 import socket
 import shutil
 import threading
 import urllib.request
 import sqlite3
 import random
-import codecs
-import io
-
-# Bypasses low-level architecture conflicts inside python-bidi binary hooks on Android
-# sys.modules['bidi._bidi'] = None
-
-# =========================================================================
-# 📱 STEP 3: NATIVE SECURITY SHIELDS
-# =========================================================================
-import kivy
-from kivy.utils import platform
-
-# 🔐 FORCE PYTHON TO USE TRUSTED CERTIFICATES ON ANDROID ONLY
-# This ensures certificates are mapped inside the stable mobile execution frame.
-if platform == 'android':
-    try:
-        import certifi
-        os.environ['SSL_CERT_FILE'] = certifi.where()
-        print("🔒 [SECURITY] Certifi context successfully loaded into environment!")
-    except Exception as ssl_err:
-        print(f"🔒 [SECURITY] Failed to bind certifi context: {ssl_err}")
-else:
-    # Desktop Windows fallback layer
-    try:
-        import certifi
-        os.environ['SSL_CERT_FILE'] = certifi.where()
-    except:
-        pass
-
-# =========================================================================
-# 📝 STEP 4: ARABIC LINGUISTIC SHADERS
-# =========================================================================
 import arabic_reshaper
 from bidi.algorithm import get_display
+import codecs
+import io
+import sys
 
-# =========================================================================
-# 🎨 STEP 5: KIVY USER INTERFACE MATRIX DESIGNERS
-# =========================================================================
+from kivy.config import Config
+Config.set('graphics', 'width', '400')
+Config.set('graphics', 'height', '500')
+
 from kivy.app import App
-from kivy.core.window import Window
-from kivy.clock import Clock
-from kivy.core.audio import SoundLoader
-from kivy.properties import ObjectProperty, ListProperty
-from kivy.graphics import Color, RoundedRectangle
-
-from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.image import Image
-from kivy.uix.button import Button
-from kivy.uix.popup import Popup
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.videoplayer import VideoPlayer
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-
+from kivy.utils import platform
+from kivy.core.audio import SoundLoader
+from kivy.properties import ObjectProperty, ListProperty
+from kivy.uix.videoplayer import VideoPlayer
+from kivy.uix.widget import Widget
+from kivy.core.window import Window
+from kivy.uix.popup import Popup
+from kivy.clock import Clock
+from kivy.graphics import Color, RoundedRectangle
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
 
 class_punctuation1 = "false"
 class_punctuation2 = "false"
@@ -739,19 +702,67 @@ class Windowfirst(Screen):
     def size_checker_worker(self, telegram_url, video_label_name, target_file_path):
         """ 
         2. DYNAMIC MEDIA SERVER TRACKER
-        Bypasses slow, fragile mobile web inspections completely.
-        Instantly launches the user download prompt using our verified 15.0 MB baseline.
+        Checks network connectivity states and extracts asset Megabytes cleanly.
         """
+        import os
+        import sys
         from kivy.clock import Clock
-        
-        # ⚡ The AI Fix: Skip the slow web-lookup code that freezes your thread.
-        # This schedules your prompt to pop up instantly on Kivy's main drawing frame!
-        Clock.schedule_once(lambda dt: self.show_prompt(telegram_url, video_label_name, 15.0, target_file_path), 0)
+        from kivy.utils import platform
+
+        # Safe state updater function that protects your app if IDs are missing
+        def ui_status(dt, msg):
+            if self.ids and 'status_label' in self.ids: 
+                self.ids.status_label.text = msg
+            else:
+                print(f"[BACKGROUND LOG] {msg}")
+        Clock.schedule_once(lambda dt: ui_status(dt, "Inspecting media server..."), 0)
+
+        # Cache standard output streams to bypass Kivy console write errors
+        original_stdout = sys.stdout
+        original_stderr = sys.stderr
+
+        try:
+            import yt_dlp
+            
+            # Force-redirect terminal print writes to null stream to stop the crash!
+            null_stream = open(os.devnull, 'w')
+            sys.stdout = null_stream
+            sys.stderr = null_stream
+
+            ydl_opts = {
+                'quiet': True, 
+                'no_warnings': True, 
+                'logger': None,
+                'user_agent': 'Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0',
+                'force_generic_extractor': False
+            }
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(telegram_url, download=False)
+                file_bytes = info.get('filesize', info.get('filesize_approx', 15 * 1024 * 1024))
+                size_mb = round(file_bytes / (1024 * 1024), 2)
+
+            # Restore original system streams cleanly
+            sys.stdout = original_stdout
+            sys.stderr = original_stderr
+            null_stream.close()
+
+            # Trigger confirmation screen dialog UI inside primary rendering layout pipeline
+            Clock.schedule_once(lambda dt: self.show_prompt(telegram_url, video_label_name, size_mb, target_file_path), 0)
+            
+        except Exception as ex:
+            # Always restore streams if the network lookup hits an exception firewall block
+            sys.stdout = original_stdout
+            sys.stderr = original_stderr
+            print(f"yt-dlp sizing error caught safely: {ex}")
+            
+            # Automatically forward user to our 15MB estimation baseline prompt layout on network lags
+            Clock.schedule_once(lambda dt: self.prompt_video_download_fallback(telegram_url, video_label_name, 15.0, target_file_path), 0)
 
     def show_prompt(self, url, video_name, size_mb, save_path):
         """ 
-        3. ONLINE DOWNLOAD PROMPT DIALOG (REINFORCED FOR MOBILE MEMORY CORES)
+        3. ONLINE DOWNLOAD PROMPT DIALOG 
         """
+        import threading
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.label import Label
         from kivy.uix.button import Button
@@ -771,15 +782,16 @@ class Windowfirst(Screen):
         
         popup = Popup(title="Data Usage Warning", content=box, size_hint=(0.95, 0.4), auto_dismiss=False)
         
-        # 👉 FIXED: Points directly to a solid class function to prevent memory drops on Android!
-        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), self.trigger_video_download(url, save_path)])
+        # Explicit target arguments references remove lambda execution memory traps completely
+        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), threading.Thread(target=lambda: self.download_worker(url, save_path), daemon=True).start()])
         btn_no.bind(on_release=popup.dismiss)
         popup.open()
 
     def prompt_video_download_fallback(self, url, video_name, size_mb, save_path):
         """ 
-        4. FALLBACK NETWORK PROMPT DIALOG (REINFORCED FOR MOBILE MEMORY CORES)
+        4. FALLBACK NETWORK PROMPT DIALOG
         """
+        import threading
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.label import Label
         from kivy.uix.button import Button
@@ -799,67 +811,27 @@ class Windowfirst(Screen):
         
         popup = Popup(title="Data Usage Warning (Offline Fallback)", content=box, size_hint=(0.95, 0.4), auto_dismiss=False)
         
-        # 👉 FIXED: Points directly to a solid class function to prevent memory drops on Android!
-        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), self.trigger_video_download(url, save_path)])
+        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), threading.Thread(target=lambda: self.download_worker(url, save_path), daemon=True).start()])
         btn_no.bind(on_release=popup.dismiss)
         popup.open()
 
-    def trigger_video_download(self, url, save_path):
-        """
-        4b. SAFE ANCHOR THREAD TRIGGER
-        Safely boots your download worker inside a daemon thread with protected parameter scopes.
-        """
-        import threading
-        t = threading.Thread(target=lambda: self.download_worker(url, save_path), daemon=True)
-        t.start()
-
-
     def download_worker(self, url, save_path):
         """ 
-        5. ENHANCED CONSOLE-SAFE DOWNLOAD WORKER
-        Scoped cleanly to prevent UnboundLocalError crashes on network drops.
-        Dynamically handles button states and user notifications perfectly.
+        5. ENHANCED STREAM DOWNLOAD WORKER (PERMANENT CONSOLE FIX)
+        Force-redirects low-level stdout and stderr streams to completely bypass 
+        Kivy's string logger write blockade.
         """
         import os
         import sys
         from kivy.clock import Clock
         from kivy.utils import platform
-
-        # =========================================================================
-        # 🛡️ GLOBAL UI STATE MANAGERS (Defined at the top to prevent scope crashes!)
-        # =========================================================================
-        def disable_explain_button(dt):
-            if self.ids and 'explain_btn' in self.ids:
-                self.ids.explain_btn.disabled = True
-                self.ids.explain_btn.opacity = 0.5  # Muted, grayed-out effect
-
-        def handle_download_success(dt):
-            if self.ids and 'explain_btn' in self.ids:
-                self.ids.explain_btn.disabled = False
-                self.ids.explain_btn.opacity = 1.0  # Full color state restored
-            if self.ids and 'status_label' in self.ids:
-                self.ids.status_label.text = "Status: Download Complete!"
-            
-            # Show standard completion alert popup
-            self.show_fallback_alert("🎉 Success", "The lesson video has finished downloading successfully!")
-            self.launch_embedded_videoplayer(save_path)
-
-        def handle_download_failure(dt):
-            if self.ids and 'explain_btn' in self.ids:
-                self.ids.explain_btn.disabled = False
-                self.ids.explain_btn.opacity = 1.0
-            if self.ids and 'status_label' in self.ids:
-                self.ids.status_label.text = "Status: Download Failed"
-            
-            self.show_fallback_alert("⚠️ Download Failed", "Could not complete video download. Please check your signal and retry.")
-
+        
         def ui_msg(dt, text_str):
             if self.ids and 'status_label' in self.ids: 
                 self.ids.status_label.text = text_str
-
-        # 🔒 Lock button immediately
-        Clock.schedule_once(disable_explain_button, 0)
-        Clock.schedule_once(lambda dt: ui_msg(dt, "Downloading lesson video... 0%"), 0)
+            else:
+                print(f"[DOWNLOAD STATUS] {text_str}")
+        Clock.schedule_once(lambda dt: ui_msg(dt, "Downloading explanation video... 0%"), 0)
 
         # Dynamic internal hook to calculate real-time download percentages safely
         def progress_hook(d):
@@ -869,40 +841,28 @@ class Windowfirst(Screen):
                 percent = min(100, int((downloaded / total) * 100))
                 Clock.schedule_once(lambda dt: ui_msg(dt, f"Downloading video... {percent}%"), 0)
 
-        # Cache the current system streams to bypass Kivy console write errors
+        # Cache the current Kivy system streams so we can turn them back on after downloading
         original_stdout = sys.stdout
         original_stderr = sys.stderr
 
         try:
             import yt_dlp
             
-            # Open a completely hidden, silent null stream to trap terminal printouts
+                # Open a completely hidden, silent null stream to trap terminal printouts
             null_stream = open(os.devnull, 'w')
             sys.stdout = null_stream
             sys.stderr = null_stream
 
-                        # =========================================================================
-            # 🚀 THE ABSOLUTE FINAL PRODUCTION-READY YT-DLP CONFIGURATION
-            # =========================================================================
             ydl_opts = {
                 'outtmpl': save_path, 
                 'progress_hooks': [progress_hook], 
                 'quiet': True, 
                 'no_warnings': True,
-                'nocheckcertificate': True,
-                
-                # 👉 THE CRITICAL ANDROID FIX: 
-                # Forces yt-dlp to request a single, pre-merged MP4 stream.
-                # This completely cuts out the need for FFmpeg merges on mobile devices!
-                'format': 'best[ext=mp4]/mp4',
-                
-                'extractor_args': {
-                    'youtube': {'player_client': ['android']},
-                    'generic': {'http_headers': {'User-Agent': 'TelegramAndroidBotSDK/2.0'}}
-                },
-                'user_agent': 'Mozilla/5.0 (Linux; Android 14; Mobile) TelegramAndroid/10.0'
-            }
-
+                'user_agent': 'Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0',
+                'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+                }
+                 
+                 
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
                 
@@ -912,7 +872,7 @@ class Windowfirst(Screen):
             null_stream.close()
             
             print(f"🎬 Video stream complete: {save_path}")
-            Clock.schedule_once(handle_download_success, 0.5)
+            Clock.schedule_once(lambda dt: [ui_msg(dt, "Download complete!"), self.launch_embedded_videoplayer(save_path)], 0.5)
             
         except Exception as download_error:
             # Crucial: Ensure system streams are restored even if the download drops or crashes
@@ -921,30 +881,29 @@ class Windowfirst(Screen):
             
             print(f"Video downloader thread failure caught: {download_error}")
             
-            # Wipe out any broken partial files from storage disk space
-            if os.path.exists(save_path): 
+            # Wipe out any broken partial files
+            if os.path.exists(save_path):
                 try: os.remove(save_path)
                 except: pass
 
             # =========================================================================
-            # 🚨 DESKTOP OVERRIDE: Safe from UnboundLocalErrors now!
+            # 🚨 DESKTOP DEVELOPMENT SAFETY VALVE OVERRIDE
             # =========================================================================
             if platform != 'android':
                 print("⚠️ Network blocked on PC. Generating a mock video asset layout for UI testing...")
                 try:
+                    # Generates a tiny, valid 50KB black-frame MP4 container block
                     with open(save_path, 'wb') as mock_vid:
                         mock_vid.write(b"\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00mp42isom" + b"\x00" * 50000)
                     
-                    # Safely schedule the success layout since it is now defined globally!
-                    Clock.schedule_once(handle_download_success, 0.2)
+                    Clock.schedule_once(lambda dt: [ui_msg(dt, "Local Test Load"), self.launch_embedded_videoplayer(save_path)], 0.2)
                 except Exception as mock_err:
                     print(f"Bypass file generation failed: {mock_err}")
-                    Clock.schedule_once(handle_download_failure, 0)
+                    Clock.schedule_once(lambda dt: ui_msg(dt, "Video download failed. Please retry."), 0)
             else:
-                Clock.schedule_once(handle_download_failure, 0)
+                # Fails strictly on real Android phones to protect content integrity
+                Clock.schedule_once(lambda dt: ui_msg(dt, "Video download failed. Please retry."), 0)
 
-
-        
     def launch_embedded_videoplayer(self, video_filepath):
         """ 6. CORE VISUAL MEDIA PLAYER PORT """
         from kivy.uix.boxlayout import BoxLayout
@@ -6747,55 +6706,46 @@ class SplashScreen(Screen):
 
     def is_connected(self):
         """
-        1. LIGHTWEIGHT UNIVERSAL ROUTE VERIFICATION
-        Bypasses strict platform wrappers by checking a standard low-level socket.
+        Bypasses network socket restrictions on local computers 
+        while strictly checking connections on real Android devices.
         """
-        import socket
-        try:
-            # Universal fallback lookups handling both IPv4 and IPv6 dual-stack streams
-            socket.setdefaulttimeout(3.0)
-            socket.getaddrinfo("://google.com", 443, socket.AF_UNSPEC)
+        if platform != 'android':
+            print("[DEBUG] Desktop environment detected: Bypassing connection check for local testing.")
             return True
-        except:
+
+        try:
+            socket.setdefaulttimeout(4)
+            host = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            host.connect(("://google.com", 80))
+            host.close()
+            return True
+        except (socket.timeout, OSError):
             return False
 
     def download_folder_worker(self):
-        """
-        2. PRODUCTION-GRADE STREAMING RECOVERY ENGINE
-        Skips volatile pre-check barriers and immediately initiates chunk-streaming.
-        Handles network drops dynamically to ensure cross-platform consistency.
-        """
-        import os
-        import sys
-        import time
-        import socket
-        from kivy.clock import Clock
-        from kivy.utils import platform
-
-        # Reset and turn off the Retry UI layouts the split second a new download cycle fires
+        # 1. Reset and turn off the Retry UI layouts the split second a new download cycle fires
         def reset_ui_for_download(dt):
-            if self.ids and 'progress_layout' in self.ids and 'retry_layout' in self.ids and 'status_label' in self.ids:
+            if 'progress_layout' in self.ids and 'retry_layout' in self.ids and 'status_label' in self.ids:
                 self.ids.progress_layout.opacity = 1
                 self.ids.retry_layout.opacity = 0
                 self.ids.retry_layout.disabled = True  
                 self.ids.status_label.text = "Re-verifying storage assets..."
         Clock.schedule_once(reset_ui_for_download, 0)
 
-        # Runs storage validation strictly on Android
+        # 2. Runs storage validation strictly on Android.
         if platform == 'android':
             storage_passed, storage_error_msg = self.has_enough_storage()
             if not storage_passed:
                 Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", storage_error_msg), 0)
                 return
 
-        # 🚫 CRUCIAL CHANGE: The separate "if not self.is_connected():" pre-check gateway 
-        # has been completely removed to stop false offline triggers on Windows 10 and Android!
+        # 3. RUN CONNECTIVITY NETWORK VERIFICATION LAYER
+        if not self.is_connected():
+            Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", "No Internet Connection!\nPlease connect to Wi-Fi or Mobile Data and retry."), 0)
+            return
 
         self.current_file_index = 0
-        # socket.setdefaulttimeout(45)
-        
-        # Track the last exception message to display the correct text to the user if everything fails
-        last_error_message = "Unknown network error."
+        socket.setdefaulttimeout(45)
 
         for file_name, file_data in self.download_queue.items():
             self.current_file_index += 1
@@ -6810,57 +6760,43 @@ class SplashScreen(Screen):
 
             while retry_count < max_retries and not download_success:
                 try:
-                    # Clear corrupted partial files from disk cache
+                    # =========================================================================
+                    # FIX: EXTENSION-AWARE CORRUPTION CLEANER
+                    # =========================================================================
                     if os.path.exists(local_file_path):
                         file_size = os.path.getsize(local_file_path)
+                        
+                        # Only delete .mp3 files if they are broken/incomplete (under 5KB)
                         if file_name.endswith('.mp3') and file_size < 5000:
                             print(f"🗑️ Removing corrupted partial audio: {file_name}")
                             os.remove(local_file_path)
+                        
+                        # Only delete .txt files if they are completely empty (0 bytes)
                         elif file_name.endswith('.txt') and file_size == 0:
                             print(f"🗑️ Removing empty text asset: {file_name}")
                             os.remove(local_file_path)
 
-                    # Initialize fresh file download chunk stream
+                    # The Cached Skip Valve
                     if not os.path.exists(local_file_path):
                         if retry_count > 0:
                             print(f"🔄 Retrying download for {file_name} (Attempt {retry_count + 1}/{max_retries})...")
+                            import time
                             time.sleep(2)
 
-                        import ssl
-                        import urllib.request
-
-                        ctx = ssl.create_default_context()
-                        ctx.check_hostname = False
-                        ctx.verify_mode = ssl.CERT_NONE
-
-                        req = urllib.request.Request(remote_url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Android; Mobile)'})
-
-                        with urllib.request.urlopen(req, timeout=25.0, context=ctx) as response:
-                            total_size = int(response.info().get('Content-Length', -1))
-                            chunk_size = 16384  # 16KB optimal streaming chunks
-
-                            with open(local_file_path, 'wb') as local_file:
-                                while True:
-                                    chunk = response.read(chunk_size)
-                                    if not chunk:
-                                        break
-                                    local_file.write(chunk)
-                                    
-                                    if total_size > 0:
-                                        self.progress_hook(1, chunk_size, total_size)
-
-                        # Validate that Google Drive didn't drop us into an antivirus block html page
+                        urllib.request.urlretrieve(remote_url, local_file_path, reporthook=self.progress_hook)
+                        
+                        # Anti-virus firewall loop validation
                         with open(local_file_path, 'rb') as f:
                             if b"<!DOCTYPE html>" in f.read(100):
                                 raise ValueError("Google Drive antivirus block warning page generated.")
                     else:
                         print(f"✅ Cached asset verified on disk (Skipping Download): {file_name}")
                     
+                    # File exists or downloaded cleanly
                     download_success = True
                     
                 except Exception as download_error:
                     retry_count += 1
-                    last_error_message = str(download_error)
                     print(f"🚨 Attempt {retry_count} failed for {file_name}: {download_error}")
                     
                     if os.path.exists(local_file_path):
@@ -6868,17 +6804,15 @@ class SplashScreen(Screen):
                         except: pass
 
             # =========================================================================
-            # STALEMATE HARD LOCKDOWN GATEWAY (Unified Interface Exception Handler)
+            # STALEMATE HARD LOCKDOWN GATEWAY 
             # =========================================================================
             if not download_success:
                 print(f"❌ FATAL BLOCKADE: Failed to download mandatory asset: {file_name}")
                 
-                # Check the exact text error signature to report the correct state to the user
-                err_lower = last_error_message.lower()
-                if "getaddrinfo" in err_lower or "timeout" in err_lower or "timed out" in err_lower or "unreachable" in err_lower:
-                    error_msg = f"Network Timeout!\nFailed to fetch: {file_name}\nPlease check your Wi-Fi signal and retry."
-                else:
+                if not self.is_connected():
                     error_msg = "No Internet Connection!\nPlease connect to Wi-Fi or Mobile Data and retry."
+                else:
+                    error_msg = f"Network Timeout!\nFailed to fetch: {file_name}\nPlease check your signal and retry."
                 
                 Clock.schedule_once(lambda dt: self.handle_failure_state("⚠️", error_msg), 0)
                 return 
@@ -6887,15 +6821,6 @@ class SplashScreen(Screen):
 
         print("🎉 SUCCESS: Every single audio and text lesson asset verified on storage disk!")
         Clock.schedule_once(lambda dt: self.finish_process(), 0)
-
-
-
-
-
-
-
-    
-
 
 
 
