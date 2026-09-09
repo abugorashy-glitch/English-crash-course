@@ -1,4 +1,4 @@
-
+# =========================================================================
 # ⚙️ STEP 1: INITIALIZE WINDOW DIMENSIONS (Must be lines 1, 2 & 3!)
 # =========================================================================
 # This forces the desktop emulator to lock its proportions BEFORE any other 
@@ -701,10 +701,11 @@ class Windowfirst(Screen):
         print(f"-> Parsed text evaluation value: {repr(correct_answer_str)}")
         print("==============================================\n")
 
-        # Hardened search match verification rule
+        # 🚀 DROPBOX CONFIGURATION: Swapped to explicit raw direct-download links
         if "was and were" in correct_answer_str:
             video_label_name = "was and were"
-            telegram_url = "https://t.memy_apk_public/6?stream=1"
+            # Ensure your Dropbox link uses '?dl=1' to enforce direct streaming bypass
+            dropbox_url = "https://www.dropbox.com/scl/fi/m3udmbuwio7kojdg72fx5/was-and-were.mp4?rlkey=oi1w8ht0sosorlk5sr4c9v4mq&st=wn6yhmcd&dl=1"
         else:
             self.show_fallback_alert("Explanation Alert", f"No video explanation available for this topic.\nFound: '{correct_answer_str}'")
             return
@@ -728,15 +729,15 @@ class Windowfirst(Screen):
             self.launch_embedded_videoplayer(target_file_path)
             return
 
-        # Launch background metadata analyzer thread securely
+        # Launch background metadata analyzer thread securely passing dropbox_url
         t = threading.Thread(
             target=self.size_checker_worker, 
-            args=(telegram_url, video_label_name, target_file_path),
+            args=(dropbox_url, video_label_name, target_file_path),
             daemon=True
         )
         t.start()
 
-    def size_checker_worker(self, telegram_url, video_label_name, target_file_path):
+    def size_checker_worker(self, dropbox_url, video_label_name, target_file_path):
         """ 
         2. DYNAMIC MEDIA SERVER TRACKER
         Bypasses slow, fragile mobile web inspections completely.
@@ -744,9 +745,8 @@ class Windowfirst(Screen):
         """
         from kivy.clock import Clock
         
-        # ⚡ The AI Fix: Skip the slow web-lookup code that freezes your thread.
-        # This schedules your prompt to pop up instantly on Kivy's main drawing frame!
-        Clock.schedule_once(lambda dt: self.show_prompt(telegram_url, video_label_name, 15.0, target_file_path), 0)
+        # ⚡ Instant Frame Scheduler: Pushes execution straight into Kivy Main UI thread
+        Clock.schedule_once(lambda dt: self.show_prompt(dropbox_url, video_label_name, 15.0, target_file_path), 0)
 
     def show_prompt(self, url, video_name, size_mb, save_path):
         """ 
@@ -771,7 +771,7 @@ class Windowfirst(Screen):
         
         popup = Popup(title="Data Usage Warning", content=box, size_hint=(0.95, 0.4), auto_dismiss=False)
         
-        # 👉 FIXED: Points directly to a solid class function to prevent memory drops on Android!
+        # 👉 FIXED: Points directly to your core streaming download workflow handler
         btn_yes.bind(on_release=lambda btn: [popup.dismiss(), self.trigger_video_download(url, save_path)])
         btn_no.bind(on_release=popup.dismiss)
         popup.open()
@@ -799,11 +799,10 @@ class Windowfirst(Screen):
         
         popup = Popup(title="Data Usage Warning (Offline Fallback)", content=box, size_hint=(0.95, 0.4), auto_dismiss=False)
         
-        # 👉 FIXED: Points directly to a solid class function to prevent memory drops on Android!
+        # 👉 FIXED: Points directly to your core streaming download workflow handler
         btn_yes.bind(on_release=lambda btn: [popup.dismiss(), self.trigger_video_download(url, save_path)])
         btn_no.bind(on_release=popup.dismiss)
         popup.open()
-
     def trigger_video_download(self, url, save_path):
         """
         4b. SAFE ANCHOR THREAD TRIGGER
@@ -813,155 +812,206 @@ class Windowfirst(Screen):
         t = threading.Thread(target=lambda: self.download_worker(url, save_path), daemon=True)
         t.start()
 
-
     def download_worker(self, url, save_path):
         """ 
-        5. ENHANCED CONSOLE-SAFE DOWNLOAD WORKER
-        Scoped cleanly to prevent UnboundLocalError crashes on network drops.
-        Dynamically handles button states and user notifications perfectly.
+        5. DIRECT DROPBOX STORAGE STREAMER (HIGH SPEED & CHUNK BUFFERED)
+        Downloads the file efficiently block-by-block to avoid freezing memory.
         """
         import os
-        import sys
+        import requests
+        import traceback
         from kivy.clock import Clock
-        from kivy.utils import platform
 
-        # =========================================================================
-        # 🛡️ GLOBAL UI STATE MANAGERS (Defined at the top to prevent scope crashes!)
-        # =========================================================================
+        print("\n🚀 [DROPBOX DIRECT CDN ENGINE] INITIALIZING STREAM HANDSHAKE 🚀\n")
+
         def disable_explain_button(dt):
             if self.ids and 'explain_btn' in self.ids:
                 self.ids.explain_btn.disabled = True
-                self.ids.explain_btn.opacity = 0.5  # Muted, grayed-out effect
+                self.ids.explain_btn.opacity = 0.5
 
         def handle_download_success(dt):
             if self.ids and 'explain_btn' in self.ids:
                 self.ids.explain_btn.disabled = False
-                self.ids.explain_btn.opacity = 1.0  # Full color state restored
+                self.ids.explain_btn.opacity = 1.0
             if self.ids and 'status_label' in self.ids:
                 self.ids.status_label.text = "Status: Download Complete!"
-            
-            # Show standard completion alert popup
             self.show_fallback_alert("🎉 Success", "The lesson video has finished downloading successfully!")
             self.launch_embedded_videoplayer(save_path)
 
-        def handle_download_failure(dt):
-            if self.ids and 'explain_btn' in self.ids:
-                self.ids.explain_btn.disabled = False
-                self.ids.explain_btn.opacity = 1.0
-            if self.ids and 'status_label' in self.ids:
-                self.ids.status_label.text = "Status: Download Failed"
-            
-            self.show_fallback_alert("⚠️ Download Failed", "Could not complete video download. Please check your signal and retry.")
+        def handle_download_failure_with_error(error_msg):
+            def inner_callback(dt):
+                if self.ids and 'explain_btn' in self.ids:
+                    self.ids.explain_btn.disabled = False
+                    self.ids.explain_btn.opacity = 1.0
+                if self.ids and 'status_label' in self.ids:
+                    self.ids.status_label.text = "Status: Download Failed"
+                self.show_fallback_alert("⚠️ Download Failed", f"Details:\n{error_msg}")
+            return inner_callback
 
         def ui_msg(dt, text_str):
             if self.ids and 'status_label' in self.ids: 
                 self.ids.status_label.text = text_str
 
-        # 🔒 Lock button immediately
         Clock.schedule_once(disable_explain_button, 0)
-        Clock.schedule_once(lambda dt: ui_msg(dt, "Downloading lesson video... 0%"), 0)
+        Clock.schedule_once(lambda dt: ui_msg(dt, "Connecting to file server..."), 0)
 
-        # Dynamic internal hook to calculate real-time download percentages safely
-        def progress_hook(d):
-            if d['status'] == 'downloading':
-                total = d.get('total_bytes') or d.get('total_bytes_approx', 1)
-                downloaded = d.get('downloaded_bytes', 0)
-                percent = min(100, int((downloaded / total) * 100))
-                Clock.schedule_once(lambda dt: ui_msg(dt, f"Downloading video... {percent}%"), 0)
-
-        # Cache the current system streams to bypass Kivy console write errors
-        original_stdout = sys.stdout
-        original_stderr = sys.stderr
+        # Clear out any stale, broken files before creating a clean handle
+        if os.path.exists(save_path):
+            try: os.remove(save_path)
+            except: pass
 
         try:
-            import yt_dlp
+            incoming_url = str(url).strip()
             
-            # Open a completely hidden, silent null stream to trap terminal printouts
-            null_stream = open(os.devnull, 'w')
-            sys.stdout = null_stream
-            sys.stderr = null_stream
+            # 🔗 AUTOMATIC LINK REPAIR: Convert standard links to raw binary download links
+            if "dl=0" in incoming_url:
+                final_download_url = incoming_url.replace("dl=0", "dl=1")
+            elif "dl=1" not in incoming_url:
+                final_download_url = incoming_url + ("?dl=1" if "?" not in incoming_url else "&dl=1")
+            else:
+                final_download_url = incoming_url
 
-                        # =========================================================================
-            # 🚀 THE ABSOLUTE FINAL PRODUCTION-READY YT-DLP CONFIGURATION
-            # =========================================================================
-            ydl_opts = {
-                'outtmpl': save_path, 
-                'progress_hooks': [progress_hook], 
-                'quiet': True, 
-                'no_warnings': True,
-                'nocheckcertificate': True,
-                
-                # 👉 THE CRITICAL ANDROID FIX: 
-                # Forces yt-dlp to request a single, pre-merged MP4 stream.
-                # This completely cuts out the need for FFmpeg merges on mobile devices!
-                'format': 'best[ext=mp4]/mp4',
-                
-                'extractor_args': {
-                    'youtube': {'player_client': ['android']},
-                    'generic': {'http_headers': {'User-Agent': 'TelegramAndroidBotSDK/2.0'}}
-                },
-                'user_agent': 'Mozilla/5.0 (Linux; Android 14; Mobile) TelegramAndroid/10.0'
+            print(f"📡 Requesting Raw Target: {final_download_url}")
+            
+            # Simple, standard headers to avoid trigger blockades
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             }
 
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([url])
+            # Hit the server and fetch with an active stream context pipeline
+            with requests.get(final_download_url, headers=headers, stream=True, timeout=30) as video_stream:
+                video_stream.raise_for_status()
                 
-            # Restore your original system streams cleanly upon safe completion
-            sys.stdout = original_stdout
-            sys.stderr = original_stderr
-            null_stream.close()
-            
+                content_type = video_stream.headers.get('content-type', '').lower()
+                print(f"📥 Received Server Content-Type: {content_type}")
+
+                # Verify we aren't pulling HTML garbage (like an error portal page)
+                if 'text/html' in content_type:
+                    raise Exception("Dropbox did not return a raw video asset stream. Verify that your link sharing access permissions are public.")
+
+                total_size = int(video_stream.headers.get('content-length', 0))
+                bytes_downloaded = 0
+                block_size = 1024 * 64  # Efficient 64 KB tracking frames
+
+                with open(save_path, 'wb') as output_file:
+                    for chunk in video_stream.iter_content(chunk_size=block_size):
+                        if chunk:
+                            output_file.write(chunk)
+                            bytes_downloaded += len(chunk)
+                            
+                            if total_size > 0:
+                                percent = min(100, int((bytes_downloaded / total_size) * 100))
+                                Clock.schedule_once(lambda dt, p=percent: ui_msg(dt, f"Downloading video... {p}%"), 0)
+                            else:
+                                calculated_mb = round(bytes_downloaded / (1024 * 1024), 1)
+                                Clock.schedule_once(lambda dt, m=calculated_mb: ui_msg(dt, f"Downloading video... {m} MB"), 0)
+
             print(f"🎬 Video stream complete: {save_path}")
             Clock.schedule_once(handle_download_success, 0.5)
             
         except Exception as download_error:
-            # Crucial: Ensure system streams are restored even if the download drops or crashes
-            sys.stdout = original_stdout
-            sys.stderr = original_stderr
+            caught_err_msg = str(download_error)
+            print("\n❌ ====== DOWNLOAD CRASH TRACEBACK ======")
+            traceback.print_exc()
+            print("========================================\n")
             
-            print(f"Video downloader thread failure caught: {download_error}")
-            
-            # Wipe out any broken partial files from storage disk space
+            # Erase half-written files immediately to avoid corrupt app caches
             if os.path.exists(save_path): 
                 try: os.remove(save_path)
                 except: pass
+            Clock.schedule_once(handle_download_failure_with_error(caught_err_msg), 0)
 
-            # =========================================================================
-            # 🚨 DESKTOP OVERRIDE: Safe from UnboundLocalErrors now!
-            # =========================================================================
-            if platform != 'android':
-                print("⚠️ Network blocked on PC. Generating a mock video asset layout for UI testing...")
-                try:
-                    with open(save_path, 'wb') as mock_vid:
-                        mock_vid.write(b"\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00mp42isom" + b"\x00" * 50000)
-                    
-                    # Safely schedule the success layout since it is now defined globally!
-                    Clock.schedule_once(handle_download_success, 0.2)
-                except Exception as mock_err:
-                    print(f"Bypass file generation failed: {mock_err}")
-                    Clock.schedule_once(handle_download_failure, 0)
-            else:
-                Clock.schedule_once(handle_download_failure, 0)
-
-
-        
     def launch_embedded_videoplayer(self, video_filepath):
-        """ 6. CORE VISUAL MEDIA PLAYER PORT """
+        """ 6. CORE VISUAL MEDIA PLAYER PORT (EXPLICIT TOGGLE FIX) """
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.button import Button
         from kivy.uix.popup import Popup
         from kivy.uix.videoplayer import VideoPlayer
+        from kivy.graphics import Color, RoundedRectangle
         
-        content_box = BoxLayout(orientation='vertical')
-        video_player_widget = VideoPlayer(source=video_filepath, state='play', options={'allow_stretch': True})
+        content_box = BoxLayout(orientation='vertical', spacing=12, padding=14)
+        
+        with content_box.canvas.before:
+            Color(0.11, 0.13, 0.16, 1)  
+            self.rect = RoundedRectangle(pos=content_box.pos, size=content_box.size, radius=(12, 12, 12, 12))
+            
+        def update_rect(instance, value):
+            self.rect.pos = instance.pos
+            self.rect.size = instance.size
+        content_box.bind(pos=update_rect, size=update_rect)
+
+        video_player_widget = VideoPlayer(
+            source=video_filepath, 
+            state='play', 
+            fullscreen=False,
+            allow_fullscreen=True,
+            options={
+                'eos': 'loop', 
+                'fit_mode': 'contain'
+            }
+        )
         content_box.add_widget(video_player_widget)
         
-        close_btn = Button(text="❌ Close Explanation Video", size_hint_y=None, height='45dp', background_color=(0.7, 0.2, 0.2, 1))
-        content_box.add_widget(close_btn)
+        action_bar = BoxLayout(size_hint_y=None, height='52dp', spacing=12)
         
-        popup = Popup(title="Lesson Video Player", content=content_box, size_hint=(0.98, 0.95), auto_dismiss=False)
-        close_btn.bind(on_release=lambda btn: [video_player_widget.unload(), popup.dismiss()])
+        fullscreen_btn = Button(
+            text="📺  Go Fullscreen",
+            font_size='15sp',
+            bold=True,
+            background_normal='',  
+            background_color=(0.14, 0.45, 0.90, 1),
+            color=(1, 1, 1, 1)  
+        )
+        
+        close_btn = Button(
+            text="❌  Close Explanation", 
+            font_size='15sp',
+            bold=True,
+            background_normal='',
+            background_color=(0.85, 0.24, 0.24, 1),
+            color=(1, 1, 1, 1)
+        )
+        
+        action_bar.add_widget(fullscreen_btn)
+        action_bar.add_widget(close_btn)
+        content_box.add_widget(action_bar)
+        
+        popup = Popup(
+            title="Lesson Video Player", 
+            title_size='18sp',
+            title_align='center',
+            title_color=(0.95, 0.96, 0.98, 1),
+            separator_color=(0.14, 0.45, 0.90, 1),  
+            content=content_box, 
+            size_hint=(0.95, 0.85),
+            auto_dismiss=False
+        )
+
+        # 🔄 DIRECT STATE TOGGLE HANDLER
+        def toggle_fullscreen_mode(instance):
+            # Explicitly flip the boolean state value
+            new_state = not video_player_widget.fullscreen
+            video_player_widget.fullscreen = new_state
+            
+            # Update the button text and color immediately based on the new state
+            if new_state:
+                fullscreen_btn.text = "🔍  Exit Fullscreen"
+                fullscreen_btn.background_color = (0.22, 0.65, 0.38, 1)  # Emerald Green
+            else:
+                fullscreen_btn.text = "📺  Go Fullscreen"
+                fullscreen_btn.background_color = (0.14, 0.45, 0.90, 1) # Royal Blue
+
+        def safely_dismiss_player(instance):
+            video_player_widget.state = 'stop'
+            video_player_widget.unload()
+            popup.dismiss()
+
+        fullscreen_btn.bind(on_release=toggle_fullscreen_mode)
+        close_btn.bind(on_release=safely_dismiss_player)
+        
         popup.open()
+
+
 
     def show_fallback_alert(self, title, msg):
         """ 7. SYSTEM FALLBACK ALERT NOTIFICATION BOX """
@@ -970,16 +1020,36 @@ class Windowfirst(Screen):
         from kivy.uix.button import Button
         from kivy.uix.popup import Popup
 
-        box = BoxLayout(orientation='vertical', padding=10)
-        box.add_widget(Label(text=msg, halign='center', valign='middle', text_size=(300, None)))
-        btn = Button(text="OK", size_hint_y=None, height='40dp', background_color=(0.12, 0.43, 0.93, 1))
+        box = BoxLayout(orientation='vertical', padding=10, spacing=10)
+        
+        # Wrapped texture space constraints dynamically so long URLs and messages wrap smoothly
+        msg_label = Label(
+            text=msg, 
+            halign='center', 
+            valign='middle', 
+            size_hint=(1, 0.8)
+        )
+        msg_label.bind(size=lambda s, w: setattr(msg_label, 'text_size', (w[0] - 20, None)))
+        box.add_widget(msg_label)
+        
+        btn = Button(
+            text="OK", 
+            size_hint_y=None, 
+            height='45dp', 
+            background_color=(0.12, 0.43, 0.93, 1)
+        )
         box.add_widget(btn)
-        popup = Popup(title=title, content=box, size_hint=(0.85, 0.28))
+        
+        popup = Popup(title=title, content=box, size_hint=(0.85, 0.45))
         btn.bind(on_release=popup.dismiss)
         popup.open()
 
 
 
+
+
+        
+    
 
 
 
