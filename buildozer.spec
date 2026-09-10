@@ -33,11 +33,9 @@ source.include_patterns = assets/*, my_audio_album/*, "phrasal verbs/*", answers
 #source.exclude_patterns = answers/*, data/*
 
 # (str) Application versioning (method 1)
-<<<<<<< HEAD
+
 version = 1.1
-=======
-version = 0.1
->>>>>>> parent of a3f1745 (successful changes)
+
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
