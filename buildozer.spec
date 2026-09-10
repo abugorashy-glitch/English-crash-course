@@ -271,9 +271,6 @@ android.enable_androidx = 1
 <<<<<<< HEAD
 #android.extra_manifest_application_arguments = android:usesCleartextTraffic="true"
 
-=======
->>>>>>> parent of a3f1745 (successful changes)
-
 # (list) Android library project to add (will be added in the
 # project.properties automatically.)
 #android.library_references =
