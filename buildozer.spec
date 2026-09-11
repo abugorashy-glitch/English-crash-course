@@ -37,7 +37,6 @@ source.include_patterns = assets/*, my_audio_album/*, "phrasal verbs/*", answers
 version = 1.1
 
 
-
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
 #version.filename = %(source.dir)s/main.py
@@ -271,7 +270,6 @@ android.enable_androidx = 1
 #android.meta_data =
 
 #android.extra_manifest_application_arguments = android:usesCleartextTraffic="true"
-
 # (list) Android library project to add (will be added in the
 # project.properties automatically.)
 #android.library_references =
