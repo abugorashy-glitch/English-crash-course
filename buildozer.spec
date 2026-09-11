@@ -33,11 +33,10 @@ source.include_patterns = assets/*, my_audio_album/*, "phrasal verbs/*", answers
 #source.exclude_patterns = answers/*, data/*
 
 # (str) Application versioning (method 1)
-<<<<<<< HEAD
+
 version = 1.1
-=======
-version = 0.1
->>>>>>> parent of a3f1745 (successful changes)
+
+
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -45,7 +44,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy, arabic_reshaper, python-bidi==0.4.2, future, sqlite3, android, openssl, yt_dlp, certifi, urllib3
+requirements = python3, kivy, arabic_reshaper, python-bidi==0.4.2, future, sqlite3, android, openssl, yt_dlp, certifi, urllib3, ffpyplayer, ffpyplayer_codecs
 
 
 # (str) Custom source folders for requirements
@@ -270,11 +269,8 @@ android.enable_androidx = 1
 
 # (list) Android application meta-data to set (key=value format)
 #android.meta_data =
-<<<<<<< HEAD
-#android.extra_manifest_application_arguments = android:usesCleartextTraffic="true"
 
-=======
->>>>>>> parent of a3f1745 (successful changes)
+#android.extra_manifest_application_arguments = android:usesCleartextTraffic="true"
 
 # (list) Android library project to add (will be added in the
 # project.properties automatically.)

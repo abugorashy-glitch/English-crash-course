@@ -1,4 +1,8 @@
-
+# =========================================================================
+# ⚙️ STEP 1: INITIALIZE WINDOW DIMENSIONS (Must be lines 1, 2 & 3!)
+# =========================================================================
+# This forces the desktop emulator to lock its proportions BEFORE any other 
+# module has the chance to spin up Kivy's core graphics engine layer.
 from kivy.config import Config
 Config.set('graphics', 'width', '400')
 Config.set('graphics', 'height', '500')
@@ -7,7 +11,6 @@ Config.set('graphics', 'height', '500')
 # 📦 STEP 2: LOAD MAIN SYSTEM PYTHON ENVIRONMENT
 # =========================================================================
 import os
-
 import sys
 # Bypasses low-level architecture conflicts insid python-bidi binary hooks on Android
 #sys.modules['bidi._bidi'] = None
