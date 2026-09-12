@@ -495,9 +495,18 @@
           # =========================================================================
           BoxLayout:
                orientation: 'vertical'
+               padding: dp(10)
+               spacing: dp(10)
+
+     # =========================================================================
+     # 1. القائمة العمودية لأزرار الراديو (كودك الأصلي تماماً مع ضبط الارتفاع)
+     # =========================================================================
+          BoxLayout:
+               orientation: 'vertical'
                spacing: dp(8)
-               size_hint_y: 1.0 
-            
+               size_hint_y: None
+               height: self.minimum_height # يمنع تمدد الفراغات بين الراديو والأزرار في أندرويد
+       
                Label:
                     text: ''
                     id: record3
@@ -506,114 +515,86 @@
                     text_size: self.size
                     valign: 'middle'
 
-               BoxLayout:
-                    size_hint_y: None
-                    height: dp(35)
-                    spacing: dp(5)
-                    CheckBox:
-                         group: 'mygroup'
-                         size_hint_x: None
-                         width: dp(32)
-                         allow_no_selection: False
-                         id: check1
-                         # 👉 FIXED: Changed self.active to active to prevent Android syntax drops
-                         on_active: root.trigger_sound(active)
-                    Label:
-                         id: lll1
-                         text_size: self.size
-                         halign: 'left'
-                         valign: 'center'
-                         text: ''
-                    
-               BoxLayout:
-                    size_hint_y: None
-                    height: dp(35)
-                    spacing: dp(5)
-                    CheckBox:
-                         group: 'mygroup'
-                         size_hint_x: None
-                         width: dp(32)
-                         id: check2
-                         on_active: root.trigger_sound(active)
-                    Label:
-                         id: lll2
-                         text_size: self.size
-                         halign: 'left'
-                         valign: 'center'
-                         text: ''
-
-               BoxLayout:
-                    size_hint_y: None
-                    height: dp(35)
-                    spacing: dp(5)
-                    CheckBox:
-                         group: 'mygroup'
-                         size_hint_x: None
-                         width: dp(32)
-                         id: check3
-                         on_active: root.trigger_sound(active)
-                    Label:
-                         id: lll3
-                         text_size: self.size
-                         halign: 'left'
-                         valign: 'center'
-                         text: ''
-
-               Widget:
-                    id: null
-                    size_hint_y: 1.0
-
-          # =========================================================================
-          # 3. LOWER MIDDLE PANEL: BOTTOM ROUNDED NAVIGATION GRID
-          # =========================================================================
           BoxLayout:
                size_hint_y: None
-               height: '65dp'
-               spacing: dp(10)
-               padding: [dp(5), 0, dp(5), 0]
-
-               RoundedButton:
-                    text: "Move Next"
-                    on_press: 
-                         root.on_pre_enter()
-                         root.remove_check()
-
-               RoundedButton:
-                    text: "STOPE HERE"
-                    on_press: 
-                         root.stophere()
-
-               RoundedButton:
-                    id: explain_btn
-                    text: "Explain"
-                    on_press:
-                         root.on_explain_button_click()
-
-          # =========================================================================
-          # 4. ABSOLUTE FOOTER PANEL: SYSTEM PROGRESS CONTAINER
-          # =========================================================================
-          BoxLayout:
-               size_hint_y: None
-               height: dp(40) 
-               padding: [dp(5), 0, dp(5), 0]
-            
-               canvas.before:
-                    Color:
-                         rgba: (0.15, 0.15, 0.18, 0.90) 
-                    RoundedRectangle:
-                         pos: self.pos
-                         size: self.size
-                         radius: [dp(8)]
-
+               height: dp(35)
+               spacing: dp(5)
+               CheckBox:
+                    group: 'mygroup'
+                    size_hint_x: None
+                    width: dp(32)
+                    allow_no_selection: False
+                    id: check1
+                    on_active: root.trigger_sound(active)
                Label:
-                    id: status_label
-                    text: "[color=#FFFFFF]Status: Ready[/color]"
-                    markup: True 
-                    font_size: '15sp'
-                    bold: True
-                    halign: 'center'
-                    valign: 'middle'
-                    text_size: (self.width, None)
+                    id: lll1
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'center'
+                    text: ''
+               
+          BoxLayout:
+               size_hint_y: None
+               height: dp(35)
+               spacing: dp(5)
+               CheckBox:
+                    group: 'mygroup'
+                    size_hint_x: None
+                    width: dp(32)
+                    id: check2
+                    on_active: root.trigger_sound(active)
+               Label:
+                    id: lll2
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'center'
+                    text: ''
+
+          BoxLayout:
+               size_hint_y: None
+               height: dp(35)
+               spacing: dp(5)
+               CheckBox:
+                    group: 'mygroup'
+                    size_hint_x: None
+                    width: dp(32)
+                    id: check3
+                    on_active: root.trigger_sound(active)
+               Label:
+                    id: lll3
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'center'
+                    text: ''
+
+     # =========================================================================
+     # 2. LOWER MIDDLE PANEL: BOTTOM ROUNDED NAVIGATION GRID (كودك الأصلي تماماً)
+     # =========================================================================
+     BoxLayout:
+          size_hint_y: None
+          height: '65dp'
+          spacing: dp(10)
+          padding: [dp(5), 0, dp(5), 0]
+
+          RoundedButton:
+               text: "Move Next"
+               on_press: 
+                    root.on_pre_enter()
+                    root.remove_check()
+
+          RoundedButton:
+               text: "STOPE HERE"
+               on_press: 
+                    root.stophere()
+
+          RoundedButton:
+               id: explain_btn
+               text: "Explain"
+               on_press:
+                    root.on_explain_button_click()
+
+     
+
 
 # =========================================================================
 # Custom Reusable Rounded Button Component (Fully Responsive to Python)

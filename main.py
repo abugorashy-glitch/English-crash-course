@@ -1,8 +1,13 @@
-# =========================================================================
-# ⚙️ STEP 1: INITIALIZE WINDOW DIMENSIONS (Must be lines 1, 2 & 3!)
-# =========================================================================
-# This forces the desktop emulator to lock its proportions BEFORE any other 
-# module has the chance to spin up Kivy's core graphics engine layer.
+import os
+from kivy.utils import platform
+
+if platform == "android":
+    # 🔇 Forces Android to cleanly map standard audio channels and stops Netlink driver crashes
+    os.environ["SDL_AUDIODRIVER"] = "android"
+
+from kivy.config import Config
+Config.set('graphics', 'multisamples', '0')  # Disables MSAA anti-aliasing bugs on mobile GPUs
+
 from kivy.config import Config
 Config.set('graphics', 'width', '400')
 Config.set('graphics', 'height', '500')
@@ -12,19 +17,26 @@ Config.set('graphics', 'height', '500')
 # =========================================================================
 import os
 import sys
-# Bypasses low-level architecture conflicts insid python-bidi binary hooks on Android
-#sys.modules['bidi._bidi'] = None
+import socket
+import shutil
+import threading
+import urllib.request
+import sqlite3
+import random
+import codecs
+import io
 
+# Bypasses low-level architecture conflicts inside python-bidi binary hooks on Android
+# sys.modules['bidi._bidi'] = None
+
+# =========================================================================
+# 📱 STEP 3: NATIVE SECURITY SHIELDS
+# =========================================================================
 import kivy
-
-import os
-import certifi
-
-# This points your app to the correct web security certificates
-os.environ['SSL_CERT_FILE'] = certifi.where()
 from kivy.utils import platform
 
-# 🔐 FORCE PYTHON TO USE CERTIFI SECURITY ON ANDROID
+# 🔐 FORCE PYTHON TO USE TRUSTED CERTIFICATES ON ANDROID ONLY
+# This ensures certificates are mapped inside the stable mobile execution frame.
 if platform == 'android':
     try:
         import certifi
@@ -32,38 +44,39 @@ if platform == 'android':
         print("🔒 [SECURITY] Certifi context successfully loaded into environment!")
     except Exception as ssl_err:
         print(f"🔒 [SECURITY] Failed to bind certifi context: {ssl_err}")
+else:
+    # Desktop Windows fallback layer
+    try:
+        import certifi
+        os.environ['SSL_CERT_FILE'] = certifi.where()
+    except:
+        pass
 
-import socket
-import shutil
-import threading
-import urllib.request
-import sqlite3
-import random
+# =========================================================================
+# 📝 STEP 4: ARABIC LINGUISTIC SHADERS
+# =========================================================================
 import arabic_reshaper
 from bidi.algorithm import get_display
-import codecs
-import io
-import sys
 
-from kivy.config import Config
-Config.set('graphics', 'width', '400')
-Config.set('graphics', 'height', '500')
-
+# =========================================================================
+# 🎨 STEP 5: KIVY USER INTERFACE MATRIX DESIGNERS
+# =========================================================================
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.image import Image
-from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-
+from kivy.core.window import Window
+from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 from kivy.properties import ObjectProperty, ListProperty
-from kivy.uix.videoplayer import VideoPlayer
-from kivy.uix.widget import Widget
-from kivy.core.window import Window
-from kivy.uix.popup import Popup
-from kivy.clock import Clock
 from kivy.graphics import Color, RoundedRectangle
-from kivy.uix.boxlayout import BoxLayout
+
+from kivy.uix.widget import Widget
+from kivy.uix.label import Label
+from kivy.uix.image import Image
 from kivy.uix.button import Button
+from kivy.uix.popup import Popup
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.videoplayer import VideoPlayer
+from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+
 
 class_punctuation1 = "false"
 class_punctuation2 = "false"
@@ -673,12 +686,14 @@ class Windowfirst(Screen):
 
     def on_explain_button_click(self, *args):
         """ 
-        1. MAIN EXPLAIN BUTTON GATEWAY
-        Validates correct answer mappings and triggers the size verification loop.
+        1. MAIN EXPLAIN BUTTON GATEWAY (ORDER-CORRECTED & RESILIENT MATCHING)
+        Calculates file structures first, checks your hard drive cache, and uses 
+        flexible SQL matching to pull links from the 'beginner' table.
         """
-        global s4, counter2  # Assumes 's3' is your pre-loaded beginner table rightanswer array
+        global s4, counter2  
         import os
         import threading
+        import sqlite3  
         from kivy.utils import platform
         
         raw_db_text = ""
@@ -693,126 +708,114 @@ class Windowfirst(Screen):
         print(f"-> Parsed text evaluation value: {repr(correct_answer_str)}")
         print("==============================================\n")
 
-        # 🚀 DROPBOX CONFIGURATION: Swapped to explicit raw direct-download links
-        if "was and were" in correct_answer_str:
-            video_label_name = "was and were"
-            # Ensure your Dropbox link uses '?dl=1' to enforce direct streaming bypass
-            dropbox_url = "https://www.dropbox.com/scl/fi/m3udmbuwio7kojdg72fx5/was-and-were.mp4?rlkey=oi1w8ht0sosorlk5sr4c9v4mq&st=wn6yhmcd&dl=1"
-        else:
-            self.show_fallback_alert("Explanation Alert", f"No video explanation available for this topic.\nFound: '{correct_answer_str}'")
-            return
+        # 💾 STEP 1: CALCULATE THE SYSTEM DIRECTORY PATHS FIRST
+        # Clean up text characters to form a valid, standardized system file name
+        safe_filename = f"{correct_answer_str.replace(' ', '_')}.mp4"
 
-        # Resolve persistent system sandbox storage directory structures
         if platform == 'android':
-            base_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
+            base_app_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
+            video_folder = os.path.join(base_app_dir, "my_audio_album")
         else:
-            base_dir = os.getcwd()
-            
-        video_folder = os.path.join(base_dir, "my_audio_album")
+            current_script_dir = os.path.dirname(os.path.abspath(__file__))
+            video_folder = os.path.join(current_script_dir, "my_audio_album")
+
+        # Ensure the video album storage container folder exists on disk
         if not os.path.exists(video_folder):
             try: os.makedirs(video_folder)
             except: pass
             
-        target_file_path = os.path.join(video_folder, "verb_to_be.mp4")
+        target_file_path = os.path.join(video_folder, safe_filename)
 
-        # If a valid video exists on storage disk from a previous download, launch playback instantly
+        # 🎬 STEP 2: CHECK CACHE DISK (If video already exists locally, play it immediately!)
         if os.path.exists(target_file_path) and os.path.getsize(target_file_path) > 50000:
-            print(f"🎬 Cache verified! Launching player for: {target_file_path}")
+            print(f"🎬 Local cache verified! Launching player directly for: {target_file_path}")
             self.launch_embedded_videoplayer(target_file_path)
             return
 
-        # Launch background metadata analyzer thread securely passing dropbox_url
-        t = threading.Thread(
-            target=self.size_checker_worker, 
-            args=(dropbox_url, video_label_name, target_file_path),
-            daemon=True
-        )
-        t.start()
+        # 🗄️ STEP 3: IF MISSING FROM STORAGE, ACQUIRE FROM SQLITE
+        if platform == 'android':
+            db_path = os.path.join(base_app_dir, "book.db")
+        else:
+            db_path = os.path.join(current_script_dir, "book.db")
 
-    def size_checker_worker(self, dropbox_url, video_label_name, target_file_path):
-        """ 
-        2. DYNAMIC MEDIA SERVER TRACKER
-        Bypasses slow, fragile mobile web inspections completely.
-        Instantly launches the user download prompt using our verified 15.0 MB baseline.
-        """
-        from kivy.clock import Clock
-        
-        # ⚡ Instant Frame Scheduler: Pushes execution straight into Kivy Main UI thread
-        Clock.schedule_once(lambda dt: self.show_prompt(dropbox_url, video_label_name, 15.0, target_file_path), 0)
+        dropbox_url = None
+        video_label_name = None
 
-    def show_prompt(self, url, video_name, size_mb, save_path):
-        """ 
-        3. ONLINE DOWNLOAD PROMPT DIALOG (REINFORCED FOR MOBILE MEMORY CORES)
-        """
-        from kivy.uix.boxlayout import BoxLayout
-        from kivy.uix.label import Label
-        from kivy.uix.button import Button
-        from kivy.uix.popup import Popup
+        try:
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+            
+            # Use flexible SQL matching (LIKE) to find the record even with slight spacing variations
+            search_query = f"%{correct_answer_str}%"
+            cursor.execute("SELECT rightanswer, video_url FROM beginner WHERE LOWER(option) LIKE ?", (search_query,))
+            row = cursor.fetchone()
+            
+            if row:
+                video_label_name = str(row[0]).strip()  # Grab column 0: rightanswer
+                dropbox_url = str(row[1]).strip()       # Grab column 1: video_url
+                
+            conn.close()
+        except Exception as db_err:
+            print(f"❌ Database error: {db_err}")
 
-        box = BoxLayout(orientation='vertical', padding=10, spacing=10)
-        prompt_txt = f"The lesson video '{video_name}' requires {size_mb} MB.\n\nDo you want to download it now?"
-        box.add_widget(Label(text=prompt_txt, halign='center', valign='middle', text_size=(380, None)))
-        
-        btn_layout = BoxLayout(size_hint_y=None, height='45dp', spacing=10)
-        btn_yes = Button(text="Download", background_color=(0.12, 0.43, 0.93, 1))
-        btn_no = Button(text="Cancel", background_color=(0.7, 0.2, 0.2, 1))
-        
-        btn_layout.add_widget(btn_yes)
-        btn_layout.add_widget(btn_no)
-        box.add_widget(btn_layout)
-        
-        popup = Popup(title="Data Usage Warning", content=box, size_hint=(0.95, 0.4), auto_dismiss=False)
-        
-        # 👉 FIXED: Points directly to your core streaming download workflow handler
-        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), self.trigger_video_download(url, save_path)])
-        btn_no.bind(on_release=popup.dismiss)
-        popup.open()
+        # 🚨 STEP 4: FALLBACK VERIFICATION DIALOG
+        if not dropbox_url or dropbox_url.strip() == "" or "http" not in dropbox_url:
+            self.show_fallback_alert(
+                "Explanation Alert", 
+                f"No video link was found inside the database for this lesson.\n\n"
+                f"Searched Row Value: '{correct_answer_str}'\n"
+                f"Database Path checked: {db_path}"
+            )
+            return
 
-    def prompt_video_download_fallback(self, url, video_name, size_mb, save_path):
-        """ 
-        4. FALLBACK NETWORK PROMPT DIALOG (REINFORCED FOR MOBILE MEMORY CORES)
-        """
-        from kivy.uix.boxlayout import BoxLayout
-        from kivy.uix.label import Label
-        from kivy.uix.button import Button
-        from kivy.uix.popup import Popup
+        # 🚀 STEP 5: INITIALIZE THE POPUP PROGRESS BAR SCREEN WORKER
+        print(f"📡 Match Confirmed. Launching download stream window for: {video_label_name}")
+        self.trigger_video_download(dropbox_url, target_file_path)
 
-        box = BoxLayout(orientation='vertical', padding=10, spacing=10)
-        prompt_txt = f"The lesson video '{video_name}' requires approximately {size_mb} MB.\n\nDo you want to download it now?"
-        box.add_widget(Label(text=prompt_txt, halign='center', valign='middle', text_size=(380, None)))
-        
-        btn_layout = BoxLayout(size_hint_y=None, height='45dp', spacing=10)
-        btn_yes = Button(text="Download", background_color=(0.12, 0.43, 0.93, 1))
-        btn_no = Button(text="Cancel", background_color=(0.7, 0.2, 0.2, 1))
-        
-        btn_layout.add_widget(btn_yes)
-        btn_layout.add_widget(btn_no)
-        box.add_widget(btn_layout)
-        
-        popup = Popup(title="Data Usage Warning (Offline Fallback)", content=box, size_hint=(0.95, 0.4), auto_dismiss=False)
-        
-        # 👉 FIXED: Points directly to your core streaming download workflow handler
-        btn_yes.bind(on_release=lambda btn: [popup.dismiss(), self.trigger_video_download(url, save_path)])
-        btn_no.bind(on_release=popup.dismiss)
-        popup.open()
+
     def trigger_video_download(self, url, save_path):
         """
-        4b. SAFE ANCHOR THREAD TRIGGER
-        Safely boots your download worker inside a daemon thread with protected parameter scopes.
+        4b. SAFE ANCHOR THREAD TRIGGER WITH PROGRESS POPUP
+        Creates a dedicated popup with a ProgressBar layout before launching the daemon worker thread.
         """
         import threading
+        from kivy.uix.boxlayout import BoxLayout
+        from kivy.uix.label import Label
+        from kivy.uix.progressbar import ProgressBar
+        from kivy.uix.popup import Popup
+        from kivy.clock import Clock
+
+        # 🎛️ Create dynamic progress widgets
+        progress_layout = BoxLayout(orientation='vertical', padding=15, spacing=10)
+        self.progress_label = Label(text="Connecting to file server...", halign='center', size_hint_y=0.4)
+        self.download_bar = ProgressBar(max=100, value=0, size_hint_y=0.6)
+        
+        progress_layout.add_widget(self.progress_label)
+        progress_layout.add_widget(self.download_bar)
+        
+        # 🖼️ Build modal popup window
+        self.progress_popup = Popup(
+            title="Downloading Lesson Video",
+            content=progress_layout,
+            size_hint=(0.85, 0.25),
+            auto_dismiss=False
+        )
+        self.progress_popup.open()
+
+        # Fire off thread
         t = threading.Thread(target=lambda: self.download_worker(url, save_path), daemon=True)
         t.start()
 
     def download_worker(self, url, save_path):
         """ 
-        5. DIRECT DROPBOX STORAGE STREAMER (HIGH SPEED & CHUNK BUFFERED)
-        Downloads the file efficiently block-by-block to avoid freezing memory.
+        5. DIRECT DROPBOX STORAGE STREAMER WITH PROGRESS BAR SYSTEM
+        Updates the active ProgressBar instance directly via thread-safe Clock schedules.
         """
         import os
         import requests
         import traceback
         from kivy.clock import Clock
+        from kivy.utils import platform
 
         print("\n🚀 [DROPBOX DIRECT CDN ENGINE] INITIALIZING STREAM HANDSHAKE 🚀\n")
 
@@ -822,40 +825,41 @@ class Windowfirst(Screen):
                 self.ids.explain_btn.opacity = 0.5
 
         def handle_download_success(dt):
+            if hasattr(self, 'progress_popup'):
+                self.progress_popup.dismiss()  # 👈 Auto-disappear on complete
             if self.ids and 'explain_btn' in self.ids:
                 self.ids.explain_btn.disabled = False
                 self.ids.explain_btn.opacity = 1.0
-            if self.ids and 'status_label' in self.ids:
-                self.ids.status_label.text = "Status: Download Complete!"
             self.show_fallback_alert("🎉 Success", "The lesson video has finished downloading successfully!")
             self.launch_embedded_videoplayer(save_path)
 
         def handle_download_failure_with_error(error_msg):
             def inner_callback(dt):
+                if hasattr(self, 'progress_popup'):
+                    self.progress_popup.dismiss()  # 👈 Auto-disappear on failure
                 if self.ids and 'explain_btn' in self.ids:
                     self.ids.explain_btn.disabled = False
                     self.ids.explain_btn.opacity = 1.0
-                if self.ids and 'status_label' in self.ids:
-                    self.ids.status_label.text = "Status: Download Failed"
                 self.show_fallback_alert("⚠️ Download Failed", f"Details:\n{error_msg}")
             return inner_callback
 
-        def ui_msg(dt, text_str):
-            if self.ids and 'status_label' in self.ids: 
-                self.ids.status_label.text = text_str
+        # Thread-safe UI progress updating bridges
+        def update_ui_progress(dt, percentage, text_str):
+            if hasattr(self, 'download_bar') and hasattr(self, 'progress_label'):
+                self.download_bar.value = percentage
+                self.progress_label.text = text_str
 
         Clock.schedule_once(disable_explain_button, 0)
-        Clock.schedule_once(lambda dt: ui_msg(dt, "Connecting to file server..."), 0)
 
-        # Clear out any stale, broken files before creating a clean handle
-        if os.path.exists(save_path):
-            try: os.remove(save_path)
+        write_path = save_path.replace('file://', '') if platform == 'android' else save_path
+
+        if os.path.exists(write_path):
+            try: os.remove(write_path)
             except: pass
 
         try:
             incoming_url = str(url).strip()
             
-            # 🔗 AUTOMATIC LINK REPAIR: Convert standard links to raw binary download links
             if "dl=0" in incoming_url:
                 final_download_url = incoming_url.replace("dl=0", "dl=1")
             elif "dl=1" not in incoming_url:
@@ -865,27 +869,22 @@ class Windowfirst(Screen):
 
             print(f"📡 Requesting Raw Target: {final_download_url}")
             
-            # Simple, standard headers to avoid trigger blockades
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             }
 
-            # Hit the server and fetch with an active stream context pipeline
             with requests.get(final_download_url, headers=headers, stream=True, timeout=30) as video_stream:
                 video_stream.raise_for_status()
                 
                 content_type = video_stream.headers.get('content-type', '').lower()
-                print(f"📥 Received Server Content-Type: {content_type}")
-
-                # Verify we aren't pulling HTML garbage (like an error portal page)
                 if 'text/html' in content_type:
-                    raise Exception("Dropbox did not return a raw video asset stream. Verify that your link sharing access permissions are public.")
+                    raise Exception("Dropbox did not return a raw video asset stream. Verify link permissions.")
 
                 total_size = int(video_stream.headers.get('content-length', 0))
                 bytes_downloaded = 0
-                block_size = 1024 * 64  # Efficient 64 KB tracking frames
+                block_size = 1024 * 64 
 
-                with open(save_path, 'wb') as output_file:
+                with open(write_path, 'wb') as output_file:
                     for chunk in video_stream.iter_content(chunk_size=block_size):
                         if chunk:
                             output_file.write(chunk)
@@ -893,12 +892,12 @@ class Windowfirst(Screen):
                             
                             if total_size > 0:
                                 percent = min(100, int((bytes_downloaded / total_size) * 100))
-                                Clock.schedule_once(lambda dt, p=percent: ui_msg(dt, f"Downloading video... {p}%"), 0)
+                                Clock.schedule_once(lambda dt, p=percent: update_ui_progress(dt, p, f"Downloading video... {p}%"), 0)
                             else:
                                 calculated_mb = round(bytes_downloaded / (1024 * 1024), 1)
-                                Clock.schedule_once(lambda dt, m=calculated_mb: ui_msg(dt, f"Downloading video... {m} MB"), 0)
+                                Clock.schedule_once(lambda dt, m=calculated_mb: update_ui_progress(dt, 0, f"Downloading video... {m} MB"), 0)
 
-            print(f"🎬 Video stream complete: {save_path}")
+            print(f"🎬 Video stream complete: {write_path}")
             Clock.schedule_once(handle_download_success, 0.5)
             
         except Exception as download_error:
@@ -907,9 +906,8 @@ class Windowfirst(Screen):
             traceback.print_exc()
             print("========================================\n")
             
-            # Erase half-written files immediately to avoid corrupt app caches
-            if os.path.exists(save_path): 
-                try: os.remove(save_path)
+            if os.path.exists(write_path): 
+                try: os.remove(write_path)
                 except: pass
             Clock.schedule_once(handle_download_failure_with_error(caught_err_msg), 0)
 
@@ -7308,7 +7306,12 @@ class CrashCourseApp(App):
 
 
         return MyScreenManager()
-    
+    def on_pause(self):
+        # Tell Android it is safe to keep our app background thread alive without crashing
+        return True 
+
+    def on_resume(self):
+        pass
     
 if __name__ == '__main__':
     CrashCourseApp().run()
