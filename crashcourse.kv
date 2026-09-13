@@ -64,6 +64,7 @@
 <Firstwindow>:
      name: "home_screen"
      id: home_screen
+    
      canvas.before:
           Color:
                rgba: 0.95, 0.95, 0.95, 1
@@ -73,57 +74,90 @@
 
      BoxLayout:
           orientation: 'vertical'
-          padding: [40, 60, 40, 60]  # Left/Right, Top/Bottom margins
-          spacing: 25                # Space between the buttons
+          padding: [dp(40), dp(30), dp(40), dp(40)]  # Balanced padding constraints
+          spacing: dp(16)                             # Standardized sleek spacing
 
+        # 🪐 SPACER 1: Pushes elements down from the top edge
+          Widget:
+               size_hint_y: 0.25
+
+        # Title Header Text Block
           Label:
                text: "English Crash Course"
-               font_size: '28sp'
+               font_size: '32sp'
                bold: True
-               color:  0, 0, 1, 1  # Sets background to blue
-               size_hint_y: 0.3
+               color: 0.12, 0.43, 0.93, 1  # Professional primary theme royal blue text color
+               size_hint_y: None
+               height: dp(50)
+               halign: 'center'
+               valign: 'middle'
+          
+          Image:
+               source: 'crash.png'  # 👈 Replace with your actual picture filename (PNG/JPG)
+               size_hint_x: 1  
+               size_hint_y: None
+               height: dp(130)     # Fixed height keeps layout from breaking on tall mobile displays
+               allow_stretch: True
+               keep_ratio: False    # Stops the picture from stretching oddly
+               pos_hint: {'center_x': 0.5}
 
-          # Button 1: Settings
+        # 🪐 SPACER 2: Creates gentle breathing room under the title
+          Widget:
+               size_hint_y: None
+               height: dp(15)
+
+        # =========================================================================
+        # 🔘 ANIMATED INTERACTIVE LEVEL SELECTION BUTTON STACK
+        # =========================================================================
+        # Button 1: Beginner
           RoundedButton:
+               id: btn_beg
                text: "Beginner Level"
                on_release:
-                    
-               
                     root.select_learning_level("beginner")
 
-        # Button 2: Profile
+        # Button 2: Intermediate
           RoundedButton:
+               id: btn_int
                text: "Intermediate Level"
                on_release:
                     app.root.transition.direction = 'right'
                     root.select_learning_level("intermediate")
 
-        # Button 3: Exit
+        # Button 3: Advanced
           RoundedButton:
+               id: btn_adv
                text: "Advanced Level"
                on_release:
                     app.root.transition.direction = 'right'
                     root.select_learning_level("advanced")
 
+        # 🪐 SPACER 3: Counter-balances the layout by pushing elements up from the bottom
+          Widget:
+               size_hint_y: 0.55
 
-# Custom Reusable Rounded Button Component
+
+# =========================================================================
+# Custom Reusable Rounded Button Component (Fully Responsive to Python)
+# =========================================================================
 <RoundedButton@Button>:
-     background_color: 0, 0, 0, 0  # 1. Hides the default gray box texture
-     background_normal: ''         # 2. Clears default button behavior tints
-     color: 1, 1, 1, 1             # White text color
+     background_color: 0, 0, 0, 0  # Hides default gray textures
+     background_normal: ''         
+     color: 1, 1, 1, 1             
      font_size: '18sp'
      bold: True
      size_hint_y: None
-     height: '60dp'                # Explicit touch-friendly mobile height
+     height: '60dp'                
+     pos_hint: {'center_x': 0.5}
 
      canvas.before:
           Color:
-            # Changes color dynamically when clicked (state is 'down')
-               rgba: (0.12, 0.43, 0.93, 1) if self.state == 'normal' else (0.08, 0.33, 0.73, 1)
+            # Active press feedback coloration changes instantly
+               rgba: (0.12, 0.43, 0.93, self.opacity) if self.state == 'normal' else (0.08, 0.33, 0.73, self.opacity)
           RoundedRectangle:
                pos: self.pos
                size: self.size
-               radius: [20]          # The corner roundness radius in pixels
+               radius: [20]
 
           
      
@@ -450,15 +484,15 @@
      name: "w_screen"
      id: w_screen
 
-     # 📱 MASTER VERTICAL RECOVERY LAYOUT
+    # 📱 MASTER VERTICAL RECOVERY LAYOUT (Holds everything exactly in one bucket)
      BoxLayout:
           orientation: 'vertical'
-          padding: [dp(12), dp(55), dp(12), dp(15)] 
+          padding: [dp(12), dp(25), dp(12), dp(15)] # Balanced top padding safely
           spacing: dp(10)
 
-          # =========================================================================
-          # 1. TOP LAYOUT PANEL: THE ACTION NAVIGATION BAR 
-          # =========================================================================
+        # =========================================================================
+        # 1. TOP LAYOUT PANEL: THE ACTION NAVIGATION BAR 
+        # =========================================================================
           BoxLayout:
                size_hint_y: None
                height: dp(50)
@@ -490,110 +524,113 @@
                                    text: 'Punctuation'
                                    on_press: app.root.current = "punc1"
 
-          # =========================================================================
-          # 2. CENTER PANEL: CONTENT DISPLAY & QUIZ BOX SELECTIONS
-          # =========================================================================
-          BoxLayout:
-               orientation: 'vertical'
-               padding: dp(10)
-               spacing: dp(10)
+        # =========================================================================
+        # 2. CENTER PANEL: CONTENT DISPLAY & QUIZ BOX SELECTIONS
+        # =========================================================================
+        # 📜 Added a clean ScrollView wrapper to completely eliminate off-screen clipping bugs on small devices!
+          ScrollView:
+               size_hint: (1, 1) # Takes up all remaining flexible space between top and bottom bars
 
-     # =========================================================================
-     # 1. القائمة العمودية لأزرار الراديو (كودك الأصلي تماماً مع ضبط الارتفاع)
-     # =========================================================================
-          BoxLayout:
-               orientation: 'vertical'
-               spacing: dp(8)
-               size_hint_y: None
-               height: self.minimum_height # يمنع تمدد الفراغات بين الراديو والأزرار في أندرويد
-       
-               Label:
-                    text: ''
-                    id: record3
+               BoxLayout:
+                    orientation: 'vertical'
+                    padding: dp(10)
+                    spacing: dp(12)
                     size_hint_y: None
-                    height: dp(40)
-                    text_size: self.size
-                    valign: 'middle'
+                    height: self.minimum_height # Dynamically recalculates layout thickness matching total text
 
+                # 📝 The Question Text Block
+                    Label:
+                         id: record3
+                         text: ''
+                         size_hint_y: None
+                         height: self.texture_size[1] + dp(20) # Dynamic auto-height sizing container
+                         text_size: self.width - dp(20), None  # Locks layout boundaries to force text wrapping
+                         font_size: '18sp'
+                         bold: True
+                         color: 1, 1, 1, 1
+                         halign: 'center'
+                         valign: 'middle'
+
+                    # 🔘 Radio Choice Container Row 1
+                    BoxLayout:
+                         size_hint_y: None
+                         height: dp(45)
+                         spacing: dp(10)
+                         CheckBox:
+                              group: 'mygroup'
+                              size_hint_x: None
+                              width: dp(35)
+                              allow_no_selection: False
+                              id: check1
+                              on_active: root.trigger_sound(active)
+                         Label:
+                              id: lll1
+                              text: ''
+                              text_size: self.width, self.height
+                              halign: 'left'
+                              valign: 'center'
+                         
+                    # 🔘 Radio Choice Container Row 2
+                    BoxLayout:
+                         size_hint_y: None
+                         height: dp(45)
+                         spacing: dp(10)
+                         CheckBox:
+                              group: 'mygroup'
+                              size_hint_x: None
+                              width: dp(35)
+                              id: check2
+                              on_active: root.trigger_sound(active)
+                         Label:
+                              id: lll2
+                              text: ''
+                              text_size: self.width, self.height
+                              halign: 'left'
+                              valign: 'center'
+
+                    # 🔘 Radio Choice Container Row 3
+                    BoxLayout:
+                         size_hint_y: None
+                         height: dp(45)
+                         spacing: dp(10)
+                         CheckBox:
+                              group: 'mygroup'
+                              size_hint_x: None
+                              width: dp(35)
+                              id: check3
+                              on_active: root.trigger_sound(active)
+                         Label:
+                              id: lll3
+                              text: ''
+                              text_size: self.width, self.height
+                              halign: 'left'
+                              valign: 'center'
+
+        # =========================================================================
+        # 3. LOWER BOTTOM PANEL: NAVIGATION GRID (Now safely nested inside the master file)
+        # =========================================================================
           BoxLayout:
                size_hint_y: None
-               height: dp(35)
-               spacing: dp(5)
-               CheckBox:
-                    group: 'mygroup'
-                    size_hint_x: None
-                    width: dp(32)
-                    allow_no_selection: False
-                    id: check1
-                    on_active: root.trigger_sound(active)
-               Label:
-                    id: lll1
-                    text_size: self.size
-                    halign: 'left'
-                    valign: 'center'
-                    text: ''
-               
-          BoxLayout:
-               size_hint_y: None
-               height: dp(35)
-               spacing: dp(5)
-               CheckBox:
-                    group: 'mygroup'
-                    size_hint_x: None
-                    width: dp(32)
-                    id: check2
-                    on_active: root.trigger_sound(active)
-               Label:
-                    id: lll2
-                    text_size: self.size
-                    halign: 'left'
-                    valign: 'center'
-                    text: ''
+               height: dp(65)
+               spacing: dp(10)
+               padding: [dp(5), 0, dp(5), 0]
 
-          BoxLayout:
-               size_hint_y: None
-               height: dp(35)
-               spacing: dp(5)
-               CheckBox:
-                    group: 'mygroup'
-                    size_hint_x: None
-                    width: dp(32)
-                    id: check3
-                    on_active: root.trigger_sound(active)
-               Label:
-                    id: lll3
-                    text_size: self.size
-                    halign: 'left'
-                    valign: 'center'
-                    text: ''
+               RoundedButton:
+                    text: "Move Next"
+                    on_press: 
+                         root.on_pre_enter()
+                         root.remove_check()
 
-     # =========================================================================
-     # 2. LOWER MIDDLE PANEL: BOTTOM ROUNDED NAVIGATION GRID (كودك الأصلي تماماً)
-     # =========================================================================
-     BoxLayout:
-          size_hint_y: None
-          height: '65dp'
-          spacing: dp(10)
-          padding: [dp(5), 0, dp(5), 0]
+               RoundedButton:
+                    text: "STOPE HERE"
+                    on_press: 
+                         root.stophere()
 
-          RoundedButton:
-               text: "Move Next"
-               on_press: 
-                    root.on_pre_enter()
-                    root.remove_check()
-
-          RoundedButton:
-               text: "STOPE HERE"
-               on_press: 
-                    root.stophere()
-
-          RoundedButton:
-               id: explain_btn
-               text: "Explain"
-               on_press:
-                    root.on_explain_button_click()
-
-     
+               RoundedButton:
+                    id: explain_btn
+                    text: "Explain"
+                    on_press:
+                         root.on_explain_button_click()
 
 
 # =========================================================================
@@ -603,18 +640,19 @@
      background_color: 0, 0, 0, 0  
      background_normal: ''         
      color: 1, 1, 1, 1             
-     font_size: '18sp'
+     font_size: '16sp'
      bold: True
      size_hint_y: None
-     height: '60dp'                
+     height: dp(55)                
 
      canvas.before:
           Color:
-               rgba: (0.12, 0.43, 0.93, self.opacity) if self.state == 'normal' else (0.08, 0.33, 0.73, self.opacity)
+               rgba: (0.14, 0.45, 0.90, self.opacity) if self.state == 'normal' else (0.08, 0.33, 0.73, self.opacity)
           RoundedRectangle:
                pos: self.pos
                size: self.size
-               radius: [20]
+               radius: [15]
+
 
 
 

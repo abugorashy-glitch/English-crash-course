@@ -43,7 +43,7 @@ version = 1.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy, arabic_reshaper, python-bidi==0.4.2, future, sqlite3, android, openssl, yt_dlp, certifi, urllib3, ffpyplayer, ffpyplayer_codecs
+requirements = python3, kivy, arabic_reshaper, python-bidi==0.4.2, future, sqlite3, android, openssl, yt_dlp, certifi, urllib3, ffpyplayer, ffpyplayer_codecs, pyjnius
 
 
 # (str) Custom source folders for requirements
