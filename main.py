@@ -63,6 +63,10 @@ from bidi.algorithm import get_display
 # =========================================================================
 from kivy.app import App
 from kivy.core.window import Window
+
+# Forces Kivy to draw over 100% of the display canvas without system frame overrides
+Window.borderless = True
+from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 from kivy.properties import ObjectProperty, ListProperty
@@ -76,6 +80,9 @@ from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.videoplayer import VideoPlayer
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+
+from kivy.core.window import Window
+Window.softinput_mode = 'below_target'
 
 
 class_punctuation1 = "false"
@@ -912,17 +919,18 @@ class Windowfirst(Screen):
             Clock.schedule_once(handle_download_failure_with_error(caught_err_msg), 0)
 
     def launch_embedded_videoplayer(self, video_filepath):
-        """ 6. CORE VISUAL MEDIA PLAYER PORT (EXPLICIT TOGGLE FIX) """
+        """ 6. CORE VISUAL MEDIA PLAYER PORT (PC & MOBILE FIXED LAYOUT) """
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.button import Button
         from kivy.uix.popup import Popup
         from kivy.uix.videoplayer import VideoPlayer
         from kivy.graphics import Color, RoundedRectangle
         
+        # 🌌 Main layout container with safe absolute structural layout dimensions
         content_box = BoxLayout(orientation='vertical', spacing=12, padding=14)
         
         with content_box.canvas.before:
-            Color(0.11, 0.13, 0.16, 1)  
+            Color(0.11, 0.13, 0.16, 1)  # Premium Obsidian background
             self.rect = RoundedRectangle(pos=content_box.pos, size=content_box.size, radius=(12, 12, 12, 12))
             
         def update_rect(instance, value):
@@ -930,6 +938,7 @@ class Windowfirst(Screen):
             self.rect.size = instance.size
         content_box.bind(pos=update_rect, size=update_rect)
 
+        # Initialize the core VideoPlayer widget safely
         video_player_widget = VideoPlayer(
             source=video_filepath, 
             state='play', 
@@ -966,6 +975,7 @@ class Windowfirst(Screen):
         action_bar.add_widget(close_btn)
         content_box.add_widget(action_bar)
         
+        # 🖼️ FIX 2: Added explicit pos_hint anchors to lock layer position and stop bleed-through
         popup = Popup(
             title="Lesson Video Player", 
             title_size='18sp',
@@ -974,32 +984,42 @@ class Windowfirst(Screen):
             separator_color=(0.14, 0.45, 0.90, 1),  
             content=content_box, 
             size_hint=(0.95, 0.85),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}, # 👈 Center perfectly
             auto_dismiss=False
         )
 
-        # 🔄 DIRECT STATE TOGGLE HANDLER
-        def toggle_fullscreen_mode(instance):
-            # Explicitly flip the boolean state value
-            new_state = not video_player_widget.fullscreen
-            video_player_widget.fullscreen = new_state
-            
-            # Update the button text and color immediately based on the new state
-            if new_state:
-                fullscreen_btn.text = "🔍  Exit Fullscreen"
-                fullscreen_btn.background_color = (0.22, 0.65, 0.38, 1)  # Emerald Green
-            else:
-                fullscreen_btn.text = "📺  Go Fullscreen"
-                fullscreen_btn.background_color = (0.14, 0.45, 0.90, 1) # Royal Blue
+        is_currently_fullscreen = False
 
+        # 🔄 FIX 1: Direct toggle script configuration updates popup bounds explicitly
+        def toggle_fullscreen_mode(instance):
+            nonlocal is_currently_fullscreen
+            is_currently_fullscreen = not is_currently_fullscreen
+            
+            if is_currently_fullscreen:
+                popup.size_hint = (1.0, 1.0)
+                popup.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
+                popup.title = ""                  
+                popup.separator_height = 0        
+                fullscreen_btn.text = "🔍  Exit Fullscreen"
+                fullscreen_btn.background_color = (0.22, 0.65, 0.38, 1)  
+            else:
+                popup.size_hint = (0.95, 0.85)
+                popup.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
+                popup.title = "Lesson Video Player"
+                popup.separator_height = '2dp'    
+                fullscreen_btn.text = "📺  Go Fullscreen"
+                fullscreen_btn.background_color = (0.14, 0.45, 0.90, 1) 
+
+        # 🔄 FIX 3: Safe teardown without calling non-existent .unload() attributes
         def safely_dismiss_player(instance):
-            video_player_widget.state = 'stop'
-            video_player_widget.unload()
+            video_player_widget.state = 'stop' # 👈 Changing state to stop frees media channel buffers safely
             popup.dismiss()
 
         fullscreen_btn.bind(on_release=toggle_fullscreen_mode)
         close_btn.bind(on_release=safely_dismiss_player)
         
         popup.open()
+
 
 
 
@@ -7209,6 +7229,9 @@ class CrashCourseApp(App):
     audio_folder = ""
     conn = None
     cursor = None
+    
+
+
 
     def on_start(self):
             
