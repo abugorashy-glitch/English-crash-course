@@ -1,6 +1,6 @@
 import os
 from kivy.utils import platform
-
+from kivy.factory import Factory
 if platform == "android":
     # 🔇 Forces Android to cleanly map standard audio channels and stops Netlink driver crashes
     os.environ["SDL_AUDIODRIVER"] = "android"
@@ -80,6 +80,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.videoplayer import VideoPlayer
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+
 
 from kivy.core.window import Window
 Window.softinput_mode = 'below_target'
@@ -360,6 +361,7 @@ class Firstwindow(Screen):
     
     def select_learning_level(self, level_name):
         global current_learning_level, current_active_sound
+        from kivy.app import App  # 👈 Dynamic import for global root tracking
         
         # 1. Instantly stop any previous audio playing to avoid overlaps
         if current_active_sound:
@@ -371,15 +373,20 @@ class Firstwindow(Screen):
         current_learning_level = level_name
         print(f"[LEVEL CHANGED] Global learning tier is now: {current_learning_level}")
         
-        # 3. Slide straight onto your dashboard viewport screen layout
+        # 🚀 Grab the running app instance context
+        app_instance = App.get_running_app()
+        if not app_instance or not app_instance.root:
+            print("⚠️ Warning: App root container context not fully initialized yet.")
+            return
+
+        # 3. Slide straight onto your dashboard viewport screen layout safely using the global root manager
         if current_learning_level == "beginner":
-            
-            self.manager.current = "w_screen" # Use your exact screen manager name string
+            app_instance.root.current = "w_screen" 
         elif current_learning_level == "intermediate":
-            self.manager.current = "menu_screen"
+            app_instance.root.current = "menu_screen"
         elif current_learning_level == "advanced":
-            self.manager.current = "game_screen"
-    
+            app_instance.root.current = "game_screen"
+
     def on_enter(self, *args):
         """
         🚀 STUNNING MOTION ENGAGEMENT ENGINE
@@ -960,6 +967,7 @@ class Windowfirst(Screen):
         content_box.bind(pos=update_rect, size=update_rect)
 
         # Initialize the core VideoPlayer widget safely
+                # Initialize the core VideoPlayer widget safely with true aspect fill constraints
         video_player_widget = VideoPlayer(
             source=video_filepath, 
             state='play', 
@@ -967,9 +975,11 @@ class Windowfirst(Screen):
             allow_fullscreen=True,
             options={
                 'eos': 'loop', 
-                'fit_mode': 'contain'
+                'fit_mode': 'fill',      # 👈 FORCES the video stream to consume 100% frame width
+                'allow_stretch': True    # 👈 Overrides resolution limits on mobile panels
             }
         )
+
         content_box.add_widget(video_player_widget)
         
         action_bar = BoxLayout(size_hint_y=None, height='52dp', spacing=12)
@@ -1017,41 +1027,44 @@ class Windowfirst(Screen):
             is_currently_fullscreen = not is_currently_fullscreen
             
             if is_currently_fullscreen:
-                # 📱 Handle Android Hardware Orientation Rotations
                 if platform == 'android':
                     jnius_module = __import__('jnius', fromlist=['autoclass'])
                     autoclass = jnius_module.autoclass
                     activity = autoclass('org.kivy.android.PythonActivity').mActivity
-                    activity.setRequestedOrientation(0) # 0 = SCREEN_ORIENTATION_LANDSCAPE
+                    activity.setRequestedOrientation(0) 
                 else:
-                    # 🖥️ Handle Desktop Monitors (Toggles true display hardware fullscreen)
                     Window.fullscreen = 'auto'
                 
-                # Expand modal layouts to use 100% boundary specs
+                # 🛠️ CRUCIAL HIDDEN SETTING: Strip popup padding completely!
                 popup.size_hint = (1.0, 1.0)
                 popup.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
                 popup.title = ""                  
-                popup.separator_height = 0        
+                popup.separator_height = 0  
+                content_box.padding = 0    # 👈 Removes internal box borders
+                content_box.spacing = 0    # 👈 Removes spacing gaps
+                
                 fullscreen_btn.text = "🔍  Exit Fullscreen"
-                fullscreen_btn.background_color = (0.22, 0.65, 0.38, 1)  # Emerald Green
+                fullscreen_btn.background_color = (0.22, 0.65, 0.38, 1)  
             else:
-                # Restore system orientations back to standard modes
                 if platform == 'android':
                     jnius_module = __import__('jnius', fromlist=['autoclass'])
                     autoclass = jnius_module.autoclass
                     activity = autoclass('org.kivy.android.PythonActivity').mActivity
-                    activity.setRequestedOrientation(1) # 1 = SCREEN_ORIENTATION_PORTRAIT
+                    activity.setRequestedOrientation(1) 
                 else:
-                    # Drop back to system window container frames on PC
                     Window.fullscreen = False
 
-                # Restore original windowed compact popup state layout bounds
+                # Restore original compact settings
                 popup.size_hint = (0.95, 0.85)
                 popup.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
                 popup.title = "Lesson Video Player"
                 popup.separator_height = '2dp'    
+                content_box.padding = 14   # 👈 Restores padding inside popup window
+                content_box.spacing = 12   # 👈 Restores standard spacing
+                
                 fullscreen_btn.text = "📺  Go Fullscreen"
-                fullscreen_btn.background_color = (0.14, 0.45, 0.90, 1) # Royal Blue
+                fullscreen_btn.background_color = (0.14, 0.45, 0.90, 1)
+
 
         def safely_dismiss_player(instance):
             # 🛡️ Safety Fail-Safe: If closed while full, force app structural normalization
@@ -1120,8 +1133,7 @@ class Windowfirst(Screen):
 
 
     
-    
-    
+
     
         
         
@@ -7387,6 +7399,8 @@ class CrashCourseApp(App):
 
     def on_resume(self):
         pass
+    
+Factory.register('Windowfirst', cls=Windowfirst)
     
 if __name__ == '__main__':
     CrashCourseApp().run()

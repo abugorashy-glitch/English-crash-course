@@ -1,65 +1,143 @@
-#
+#:import Factory kivy.factory.Factory
+# 📱 MULTI-SCREEN MANAGER INSTANT-STARTUP OPTIMIZATION PROFILE
+# 📱 MULTI-SCREEN MANAGER INSTANT-STARTUP OPTIMIZATION PROFILE
 <MyScreenManager>:
      SplashScreen:
           name: 'splash'
-     Firstwindow:
+
+    # =========================================================================
+    # ⏳ DYNAMIC LAZY-LOADED CHANNELS WITH EXPLICIT LIFECYCLE FORWARDING
+    # This completely forces Kivy to wake up your Python database queries!
+    # =========================================================================
+     Screen:
           name: 'home_screen'
-     Secondwindow:
+          on_pre_enter: 
+               if not self.children: self.add_widget(Factory.Firstwindow())
+               if self.children: self.children[0].on_pre_enter()
+
+     Screen:
           name: 'menu_screen'
-     Thirdwindow:
+          on_pre_enter: 
+               if not self.children: self.add_widget(Factory.Secondwindow())
+               if self.children: self.children[0].on_pre_enter()
+
+     Screen:
           name: 'game_screen'
-     Windowfirst:
+          on_pre_enter: 
+               if not self.children: self.add_widget(Factory.Thirdwindow())
+               if self.children: self.children[0].on_pre_enter()
+
+     Screen:
           name: 'w_screen'
-     Mywidget:
-          name:'ww'
-     Playvideo:
-          name:'video'
-     Mode:
-          name:'con_a'
-     Modea:
-          name:'con_b'
-     Video_a:
-          name:'a'
-     Video_b:
-          name:'b'
-     ArabicText:
-          name:'arabic'
-     ArabicText1:
-          name:'arabic1'
-     ArabicText2:
-          name:'arabic2'
-     GramarPage:
-          name:'page1'
-     GramarPage1:
-          name:'page2'
-     GramarPage2:
-          name:'page3'
-     PhrasalVerb:
-          name:'phrasal'
-     PhrasalVerb1:
-          name:'phrasal2'
-     PhrasalVerb2:
-          name:'phrasal3'
-     ShowphrResult:
-          name:'showphr'
-     Vocabulary_a:
-          name:'v'
-     Vocabulary_b:
-          name:'vocabu'
-     Vocabulary_c:
-          name:'v2'
-     ShowVocabulary:
-          name:'show_v'
-     Punctuation1:
-          name:'punc1'
-     Punctuation2:
-          name:'punc2'
-     Punctuation3:
-          name:'punc3'
-     ShowPunctuation:
-          name:'showpunc'
-     Translation:
-          name:'trans'
+          on_pre_enter: 
+            # 1. If the widget is missing, build it dynamically via Factory
+               if not self.children: self.add_widget(Factory.Windowfirst())
+            # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
+
+     Screen:
+          name: 'ww'
+          on_pre_enter: 
+               if not self.children: self.add_widget(Factory.Mywidget())
+               if self.children: self.children[0].on_pre_enter()
+
+
+     Screen:
+          name: 'video'
+          on_enter: if not self.children: self.add_widget(Factory.Playvideo())
+
+     Screen:
+          name: 'con_a'
+          on_enter: if not self.children: self.add_widget(Factory.Mode())
+
+     Screen:
+          name: 'con_b'
+          on_enter: if not self.children: self.add_widget(Factory.Modea())
+
+     Screen:
+          name: 'a'
+          on_enter: if not self.children: self.add_widget(Factory.Video_a())
+
+     Screen:
+          name: 'b'
+          on_enter: if not self.children: self.add_widget(Factory.Video_b())
+
+     Screen:
+          name: 'arabic'
+          on_enter: if not self.children: self.add_widget(Factory.ArabicText())
+
+     Screen:
+          name: 'arabic1'
+          on_enter: if not self.children: self.add_widget(Factory.ArabicText1())
+
+     Screen:
+          name: 'arabic2'
+          on_enter: if not self.children: self.add_widget(Factory.ArabicText2())
+
+     Screen:
+          name: 'page1'
+          on_enter: if not self.children: self.add_widget(Factory.GramarPage())
+
+     Screen:
+          name: 'page2'
+          on_enter: if not self.children: self.add_widget(Factory.GramarPage1())
+
+     Screen:
+          name: 'page3'
+          on_enter: if not self.children: self.add_widget(Factory.GramarPage2())
+
+     Screen:
+          name: 'phrasal'
+          on_enter: if not self.children: self.add_widget(Factory.PhrasalVerb())
+
+     Screen:
+          name: 'phrasal2'
+          on_enter: if not self.children: self.add_widget(Factory.PhrasalVerb1())
+
+     Screen:
+          name: 'phrasal3'
+          on_enter: if not self.children: self.add_widget(Factory.PhrasalVerb2())
+
+     Screen:
+          name: 'showphr'
+          on_enter: if not self.children: self.add_widget(Factory.ShowphrResult())
+
+     Screen:
+          name: 'v'
+          on_enter: if not self.children: self.add_widget(Factory.Vocabulary_a())
+
+     Screen:
+          name: 'vocabu'
+          on_enter: if not self.children: self.add_widget(Factory.Vocabulary_b())
+
+     Screen:
+          name: 'v2'
+          on_enter: if not self.children: self.add_widget(Factory.Vocabulary_c())
+
+     Screen:
+          name: 'show_v'
+          on_enter: if not self.children: self.add_widget(Factory.ShowVocabulary())
+
+     Screen:
+          name: 'punc1'
+          on_enter: if not self.children: self.add_widget(Factory.Punctuation1())
+
+     Screen:
+          name: 'punc2'
+          on_enter: if not self.children: self.add_widget(Factory.Punctuation2())
+
+     Screen:
+          name: 'punc3'
+          on_enter: if not self.children: self.add_widget(Factory.Punctuation3())
+
+     Screen:
+          name: 'showpunc'
+          on_enter: if not self.children: self.add_widget(Factory.ShowPunctuation())
+
+     Screen:
+          name: 'trans'
+          on_enter: if not self.children: self.add_widget(Factory.Translation())
+
 
 <Firstwindow>:
      name: "home_screen"
@@ -121,7 +199,7 @@
                id: btn_int
                text: "Intermediate Level"
                on_release:
-                    app.root.transition.direction = 'right'
+                    app.root.transition.direction = 'left' # Changed to 'left' so screens slide naturally forward
                     root.select_learning_level("intermediate")
 
         # Button 3: Advanced
@@ -129,7 +207,7 @@
                id: btn_adv
                text: "Advanced Level"
                on_release:
-                    app.root.transition.direction = 'right'
+                    app.root.transition.direction = 'left'
                     root.select_learning_level("advanced")
 
         # 🪐 SPACER 3: Counter-balances the layout by pushing elements up from the bottom
@@ -562,7 +640,7 @@
                               width: dp(35)
                               allow_no_selection: False
                               id: check1
-                              on_active: root.trigger_sound(active)
+                              on_active: if self.active: root.trigger_sound("play")
                          Label:
                               id: lll1
                               text: ''
@@ -580,7 +658,7 @@
                               size_hint_x: None
                               width: dp(35)
                               id: check2
-                              on_active: root.trigger_sound(active)
+                              on_active: if self.active: root.trigger_sound("play")
                          Label:
                               id: lll2
                               text: ''
@@ -598,7 +676,7 @@
                               size_hint_x: None
                               width: dp(35)
                               id: check3
-                              on_active: root.trigger_sound(active)
+                              on_active: if self.active: root.trigger_sound("play")
                          Label:
                               id: lll3
                               text: ''
