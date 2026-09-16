@@ -967,7 +967,6 @@ class Windowfirst(Screen):
         content_box.bind(pos=update_rect, size=update_rect)
 
         # Initialize the core VideoPlayer widget safely
-                # Initialize the core VideoPlayer widget safely with true aspect fill constraints
         video_player_widget = VideoPlayer(
             source=video_filepath, 
             state='play', 
@@ -975,11 +974,9 @@ class Windowfirst(Screen):
             allow_fullscreen=True,
             options={
                 'eos': 'loop', 
-                'fit_mode': 'fill',      # 👈 FORCES the video stream to consume 100% frame width
-                'allow_stretch': True    # 👈 Overrides resolution limits on mobile panels
+                'fit_mode': 'contain'
             }
         )
-
         content_box.add_widget(video_player_widget)
         
         action_bar = BoxLayout(size_hint_y=None, height='52dp', spacing=12)
@@ -1022,6 +1019,7 @@ class Windowfirst(Screen):
         is_currently_fullscreen = False
 
         # 🔄 DYNAMIC SENSOR & DESKTOP WINDOW TOGGLE HANDLER
+            # 🔄 DYNAMIC SENSOR & DESKTOP WINDOW TOGGLE
         def toggle_fullscreen_mode(instance):
             nonlocal is_currently_fullscreen
             is_currently_fullscreen = not is_currently_fullscreen
@@ -1033,16 +1031,12 @@ class Windowfirst(Screen):
                     activity = autoclass('org.kivy.android.PythonActivity').mActivity
                     activity.setRequestedOrientation(0) 
                 else:
-                    Window.fullscreen = 'auto'
+                    Window.maximize() # 🖥️ Triggers true full-screen maximize on Windows/Mac/Linux
                 
-                # 🛠️ CRUCIAL HIDDEN SETTING: Strip popup padding completely!
                 popup.size_hint = (1.0, 1.0)
                 popup.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
                 popup.title = ""                  
-                popup.separator_height = 0  
-                content_box.padding = 0    # 👈 Removes internal box borders
-                content_box.spacing = 0    # 👈 Removes spacing gaps
-                
+                popup.separator_height = 0        
                 fullscreen_btn.text = "🔍  Exit Fullscreen"
                 fullscreen_btn.background_color = (0.22, 0.65, 0.38, 1)  
             else:
@@ -1052,22 +1046,16 @@ class Windowfirst(Screen):
                     activity = autoclass('org.kivy.android.PythonActivity').mActivity
                     activity.setRequestedOrientation(1) 
                 else:
-                    Window.fullscreen = False
+                    Window.restore() # 🖥️ Restores original windowed dimensions on PC
 
-                # Restore original compact settings
                 popup.size_hint = (0.95, 0.85)
                 popup.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
                 popup.title = "Lesson Video Player"
                 popup.separator_height = '2dp'    
-                content_box.padding = 14   # 👈 Restores padding inside popup window
-                content_box.spacing = 12   # 👈 Restores standard spacing
-                
                 fullscreen_btn.text = "📺  Go Fullscreen"
-                fullscreen_btn.background_color = (0.14, 0.45, 0.90, 1)
-
+                fullscreen_btn.background_color = (0.14, 0.45, 0.90, 1) 
 
         def safely_dismiss_player(instance):
-            # 🛡️ Safety Fail-Safe: If closed while full, force app structural normalization
             if is_currently_fullscreen:
                 if platform == 'android':
                     jnius_module = __import__('jnius', fromlist=['autoclass'])
@@ -1075,15 +1063,22 @@ class Windowfirst(Screen):
                     activity = autoclass('org.kivy.android.PythonActivity').mActivity
                     activity.setRequestedOrientation(1)
                 else:
-                    Window.fullscreen = False
+                    Window.restore()
             
             video_player_widget.state = 'stop' 
             popup.dismiss()
+
+
 
         fullscreen_btn.bind(on_release=toggle_fullscreen_mode)
         close_btn.bind(on_release=safely_dismiss_player)
         
         popup.open()
+
+
+
+        # 🔄 DYNAMIC SENSOR & DESKTOP WINDOW TOGGLE HANDLER
+    
 
 
 
@@ -7400,7 +7395,7 @@ class CrashCourseApp(App):
     def on_resume(self):
         pass
     
-Factory.register('Windowfirst', cls=Windowfirst)
+
     
 if __name__ == '__main__':
     CrashCourseApp().run()

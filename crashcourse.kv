@@ -39,104 +39,177 @@
           name: 'ww'
           on_pre_enter: 
                if not self.children: self.add_widget(Factory.Mywidget())
+            # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
                if self.children: self.children[0].on_pre_enter()
 
 
      Screen:
           name: 'video'
-          on_enter: if not self.children: self.add_widget(Factory.Playvideo())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Playvideo())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'con_a'
-          on_enter: if not self.children: self.add_widget(Factory.Mode())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Mode())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'con_b'
-          on_enter: if not self.children: self.add_widget(Factory.Modea())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Modea())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'a'
-          on_enter: if not self.children: self.add_widget(Factory.Video_a())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Video_a())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'b'
-          on_enter: if not self.children: self.add_widget(Factory.Video_b())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Video_b())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'arabic'
-          on_enter: if not self.children: self.add_widget(Factory.ArabicText())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.ArabicText())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'arabic1'
-          on_enter: if not self.children: self.add_widget(Factory.ArabicText1())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.ArabicText1())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'arabic2'
-          on_enter: if not self.children: self.add_widget(Factory.ArabicText2())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.ArabicText2())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'page1'
-          on_enter: if not self.children: self.add_widget(Factory.GramarPage())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.GramarPage())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'page2'
-          on_enter: if not self.children: self.add_widget(Factory.GramarPage1())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.GramarPage1())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'page3'
-          on_enter: if not self.children: self.add_widget(Factory.GramarPage2())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.GramarPage2())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'phrasal'
-          on_enter: if not self.children: self.add_widget(Factory.PhrasalVerb())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.PhrasalVerb())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'phrasal2'
-          on_enter: if not self.children: self.add_widget(Factory.PhrasalVerb1())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.PhrasalVerb1())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'phrasal3'
-          on_enter: if not self.children: self.add_widget(Factory.PhrasalVerb2())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.PhrasalVerb2())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'showphr'
-          on_enter: if not self.children: self.add_widget(Factory.ShowphrResult())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.ShowphrResult())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'v'
-          on_enter: if not self.children: self.add_widget(Factory.Vocabulary_a())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Vocabulary_a())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'vocabu'
-          on_enter: if not self.children: self.add_widget(Factory.Vocabulary_b())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Vocabulary_b())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'v2'
-          on_enter: if not self.children: self.add_widget(Factory.Vocabulary_c())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Vocabulary_c())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'show_v'
-          on_enter: if not self.children: self.add_widget(Factory.ShowVocabulary())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.ShowVocabulary())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'punc1'
-          on_enter: if not self.children: self.add_widget(Factory.Punctuation1())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Punctuation1())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'punc2'
-          on_enter: if not self.children: self.add_widget(Factory.Punctuation2())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Punctuation2())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'punc3'
-          on_enter: if not self.children: self.add_widget(Factory.Punctuation3())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Punctuation3())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'showpunc'
-          on_enter: if not self.children: self.add_widget(Factory.ShowPunctuation())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.ShowPunctuation())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
      Screen:
           name: 'trans'
-          on_enter: if not self.children: self.add_widget(Factory.Translation())
+          on_pre_enter:
+               if not self.children: self.add_widget(Factory.Translation())
+               # 2. 🚀 CRUCIAL FIX: Force the layout layer to run your python database lookups instantly!
+               if self.children: self.children[0].on_pre_enter()
 
 
 <Firstwindow>:
