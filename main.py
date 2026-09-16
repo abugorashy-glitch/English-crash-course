@@ -62,10 +62,7 @@ from bidi.algorithm import get_display
 # 🎨 STEP 5: KIVY USER INTERFACE MATRIX DESIGNERS
 # =========================================================================
 from kivy.app import App
-from kivy.core.window import Window
 
-# Forces Kivy to draw over 100% of the display canvas without system frame overrides
-Window.borderless = True
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
@@ -83,6 +80,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 
 
 from kivy.core.window import Window
+Window.borderless = True
 Window.softinput_mode = 'below_target'
 
 
@@ -945,20 +943,19 @@ class Windowfirst(Screen):
             Clock.schedule_once(handle_download_failure_with_error(caught_err_msg), 0)
 
     def launch_embedded_videoplayer(self, video_filepath):
-        """ 6. CORE VISUAL MEDIA PLAYER PORT (CROSS-PLATFORM FULLSCREEN) """
+        """ 6. CORE VISUAL MEDIA PLAYER PORT (CROSS-PLATFORM FIXED EDGE-TO-EDGE) """
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.button import Button
         from kivy.uix.popup import Popup
-        from kivy.uix.videoplayer import VideoPlayer
-        from kivy.graphics import Color, RoundedRectangle
+        from kivy.uix.video import Video  # 👈 Direct core Video widget bypasses Android aspect locks
         from kivy.core.window import Window  
         from kivy.utils import platform
         
-        # 🌌 Main layout container with safe absolute structural layout dimensions
+        # 🌌 Main container layout defaults
         content_box = BoxLayout(orientation='vertical', spacing=12, padding=14)
         
         with content_box.canvas.before:
-            Color(0.11, 0.13, 0.16, 1)  # Premium Obsidian background
+            Color(0.11, 0.13, 0.16, 1)  
             self.rect = RoundedRectangle(pos=content_box.pos, size=content_box.size, radius=(12, 12, 12, 12))
             
         def update_rect(instance, value):
@@ -966,18 +963,16 @@ class Windowfirst(Screen):
             self.rect.size = instance.size
         content_box.bind(pos=update_rect, size=update_rect)
 
-        # Initialize the core VideoPlayer widget safely
-        video_player_widget = VideoPlayer(
+        # 🎬 Initialize the core Video instance explicitly breaking video ratio locks
+        video_widget = Video(
             source=video_filepath, 
             state='play', 
-            fullscreen=False,
-            allow_fullscreen=True,
-            options={
-                'eos': 'loop', 
-                'fit_mode': 'contain'
-            }
+            eos='loop',
+            allow_stretch=True,  # 👈 Directly forced on the rendering pipeline
+            keep_ratio=False,    # 👈 Forces hardware texture to stretch to container boundaries
+            size_hint=(1, 1)     # 👈 Consumes 100% of space
         )
-        content_box.add_widget(video_player_widget)
+        content_box.add_widget(video_widget)
         
         action_bar = BoxLayout(size_hint_y=None, height='52dp', spacing=12)
         
@@ -1003,7 +998,6 @@ class Windowfirst(Screen):
         action_bar.add_widget(close_btn)
         content_box.add_widget(action_bar)
         
-        # Centered base layout popup window configurations
         popup = Popup(
             title="Lesson Video Player", 
             title_size='18sp',
@@ -1018,8 +1012,6 @@ class Windowfirst(Screen):
 
         is_currently_fullscreen = False
 
-        # 🔄 DYNAMIC SENSOR & DESKTOP WINDOW TOGGLE HANDLER
-            # 🔄 DYNAMIC SENSOR & DESKTOP WINDOW TOGGLE
         def toggle_fullscreen_mode(instance):
             nonlocal is_currently_fullscreen
             is_currently_fullscreen = not is_currently_fullscreen
@@ -1029,14 +1021,18 @@ class Windowfirst(Screen):
                     jnius_module = __import__('jnius', fromlist=['autoclass'])
                     autoclass = jnius_module.autoclass
                     activity = autoclass('org.kivy.android.PythonActivity').mActivity
-                    activity.setRequestedOrientation(0) 
+                    activity.setRequestedOrientation(0) # 0 = Horizontal Landscape view
                 else:
-                    Window.maximize() # 🖥️ Triggers true full-screen maximize on Windows/Mac/Linux
+                    Window.fullscreen = 'auto'
                 
+                # 🛠️ STRIP EDGES AND MARGINS COMPLETELY IN FULLSCREEN
                 popup.size_hint = (1.0, 1.0)
                 popup.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
                 popup.title = ""                  
                 popup.separator_height = 0        
+                content_box.padding = 0   # 👈 Removes internal box borders
+                content_box.spacing = 0   # 👈 Removes gaps
+                
                 fullscreen_btn.text = "🔍  Exit Fullscreen"
                 fullscreen_btn.background_color = (0.22, 0.65, 0.38, 1)  
             else:
@@ -1044,14 +1040,18 @@ class Windowfirst(Screen):
                     jnius_module = __import__('jnius', fromlist=['autoclass'])
                     autoclass = jnius_module.autoclass
                     activity = autoclass('org.kivy.android.PythonActivity').mActivity
-                    activity.setRequestedOrientation(1) 
+                    activity.setRequestedOrientation(1) # 1 = Vertical Portrait view
                 else:
-                    Window.restore() # 🖥️ Restores original windowed dimensions on PC
+                    Window.fullscreen = False
 
+                # Restore original layout spacing boundaries
                 popup.size_hint = (0.95, 0.85)
                 popup.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
                 popup.title = "Lesson Video Player"
                 popup.separator_height = '2dp'    
+                content_box.padding = 14  # 👈 Restores padding inside popup window
+                content_box.spacing = 12  # 👈 Restores default layout gaps
+                
                 fullscreen_btn.text = "📺  Go Fullscreen"
                 fullscreen_btn.background_color = (0.14, 0.45, 0.90, 1) 
 
@@ -1063,17 +1063,16 @@ class Windowfirst(Screen):
                     activity = autoclass('org.kivy.android.PythonActivity').mActivity
                     activity.setRequestedOrientation(1)
                 else:
-                    Window.restore()
+                    Window.fullscreen = False
             
-            video_player_widget.state = 'stop' 
+            video_widget.state = 'stop' 
             popup.dismiss()
-
-
 
         fullscreen_btn.bind(on_release=toggle_fullscreen_mode)
         close_btn.bind(on_release=safely_dismiss_player)
         
         popup.open()
+
 
 
 
