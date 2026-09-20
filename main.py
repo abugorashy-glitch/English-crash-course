@@ -77,7 +77,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.videoplayer import VideoPlayer
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-
+from kivy.lang import Builder
 
 from kivy.core.window import Window
 Window.borderless = True
@@ -88,7 +88,7 @@ class_punctuation1 = "false"
 class_punctuation2 = "false"
 class_punctuation3 ="false"
 
-
+TEST_MODE = True 
 current_active_sound = None
 # coding=utf-8 
 punc_counter2 = 0
@@ -148,23 +148,92 @@ pc = []; pc1 = []; pc2 = []; pc3 = []; pc4 = []; pc_id = []; pcr = []
  
 prefix=""
 
+import os
+import sqlite3
+import threading
+from kivy.uix.screenmanager import Screen
+from kivy.core.audio import SoundLoader
+from kivy.clock import Clock
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+from kivy.utils import platform
+
+# Global states
+current_learning_level = "beginner"
+current_active_sound = None
+prefix = "beg"
+myresult1 = ""
+truth1 = True
+truth2 = False
+truth3 = False
+show_textfile_beginner_table=""
 class Mywidget(Screen):
-    def change_pre(self,new_pre): 
-        global current_learning_level
-        current_learning_level= new_pre
+    def __init__(self, **kwargs):
+        super(Mywidget, self).__init__(**kwargs)
+        self.audio_tracker = None
+        # 💾 Safe background string cache to permanently hold your highlighted words
+        self.selected_word_cache = ""
+
+    def on_pre_enter(self, *args):
+        """ Runs automatically right before the screen appears """
+        if 'mytext' in self.ids:
+            
+            # 🚀 THE NATIVE KEYBOARD BLOCK RULE: Override the virtual keyboard trigger [1]
+            self.ids.mytext.show_keyboard = lambda *x: None 
+            
+            # Bind a dynamic live listener to intercept highlight drag text events instantly
+            self.ids.mytext.bind(selection_text=self.save_selection_cache)
+            
+            # Reset cache on entry
+            self.selected_word_cache = ""
+
+    def save_selection_cache(self, instance, value):
+        """ 🚀 REAL-TIME INTERCEPTOR: Saves your highlighted word into memory instantly """
+        if value and value.strip():
+            self.selected_word_cache = value.strip()
+            print(f"💾 [CACHE HARVESTER] Saved active selection to memory: '{self.selected_word_cache}'")
+
+    def selection(self):
+        """ Triggered when pressing the 'Translate Selection' button """
+        global truth1, truth2, truth3
+        truth1 = True
+        truth2 = False
+        truth3 = False
         
+        # 🚀 THE DEFINITIVE BYPASS: Read from our secure internal memory cache
+        myvariable = self.selected_word_cache
+        
+        print(f"\n🔍 [TRANSLATION SYSTEM] Raw highlighted text captured from cache: {repr(myvariable)}")
+        
+        if myvariable and myvariable.strip():
+            # Clean up punctuation around the word safely
+            cleaned_word = myvariable.strip().strip(".,?!;:\"'()[]{}<>*_-")
+            print(f"📡 Launching lookup thread for cleaned keyword: '{cleaned_word}'")
+            
+            # Reset cache so the user can make a clean new selection next time
+            self.selected_word_cache = ""
+            
+            threading.Thread(target=self.async_db_lookup, args=(cleaned_word,), daemon=True).start()
+        else:
+            print("⚠️ Translation canceled: No text was highlighted inside your text box layer!")
+
+    def on_leave(self, *args):
+        """ Kills background audio interval loops when navigating away from the page """
+        self.stop_audio_tracking_loop()
+
+    def change_pre(self, new_pre): 
+        global current_learning_level
+        current_learning_level = new_pre
         
     def play_lesson_track(self, track_number="1"):
-        """ Platforms-safe audio player that dynamically maps level prefixes and plays any track number """
+        """ Platforms-safe audio player with reactive live progress bar linking hooks """
         global current_active_sound, current_learning_level, prefix
         
-        # 1. Automatically match the prefix to the active level selection
-        prefix = "beg" if current_learning_level == "beginner" else "inter" if current_learning_level == "intermediate" else "adv"
+        self.stop_audio_tracking_loop()
         
-        # 2. Ensure the filename matches your downloaded file structure exactly
+        prefix = "beg" if current_learning_level == "beginner" else "inter" if current_learning_level == "intermediate" else "adv"
         filename = f"{prefix}_track{track_number}.mp3"
 
-        # 3. Kill any currently playing track before launching the new one to prevent overlaps
         if current_active_sound:
             try:
                 current_active_sound.stop()
@@ -173,52 +242,59 @@ class Mywidget(Screen):
                 print(f"Audio cleanup warning: {stop_err}")
             current_active_sound = None
 
-        # =========================================================================
-        # 4. FIX: MATCH THE SPLASH SCREEN STORAGE DIRECTORY EXACTLY
-        # =========================================================================
         if platform == 'android':
             base_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
         else:
-            # DESKTOP COMPUTER: Use your current project directory (os.getcwd()) 
-            # instead of AppData so it targets your downloaded assets folder!
             base_dir = os.getcwd()
 
-        # 5. Build the total path including the fixed extension variable
         track_absolute_path = os.path.join(base_dir, "my_audio_album", filename)
         print(f"[AUDIO SYSTEM] Attempting playback from path: {track_absolute_path}")
 
-        # 6. Stream verification gate
         if not os.path.exists(track_absolute_path) or os.path.getsize(track_absolute_path) == 0:
             print(f"🚨 AUDIO ERROR: File missing or empty: {filename}")
+            if 'audio_progress' in self.ids:
+                self.ids.audio_progress.value = 0
             return
 
-        # 7. Core Kivy Audio Engine Execution
         try:
             sound = SoundLoader.load(track_absolute_path)
             if sound:
                 current_active_sound = sound
                 sound.play()
                 print(f"🔊 SUCCESS: Now playing {filename}")
+                
+                if 'audio_progress' in self.ids:
+                    self.ids.audio_progress.value = 0
+                self.audio_tracker = Clock.schedule_interval(self.update_audio_progress_bar, 0.2)
             else:
-                print("🚨 SOUNDLOADER ERROR: Core audio engine returned None (Codec missing).")
+                print("🚨 SOUNDLOADER ERROR: Core audio engine returned None.")
         except Exception as audio_runtime_error:
             print(f"🚨 CRITICAL PLAYBACK REJECTION: {audio_runtime_error}")
-    
-    
 
+    def update_audio_progress_bar(self, dt):
+        """ Dynamically tracks audio length versus position matrix metrics safely """
+        global current_active_sound
+        if current_active_sound and current_active_sound.state == 'play':
+            length = current_active_sound.length
+            pos = current_active_sound.get_pos()
+            if length > 0:
+                percentage = (pos / length) * 100
+                if 'audio_progress' in self.ids:
+                    self.ids.audio_progress.value = percentage
+        else:
+            self.stop_audio_tracking_loop()
 
+    def stop_audio_tracking_loop(self):
+        if self.audio_tracker:
+            Clock.unschedule(self.audio_tracker)
+            self.audio_tracker = None
 
     def load_lesson_text_view(self, track_number="1"):
-        """ Reads the downloaded .txt file matching the active tier and displays it in the UI """
+        """ Reads .txt data files dynamically pushing them text content into TextInput """
         global current_learning_level
-        
-        # 1. Automatically match the prefix to the active level selection
         prefix = "beg" if current_learning_level == "beginner" else "inter" if current_learning_level == "intermediate" else "adv"
-        
-        # 2. Reconstruct the exact text filename matching the track number
         filename = f"{prefix}_track{track_number}.txt"
 
-        # 3. Synchronize folder paths perfectly with your splash screen and audio engine
         if platform == 'android':
             base_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
         else:
@@ -227,97 +303,83 @@ class Mywidget(Screen):
         text_absolute_path = os.path.join(base_dir, "my_audio_album", filename)
         print(f"[TEXT SYSTEM] Reading script layout from path: {text_absolute_path}")
 
-        # 4. Read the file safely and inject it into your user interface
         if os.path.exists(text_absolute_path):
             try:
                 with open(text_absolute_path, 'r', encoding='utf-8') as f:
                     lesson_text_content = f.read()
                 
-                # Apply your Arabic reshaper configuration rules natively if the text contains Arabic script
-                # If your text is purely English, you can change this line to simply: final_text = lesson_text_content
-                import arabic_reshaper
-                from bidi.algorithm import get_display
-                final_text = get_display(arabic_reshaper.reshape(lesson_text_content))
+                try:
+                    import arabic_reshaper
+                    from bidi.algorithm import get_display
+                    final_text = get_display(arabic_reshaper.reshape(lesson_text_content))
+                except ImportError:
+                    final_text = lesson_text_content
                 
-                # 🚨 REPLACE 'lesson_text_display' WITH YOUR EXACT LABEL ID INSIDE YOUR .KV FILE!
                 if 'mytext' in self.ids:
                     self.ids.mytext.text = final_text
+                    self.ids.mytext.scroll_y = 1.0
                     print(f"📖 SUCCESS: Text display loaded for {filename}")
-                else:
-                    print("🚨 LAYOUT ERROR: Could not find the label ID 'lesson_text_display' inside self.ids.")
+                    from kivy.clock import Clock
+                    Clock.schedule_once(lambda dt: self.reset_scrollbar_to_top(), 0.1)
             except Exception as file_read_err:
-                print(f"🚨 FILE READ EXCEPTION: Cannot parse text stream -> {file_read_err}")
+                print(f"🚨 FILE READ EXCEPTION: {file_read_err}")
         else:
             print(f"🚨 TEXT ERROR: File missing: {filename}")
-            if 'lesson_text_display' in self.ids:
+            if 'mytext' in self.ids:
                 self.ids.mytext.text = "Lesson transcript file is missing."
-
-
-
- 
-
+                
+    def reset_scrollbar_to_top(self):
+        """ Safe helper callback to guarantee top line pinning on any hardware """
+        if 'mytext' in self.ids:
+            # 🚀 1. Force the internal cursor position to index 0 (Row 0, Column 0)
+            # This forces Kivy's viewport renderer to look at the first character!
+            self.ids.mytext.cursor = (0, 0)
             
-            
-    def selection(self):
-        global truth1, truth2, truth3
-        truth1 = True
-        truth2 = False
-        truth3 = False
-        
-        # 1. Grab the selected text from the UI while on the main thread
-        myvariable = self.ids.mytext.selection_text
-        
-        # 2. Spin the database lookup off into a background thread
-        threading.Thread(target=self.async_db_lookup, args=(myvariable,), daemon=True).start()
+            # 🚀 2. Reinforce the absolute scroll height coordinate anchor
+            self.ids.mytext.scroll_y = 1.0
+            print("🎯 Cursor and view successfully forced back to line 1!")
 
     def async_db_lookup(self, search_word):
-        # 3. Open a separate, thread-isolated database connection for safety
         db_name = "book.db"
         if platform == 'android':
-            from android.storage import app_storage_path # type: ignore
-            db_path = os.path.join(app_storage_path(), db_name)
+            base_app_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
+            db_path = os.path.join(base_app_dir, db_name)
         else:
-            db_path = db_name
+            current_script_dir = os.path.dirname(os.path.abspath(__file__))
+            db_path = os.path.join(current_script_dir, db_name)
 
         try:
-            # Connect, execute the query, and fetch the single record
             thread_conn = sqlite3.connect(db_path)
             thread_cursor = thread_conn.cursor()
-            
-            sql_query = "select meaning from words10 where lower(upper(word)) like ?"
+            sql_query = "SELECT meaning FROM words10 WHERE LOWER(word) = LOWER(?)"
             thread_cursor.execute(sql_query, (search_word,))
             myresult = thread_cursor.fetchone()
-            
             thread_conn.close()
             
-            # 4. Use Clock to pass the result back to the main UI thread safely
             Clock.schedule_once(lambda dt: self.process_lookup_result(myresult), 0)
-            
         except Exception as e:
             print(f"Lookup thread error: {e}")
-            # Fallback error message if something fails
             Clock.schedule_once(lambda dt: self.process_lookup_result(None), 0)
 
     def process_lookup_result(self, myresult):
         global myresult1
-        
-        # 5. This runs back on Kivy's main thread, making UI changes 100% safe
         if myresult is None:
             content = Label(text="Not Found. Please choose the word correctly", halign='center', valign='middle')
             popup = Popup(title='info', content=content, size_hint=(0.9, 0.2), auto_dismiss=False)
             popup.open()
-            Clock.schedule_once(lambda dt: popup.dismiss(), 3)
+            Clock.schedule_once(lambda dt: popup.dismiss(), 2.5)
         else:
             myresult1 = ''.join(myresult)
-            self.manager.current = 'trans'
-
-
-       
+            app_inst = App.get_running_app()
+            if app_inst.root:
+                app_inst.root.current = 'trans'
 
     def translatall(self):
-        if self.ids.all.text=="Translate All":
-            self.ids.all.text="Translate All"
-            self.ids.yourtext.size=400,450
+        if 'all' in self.ids and self.ids.all.text == "Translate All":
+            if 'yourtext' in self.ids:
+                self.ids.yourtext.size = (400, 450)
+
+
        
        
                     
@@ -717,16 +779,19 @@ class Windowfirst(Screen):
 
     def on_explain_button_click(self, *args):
         """ 
-        1. MAIN EXPLAIN BUTTON GATEWAY (ORDER-CORRECTED & RESILIENT MATCHING)
-        Calculates file structures first, checks your hard drive cache, and uses 
-        flexible SQL matching to pull links from the 'beginner' table.
+        1. MAIN EXPLAIN BUTTON GATEWAY (CHOICE DIALOG OVERRIDE)
+        Prompts user to select Video or Text. Handles local text asset presentation 
+        or carries forward to standard SQL matching and download threads.
         """
         global s4, counter2  
         import os
-        import threading
         import sqlite3  
         from kivy.utils import platform
-        
+        from kivy.uix.boxlayout import BoxLayout
+        from kivy.uix.button import Button
+        from kivy.uix.label import Label
+        from kivy.uix.popup import Popup
+       
         raw_db_text = ""
         correct_answer_str = ""
         
@@ -739,9 +804,9 @@ class Windowfirst(Screen):
         print(f"-> Parsed text evaluation value: {repr(correct_answer_str)}")
         print("==============================================\n")
 
-        # 💾 STEP 1: CALCULATE THE SYSTEM DIRECTORY PATHS FIRST
-        # Clean up text characters to form a valid, standardized system file name
-        safe_filename = f"{correct_answer_str.replace(' ', '_')}.mp4"
+        # 🪐 Setup system path structures for both media formats
+        safe_video_name = f"{correct_answer_str.replace(' ', '_')}.mp4"
+        safe_text_name = f"{correct_answer_str}.txt"
 
         if platform == 'android':
             base_app_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
@@ -750,58 +815,153 @@ class Windowfirst(Screen):
             current_script_dir = os.path.dirname(os.path.abspath(__file__))
             video_folder = os.path.join(current_script_dir, "my_audio_album")
 
-        # Ensure the video album storage container folder exists on disk
         if not os.path.exists(video_folder):
             try: os.makedirs(video_folder)
             except: pass
             
-        target_file_path = os.path.join(video_folder, safe_filename)
+        target_file_path = os.path.join(video_folder,safe_video_name)
+        text_read_path = os.path.join(video_folder, safe_text_name)
 
-        # 🎬 STEP 2: CHECK CACHE DISK (If video already exists locally, play it immediately!)
-        if os.path.exists(target_file_path) and os.path.getsize(target_file_path) > 50000:
-            print(f"🎬 Local cache verified! Launching player directly for: {target_file_path}")
-            self.launch_embedded_videoplayer(target_file_path)
-            return
+        # =========================================================================
+        # 🎛️ DUAL CHOICE DIALOG POP-UP UI BUILDER
+        # =========================================================================
+        choice_layout = BoxLayout(orientation='vertical', padding=15, spacing=14)
+        
+        info_label = Label(
+            text="How would you like to view this lesson explanation?",
+            font_size='15sp',
+            halign='center',
+            size_hint_y=0.3
+        )
+        choice_layout.add_widget(info_label)
 
-        # 🗄️ STEP 3: IF MISSING FROM STORAGE, ACQUIRE FROM SQLITE
-        if platform == 'android':
-            db_path = os.path.join(base_app_dir, "book.db")
-        else:
-            db_path = os.path.join(current_script_dir, "book.db")
+        btn_box = BoxLayout(orientation='horizontal', spacing=12, size_hint_y=0.7)
 
-        dropbox_url = None
-        video_label_name = None
+        video_btn = Button(
+            text="🎬  Watch Video\n(Requires Data)",
+            font_size='14sp',
+            bold=True,
+            halign='center',
+            background_normal='',
+            background_color=(0.14, 0.45, 0.90, 1) # Royal Blue
+        )
+        
+        text_btn = Button(
+            text="📖  Read Text\n(Zero Mobile Data)",
+            font_size='14sp',
+            bold=True,
+            halign='center',
+            background_normal='',
+            background_color=(0.22, 0.65, 0.38, 1) # Emerald Green
+        )
 
-        try:
-            conn = sqlite3.connect(db_path)
-            cursor = conn.cursor()
+        btn_box.add_widget(video_btn)
+        btn_box.add_widget(text_btn)
+        choice_layout.add_widget(btn_box)
+
+        self.choice_popup = Popup(
+            title="Explanation Method Selector",
+            content=choice_layout,
+            size_hint=(0.85, 0.32),
+            auto_dismiss=True
+        )
+
+        # =========================================================================
+        # 🔘 INTERACTIVE CALLBACK A: EXECUTE YOUR ORIGINAL VIDEO PATH ENGINE
+        # =========================================================================
+        def run_video_pipeline(instance):
+            self.choice_popup.dismiss()
             
-            # Use flexible SQL matching (LIKE) to find the record even with slight spacing variations
-            search_query = f"%{correct_answer_str}%"
-            cursor.execute("SELECT rightanswer, video_url FROM beginner WHERE LOWER(option) LIKE ?", (search_query,))
-            row = cursor.fetchone()
-            
-            if row:
-                video_label_name = str(row[0]).strip()  # Grab column 0: rightanswer
-                dropbox_url = str(row[1]).strip()       # Grab column 1: video_url
+            # 💾 STEP 2: CHECK CACHE DISK (If video already exists locally, play it immediately!)
+            if os.path.exists(target_file_path) and os.path.getsize(target_file_path) > 50000:
+                print(f"🎬 Local cache verified! Launching player directly for: {target_file_path}")
+                self.launch_embedded_videoplayer(target_file_path)
+                return
+
+            # 🗄️ STEP 3: IF MISSING FROM STORAGE, ACQUIRE FROM SQLITE
+            if platform == 'android':
+                db_path = os.path.join(base_app_dir, "book.db")
+            else:
+                db_path = os.path.join(current_script_dir, "book.db")
+
+            dropbox_url = None
+            video_label_name = None
+
+            try:
+                conn = sqlite3.connect(db_path)
+                cursor = conn.cursor()
                 
-            conn.close()
-        except Exception as db_err:
-            print(f"❌ Database error: {db_err}")
+                search_query = f"%{correct_answer_str}%"
+                cursor.execute("SELECT rightanswer, video_url FROM beginner WHERE LOWER(option) LIKE ?", (search_query,))
+                row = cursor.fetchone()
+                
+                if row:
+                    video_label_name = str(row[0]).strip()  
+                    dropbox_url = str(row[1]).strip()       
+                    
+                conn.close()
+            except Exception as db_err:
+                print(f"❌ Database error: {db_err}")
 
-        # 🚨 STEP 4: FALLBACK VERIFICATION DIALOG
-        if not dropbox_url or dropbox_url.strip() == "" or "http" not in dropbox_url:
-            self.show_fallback_alert(
-                "Explanation Alert", 
-                f"No video link was found inside the database for this lesson.\n\n"
-                f"Searched Row Value: '{correct_answer_str}'\n"
-                f"Database Path checked: {db_path}"
-            )
-            return
+            # 🚨 STEP 4: FALLBACK VERIFICATION DIALOG
+            if not dropbox_url or dropbox_url.strip() == "" or "http" not in dropbox_url:
+                self.show_fallback_alert(
+                    "Explanation Alert", 
+                    f"No video link was found inside the database for this lesson.\n\n"
+                    f"Searched Row Value: '{correct_answer_str}'\n"
+                    f"Database Path checked: {db_path}"
+                )
+                return
 
-        # 🚀 STEP 5: INITIALIZE THE POPUP PROGRESS BAR SCREEN WORKER
-        print(f"📡 Match Confirmed. Launching download stream window for: {video_label_name}")
-        self.trigger_video_download(dropbox_url, target_file_path)
+            # 🚀 STEP 5: INITIALIZE THE POPUP PROGRESS BAR SCREEN WORKER
+            print(f"📡 Match Confirmed. Launching download stream window for: {video_label_name}")
+            self.trigger_video_download(dropbox_url, target_file_path)
+
+        # =========================================================================
+        # 🔘 INTERACTIVE CALLBACK B: TEXT EXTRACTION FROM LOCAL ALbum
+        # =========================================================================
+        def run_text_pipeline(instance):
+            self.choice_popup.dismiss()
+            global show_textfile_beginner_table
+            
+            print(f"[TEXT SYSTEM] Reading local disk layout explanation for: {text_read_path}")
+            
+            if os.path.exists(text_read_path):
+                try:
+                    with codecs.open (text_read_path, 'r', encoding='utf-8') as f:
+                        text_file_content = f.read()
+                        show_textfile_beginner_table = text_file_content                                  
+                                                            # Native Arabic Reshaping context mapping bridge if strings have RTL letters
+                    try:
+                        import arabic_reshaper
+                        from bidi.algorithm import get_display
+                        show_textfile_beginner_table = text_file_content= get_display(arabic_reshaper.reshape(text_file_content))
+                        # 🚀 SUCCESS: Force the global application root manager forward to the translation window frame
+                        from kivy.app import App
+                        App.get_running_app().root.current= 'beginner'
+                        print(f"📖 SUCCESS: Text lesson loaded for option row content: '{correct_answer_str}'")
+                    except ImportError:
+                    
+                        
+                    
+                    
+                        print("hhhh")
+                    
+                except Exception as file_err:
+                    self.show_fallback_alert("⚠️ File Error", f"Cannot read the text file explanation data: {file_err}")
+            else:
+                self.show_fallback_alert(
+                    "📥 File Not Found", 
+                    f"The text file explanation assignment asset for '{correct_answer_str}' is missing.\n\n"
+                    f"Expected Path: {text_read_path}\n\nPlease use the video option instead!"
+                )
+
+        # Link click mechanics to trigger specific function handlers
+        video_btn.bind(on_release=run_video_pipeline)
+        text_btn.bind(on_release=run_text_pipeline)
+        
+        self.choice_popup.open()
+
 
 
     def trigger_video_download(self, url, save_path):
@@ -4992,7 +5152,7 @@ class ArabicText2(Screen):
             
             
             
-class GramarPage(Screen):
+class GramarPage (Screen):
     def load_grammar_lesson_text(self, lesson_title):
         """
         DYNAMIC ASSET LOADER:
@@ -5024,9 +5184,12 @@ class GramarPage(Screen):
                 # Apply your native Arabic text reshaping engine requirements
                 # 🚨 MAKE SURE 'ph' MATCHES THE ID OF THE TEXTINPUT WIDGET ON THIS SCREEN!
                 if 'page' in self.ids:
+                    self.ids.page.scroll_y = 1.0
                     self.ids.page.multiline = True
                     self.ids.page.text = get_display(arabic_reshaper.reshape(grammar_content))
                     print(f"🎉 SUCCESS: Rendered grammar content for -> {file_target_name}")
+                    from kivy.clock import Clock
+                    Clock.schedule_once(lambda dt: self.reset_scrollbar_to_top(), 0.1)
                 else:
                     print("🚨 LAYOUT ERROR: TextInput ID 'ph' was not found on this screen class.")
             except Exception as file_read_error:
@@ -5037,7 +5200,17 @@ class GramarPage(Screen):
             print(f"🚨 CRITICAL MISSING ASSET: File path does not exist -> {target_txt_path}")
             if 'page' in self.ids:
                 self.ids.page.text = f"Grammar script file missing:\n{file_target_name}"
-
+                
+    def reset_scrollbar_to_top(self):
+            """ Safe helper callback to guarantee top line pinning on any hardware """
+            if 'page' in self.ids:
+                # 🚀 1. Force the internal cursor position to index 0 (Row 0, Column 0)
+                # This forces Kivy's viewport renderer to look at the first character!
+                self.ids.page.cursor = (0, 0)
+                
+                # 🚀 2. Reinforce the absolute scroll height coordinate anchor
+                self.ids.page.scroll_y = 1.0
+                print("🎯 Cursor and view successfully forced back to line 1!")
             
         
          
@@ -5089,9 +5262,12 @@ class GramarPage1(Screen):
                 # Apply your native Arabic text reshaping engine requirements
                 # 🚨 MAKE SURE 'ph' MATCHES THE ID OF THE TEXTINPUT WIDGET ON THIS SCREEN!
                 if 'page' in self.ids:
+                    self.ids.page.scroll_y = 1.0
                     self.ids.page.multiline = True
                     self.ids.page.text = get_display(arabic_reshaper.reshape(grammar_content))
                     print(f"🎉 SUCCESS: Rendered grammar content for -> {file_target_name}")
+                    from kivy.clock import Clock
+                    Clock.schedule_once(lambda dt: self.reset_scrollbar_to_top(), 0.1)
                 else:
                     print("🚨 LAYOUT ERROR: TextInput ID 'ph' was not found on this screen class.")
             except Exception as file_read_error:
@@ -5102,6 +5278,21 @@ class GramarPage1(Screen):
             print(f"🚨 CRITICAL MISSING ASSET: File path does not exist -> {target_txt_path}")
             if 'page' in self.ids:
                 self.ids.page.text = f"Grammar script file missing:\n{file_target_name}"
+    def reset_scrollbar_to_top(self):
+            """ Safe helper callback to guarantee top line pinning on any hardware """
+            if 'page' in self.ids:
+                # 🚀 1. Force the internal cursor position to index 0 (Row 0, Column 0)
+                # This forces Kivy's viewport renderer to look at the first character!
+                self.ids.page.cursor = (0, 0)
+                    
+                # 🚀 2. Reinforce the absolute scroll height coordinate anchor
+                self.ids.page.scroll_y = 1.0
+                print("🎯 Cursor and view successfully forced back to line 1!")
+    
+    
+    
+    
+    
 
         
         
@@ -5157,6 +5348,8 @@ class GramarPage2(Screen):
                     self.ids.page.multiline = True
                     self.ids.page.text = get_display(arabic_reshaper.reshape(grammar_content))
                     print(f"🎉 SUCCESS: Rendered grammar content for -> {file_target_name}")
+                    from kivy.clock import Clock
+                    Clock.schedule_once(lambda dt: self.reset_scrollbar_to_top(), 0.1)
                 else:
                     print("🚨 LAYOUT ERROR: TextInput ID 'ph' was not found on this screen class.")
             except Exception as file_read_error:
@@ -5167,6 +5360,18 @@ class GramarPage2(Screen):
             print(f"🚨 CRITICAL MISSING ASSET: File path does not exist -> {target_txt_path}")
             if 'page' in self.ids:
                 self.ids.page.text = f"Grammar script file missing:\n{file_target_name}"
+    
+    
+    def reset_scrollbar_to_top(self):
+            """ Safe helper callback to guarantee top line pinning on any hardware """
+            if 'page' in self.ids:
+                # 🚀 1. Force the internal cursor position to index 0 (Row 0, Column 0)
+                # This forces Kivy's viewport renderer to look at the first character!
+                self.ids.page.cursor = (0, 0)
+                        
+                # 🚀 2. Reinforce the absolute scroll height coordinate anchor
+                self.ids.page.scroll_y = 1.0
+                print("🎯 Cursor and view successfully forced back to line 1!")
 
         
         
@@ -6556,15 +6761,23 @@ class ShowPunctuation(Screen):
 class Translation(Screen):
     def on_pre_enter(self, *args):
         global myresult1
-        self.ids.my.text= get_display(arabic_reshaper.reshape(myresult1))
+        self.ids.my.text= get_display(arabic_reshaper.reshape(myresult1))  
     def checkwindow(self):
         if truth1:
-            self.manager.current='ww'
+            from kivy.app import App
+            App.get_running_app().root.current = 'ww'
         if truth2:
-            self.manager.current="con_a"
+            from kivy.app import App
+            App.get_running_app().root.current = 'con_a'
 
         if truth3:
-            self.manager.current= "con_b"
+            from kivy.app import App
+            App.get_running_app().root.current = 'con_b '
+            
+            
+class Show_lesson_for_beginner(Screen):
+    def on_pre_enter(self, *args):
+        self.ids.beg.text = show_textfile_beginner_table
 
 class SplashScreen(Screen):
     # Setup native variable footprints inside the instance layer securely
@@ -6584,6 +6797,16 @@ class SplashScreen(Screen):
         Clock.schedule_once(self.start_download_process, 0.5) 
         
     def start_download_process(self, dt=0):
+        
+        global TEST_MODE
+
+    # 🚀 IF TEST_MODE IS ACTIVE, SKIP THE DOWNLOADS AND SKIP TO HOME SCREEN INSTANTLY!
+        if TEST_MODE:
+            print("🔌 TEST MODE ACTIVE: Skipping data downloads to protect your mobile data.")
+            # Switch directly to home screen or trigger your next lazy-load step
+            from kivy.app import App
+            
+            return
         print(">>> DEBUG LOG: start_download_process HAS STARTED EXECUTING! <<<")
         
         # Safe fallback variable assignment to prevent string crashes if IDs are missing locally
@@ -7066,7 +7289,8 @@ class SplashScreen(Screen):
             self.ids.retry_layout.disabled = False
 
     def finish_process(self):
-        self.manager.current = 'home_screen'
+        from kivy.app import App
+        
 
 
     def load_database_step(self, dt):
@@ -7091,10 +7315,11 @@ class SplashScreen(Screen):
             conn = sqlite3.connect(db_path)
             
             # --- 1. Core Quiz tables ---
+            s = conn.execute("select wronganswer1 from advanced").fetchall(); s1 = conn.execute("select questions from advanced").fetchall(); s2 = conn.execute("select wronganswer2 from advanced").fetchall(); s3 = conn.execute("select rightanswer from advanced").fetchall(); s4 = conn.execute("select option from advanced").fetchall(); s5 = conn.execute("select num from advanced").fetchall()
             print("[DEBUG 6] Querying intermediate, advanced, and beginner tables...")
             re1 = conn.execute("select wronganswer1 from intermediate").fetchall(); re = conn.execute("select questions from intermediate").fetchall(); re2 = conn.execute("select wronganswer2 from intermediate").fetchall(); re3 = conn.execute("select rightanswer from intermediate").fetchall(); re4 = conn.execute("select option from intermediate").fetchall(); re5 = conn.execute("select num from intermediate").fetchall()
             results = conn.execute("select wronganswer1 from advanced").fetchall(); result1 = conn.execute("select questions from advanced").fetchall(); result2 = conn.execute("select wronganswer2 from advanced").fetchall(); result3 = conn.execute("select rightanswer from advanced").fetchall(); result4 = conn.execute("select option from advanced").fetchall(); result5 = conn.execute("select num from advanced").fetchall()
-            s = conn.execute("select wronganswer1 from beginner").fetchall(); s1 = conn.execute("select questions from beginner").fetchall(); s2 = conn.execute("select wronganswer2 from beginner").fetchall(); s3 = conn.execute("select rightanswer from beginner").fetchall(); s4 = conn.execute("select option from beginner").fetchall(); s5 = conn.execute("select num from beginner").fetchall()
+           
             
             # --- 2. Phrasal Verbs ---
             print("[DEBUG 7] Querying phrasalverbs tables...")
@@ -7291,69 +7516,18 @@ class CrashCourseApp(App):
 
 
 
-    def on_start(self):
-            
-        """ App-level initialization database check routine block """
-        db_name = "book.db"
-        
-        # Resolve the restriction-free, private internal storage sandbox path
-        if platform == 'android':
-            base_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
-        else:
-            base_dir = self.user_data_dir
-
-        # Unified path tracking property accessible globally across all classes
-        self.internal_sandbox_dir = base_dir
-        
-        writable_db_path = os.path.join(base_dir, db_name)
-        bundled_db_path = os.path.join(os.getcwd(), db_name)
-        
-        # FIX: Added a check for empty/0-byte files to prevent corrupt database lockups
-        database_needs_copy = not os.path.exists(writable_db_path) or (os.path.exists(writable_db_path) and os.path.getsize(writable_db_path) == 0)
-        
-        # Copy the pre-populated database safely into internal storage
-        if database_needs_copy and os.path.exists(bundled_db_path):
-            try:
-                shutil.copy(bundled_db_path, writable_db_path)
-                print("Database cleanly copied into secure internal storage.")
-            except Exception as e:
-                print(f"Failed to copy bundled database asset: {e}")
-                
-        # Main thread database connection
-        self.conn = sqlite3.connect(writable_db_path)
-        self.cursor = self.conn.cursor()
+    
 
     def build(self):
-        db_name = "book.db"
+        # ⚡ 1. Load ONLY your small splash structure file first so it draws instantly!
+        Builder.load_file("splash.kv")
         
-        # FIX: We completely removed Builder.load_file() from here!
-        # Because your class is CrashCourseApp, Kivy natively handles loading crashcourse.kv automatically.
-        # Leaving this method to do ONLY database setups stops the duplicate memory freeze.
-        print("[DEBUG SUCCESS] Kivy automatic engine is loading 'crashcourse.kv' cleanly...")
-
-        # Platform-aware database path parsing
-        if platform == 'android':
-            base_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
-            writable_db_path = os.path.join(base_dir, db_name)
-            bundled_db_path = os.path.join(os.getcwd(), db_name)
-            
-            if not os.path.exists(writable_db_path) and os.path.exists(bundled_db_path):
-                try: 
-                    shutil.copy(bundled_db_path, writable_db_path)
-                except Exception as e: 
-                    print(f"Mobile DB copy failure: {e}")
-        else:
-            writable_db_path = db_name
-            self.internal_sandbox_dir = os.getcwd()
-
-        print(f"[DEBUG SUCCESS] Connecting database target: {writable_db_path}")
+        # ⚡ 2. Initialize a completely clean, empty core screen manager layout
+        self.root_manager = MyScreenManager()
         
-        try:
-            self.conn = sqlite3.connect(writable_db_path)
-            self.cursor = self.conn.cursor()
-            print("[DEBUG SUCCESS] Main thread database connection established!")
-        except Exception as db_err:
-            print(f"[DEBUG ERROR] Database connection lock: {db_err}")
+        
+        
+       
 
         
         
@@ -7383,17 +7557,154 @@ class CrashCourseApp(App):
         punctuation=open("punctuation.txt","r")
         punc_counter=int(punctuation.read())
         punc_counter = punc_counter-2
+        return self.root_manager
+    def on_start(self):
+        Clock.schedule_once(self.lazy_load_app_and_database, 0.1)
+    
+    def lazy_load_app_and_database(self, dt):
+        """ Runs entirely in the background behind your loading splash screen screen """
+        from kivy.lang import Builder
+        from kivy.uix.screenmanager import Screen
+        from kivy.clock import Clock
+
+        # 🗄️ A. Execute your multi-level SQLite table preload queries first
+        self.preload_sqlite_data_into_global_arrays()
+
+        try:
+            # ⚡ B. Compile your 30+ layout screen class rules safely in memory
+            Builder.load_file("main_layout.kv") 
+            print("🎉 Dynamic text and button layouts compiled safely into Kivy's rule library!")
+        except Exception as kv_err:
+            print(f"❌ Error reading layout library: {kv_err}")
+
+        # =========================================================================
+        # 🔗 C. THE CORE FACTORY-LAZY BRIDGE TRICK
+        # Instead of parsing a file layout manager, we build clean empty placeholder 
+        # Screen slots directly into your active manager workspace inside Python.
+        # This completely bypasses all Kivy 'No Screen with name' bugs!
+        # =========================================================================
+        lazy_screens_config = [
+            {"name": "home_screen", "class": "Firstwindow"},
+            {"name": "menu_screen", "class": "Secondwindow"},
+            {"name": "game_screen", "class": "Thirdwindow"},
+            {"name": "w_screen",    "class": "Windowfirst"},
+            {"name": "ww",          "class": "Mywidget"},
+            {"name": "beginner",    "class": "Show_lesson_for_beginner"}
+            # 👉 Add your remaining screen strings here matching your dictionary names!
+        ]
+
+        for screen_data in lazy_screens_config:
+            if not self.root_manager.has_screen(screen_data["name"]):
+                # Create a lightweight, empty base screen slot
+                placeholder = Screen(name=screen_data["name"])
+                
+                # 🚀 Attach the exact dynamic lifecycle forwarding rule using an explicit function binding
+                placeholder.bind(on_pre_enter=lambda instance, s_data=screen_data: self.compile_lazy_widget_on_demand(instance, s_data))
+                
+                self.root_manager.add_widget(placeholder)
+                print(f"🔗 Factory slot mapped cleanly in active manager memory: '{screen_data['name']}'")
+
+        # ⚡ D. Slide safely over onto the home menu on the next execution frame
+        Clock.schedule_once(self.complete_splash_transition, 0.05)
+        
+        
+    
+    
+    
+    
+    def preload_sqlite_data_into_global_arrays(self):
+                """
+                🚀 GLOBAL MEMORY INJECTION ENGINE
+                Queries ONLY the essential layout-driving table loops. Parks data rows 
+                safely inside global caches so your lazy screens never render blank blocks.
+                """
+                global s, s1, s2, s3, s4, s5 # Core layout global caches
+                import sqlite3
+                import os
+                from kivy.utils import platform
+        
+                print("🗄️ Preloading core quiz sets into global tracking parameters...")
+        
+                # 1. Platform safe database alignment paths
+                if platform == 'android':
+                    base_app_dir = os.environ.get('ANDROID_PRIVATE_DIR', '/data/data/org.test.crashcourse/files/app')
+                    db_path = os.path.join(base_app_dir, "book.db")
+                else:
+                    db_path = "book.db"
+        
+                try:
+                    conn = sqlite3.connect(db_path)
+                    s = []; s1 = []; s2 = []; s3 = []; s4 = []; s5 = []
+                    s = conn.execute("select wronganswer1 from beginner").fetchall(); s1 = conn.execute("select questions from beginner").fetchall(); s2 = conn.execute("select wronganswer2 from beginner").fetchall(); s3 = conn.execute("select rightanswer from beginner").fetchall(); s4 = conn.execute("select option from beginner").fetchall(); s5 = conn.execute("select num from beginner").fetchall()
+                    
+                    # 3. Reset and fill your global array caches safely   
+                    conn.close()
+                    print(f"✅ Success: Preloaded {len(s1)} core data rows into memory buffers!")
+                    
+                except Exception as preload_err:
+                    print(f"❌ Splash preloader failure (Ignored for safety context): {preload_err}")
+        
+    
+    
+    
+            
+        
+    def compile_lazy_widget_on_demand(self, placeholder_instance, screen_data):
+        """
+        🚀 THE LIFECYCLE RECOVERY BRIDGE
+        Triggers automatically the exact millisecond a user clicks a button to go to a screen.
+        Compiles your heavy python buttons/labels and forwards your SQLite queries instantly!
+        """
+        from kivy.factory import Factory
+        
+        # If the screen doesn't have its children built yet, build it using Factory now!
+        if not placeholder_instance.children:
+            print(f"🏗️ Lazy Loader compiling full layouts on demand for widget: class {screen_data['class']}")
+            
+            # Fetch the template rule blueprint from Factory (e.g., Factory.Firstwindow())
+            real_screen_widget = getattr(Factory, screen_data["class"])()
+            placeholder_instance.add_widget(real_screen_widget)
+            
+            # 🚀 CRUCIAL: Immediately force the newly born child widget to execute its database queries!
+            if hasattr(real_screen_widget, 'on_pre_enter'):
+                real_screen_widget.on_pre_enter()
+        
+    def complete_splash_transition(self, dt):
+            """ Safe helper callback to guarantee transition tracks land smoothly without crashes """
+            if self.root_manager and self.root_manager.has_screen("home_screen"):
+                self.root_manager.current = "home_screen"
+                print("🚀 App successfully transitioned to the level selection home menu!")
+    
+    
+    
+
+    
+
+    
 
 
+        
+        
+    
 
-        return MyScreenManager()
+        
     def on_pause(self):
         # Tell Android it is safe to keep our app background thread alive without crashing
         return True 
 
     def on_resume(self):
         pass
-    
+
+
+  
+
+
+
+
+
+
+
+ 
 
     
 if __name__ == '__main__':

@@ -1,0 +1,77 @@
+
+#:kivy 2.0.0
+
+# 🚀 Rule 1: Use this exact class header tag name!
+<SplashScreen>:
+     name: 'splash'
+    
+     BoxLayout:
+          orientation: 'vertical'
+          padding: [20, 40, 20, 40]  # Standard desktop and mobile display boundaries
+          spacing: 15
+          canvas.before:
+               Color:
+                    rgba: 0.1, 0.5, 0.8, 1  # Consistent sky blue signature tint
+               Rectangle:
+                    pos: self.pos
+                    size: self.size
+                
+        # 1. LIGHTWEIGHT TOP SPACER
+        # Dynamically expands to push the setup assets downward into the bottom viewport segment
+          Widget:
+               size_hint_y: 0.3
+
+          Label:
+               id: icon_label
+               text: "📥"
+               font_size: '60sp'
+               size_hint_y: None
+               height: '80dp'
+
+          Label:
+               id: status_label
+               text: "Initializing configuration..."
+               font_size: '18sp'
+               color: 1, 1, 1, 1
+               halign: 'center'
+               valign: 'middle'
+               text_size: self.width, None
+               size_hint_y: None
+               height: '50dp'
+
+          BoxLayout:
+               id: progress_layout
+               orientation: 'vertical'
+               size_hint_y: None
+               height: '60dp'
+               spacing: 5
+            
+               ProgressBar:
+                    id: progress_bar
+                    max: 100
+                    value: 0
+                    size_hint_y: None
+                    height: '20dp'
+                
+               Label:
+                    id: percent_label
+                    text: "0%"
+                    font_size: '14sp'
+                    color: 0.9, 0.9, 0.9, 1
+
+          BoxLayout:
+               id: retry_layout
+               size_hint_y: None
+               height: '50dp'
+               opacity: 0
+               disabled: True
+               padding: [20, 0, 20, 0]
+            
+               Button:
+                    text: "🔄 Tap to Retry Setup"
+                    font_size: '16sp'
+                    background_normal: ''
+                    background_color: 0.12, 0.43, 0.93, 1
+                    on_release: root.start_download_process()
+
+       
